@@ -1,0 +1,102 @@
+{
+    "event": {
+        "id":1313266,
+        "title":"FRONT Exhibition: Juan Araujo: Redwood",
+        "url":"http://www2.oberlin.edu/amam/Juan%20Araujo-%20Redwood.html",
+        "updated_at":"2018-09-30T08:03:33-04:00",
+        "created_at":"2018-06-19T15:31:55-04:00",
+        "facebook_id":null,
+        "first_date":"2018-07-14",
+        "last_date":"2018-09-29",
+        "hashtag":"frontart.org",
+        "urlname":"juan_araujo_redwood",
+        "user_id":63905,
+        "directions":"",
+        "allows_reviews":true,
+        "allows_attendance":true,
+        "location":"",
+        "room_number":"",
+        "location_name":"Weltzheimer-Johnson House",
+        "created_by":63905,
+        "updated_by":365700,
+        "city_id":null,
+        "neighborhood_id":null,
+        "school_id":43,
+        "campus_id":null,
+        "recurring":true,
+        "free":true,
+        "private":false,
+        "verified":true,
+        "rejected":false,
+        "sponsored":false,
+        "venue_id":53968,
+        "ticket_url":"http://www2.oberlin.edu/amam/flwright.html",
+        "ticket_cost":"Free. No advance registration required except for regular open houses on August 5 and September 2.",
+        "keywords":[],
+        "tags":[],
+        "description_text":"Juan Araujo has created a site-specific installation for the Frank Lloyd Wright-designed Weltzheimer/Johnson House that mines its multi-layered history and highlights features of its impeccably balanced mid-century design, which the artist finds imbued with a “sense of tranquility.”\n\nBorn in Venezuela and now based in Portugal, Araujo has long been interested in modernist architecture and how it circulates in reproduction, approaching a classical painting practice through a conceptual framework. Redwood includes a video and cycle of paintings for the interior and exterior of the house.\n\nFrom July 14 through September 30, the Weltzheimer/ Johnson House has extended hours: from 10 a.m. to 5 p.m., Fridays and Saturdays, and from 1-5 p.m., Sundays. All visits on the regular first Sundays, August 5 and September 2, require advance registration and a $5 admission fee.\n\nThis project was commissioned by FRONT International: Cleveland Triennial for Contemporary Art, and organized by Andrea Gyorody, Ellen Johnson ’33 Assistant Curator of Modern and Contemporary Art.\n\nRedwood is presented with support from the Eric and  Jane Nord Family Fund and the Nord Family Foundation.",
+        "photo_id":677907,
+        "detail_views":324,
+        "event_instances": [
+            {
+                "event_instance":{
+                    "id":3693582,
+                    "ranking":0,
+                    "event_id":1313266,
+                    "start":"2018-09-01T10:00:00-04:00",
+                    "end":"2018-09-01T17:00:00-04:00",
+                    "all_day":false
+                }
+            }
+        ],
+        "address":"534 Morgan Street, Oberlin, OH 44074",
+        "description":"<p>Juan Araujo has created a site-specific installation for the Frank Lloyd Wright-designed Weltzheimer/Johnson House that mines its multi-layered history and highlights features of its impeccably balanced mid-century design, which the artist finds imbued with a &ldquo;sense of tranquility.&rdquo;</p>\r\n\r\n<p>Born in Venezuela and now based in Portugal, Araujo has long been interested in modernist architecture and how it circulates in reproduction, approaching a classical painting practice through a conceptual framework. <i>Redwood</i> includes a video and cycle of paintings for the interior and exterior of the house.</p>\r\n\r\n<p>From July 14 through September 30, the <a href=\"http://www2.oberlin.edu/amam/flwright.html\">Weltzheimer/ Johnson House</a> has extended hours: from 10 a.m. to 5 p.m., Fridays and Saturdays, and from 1-5 p.m., Sundays. All visits on the regular first Sundays, <a href=\"https://www.eventbrite.com/e/frank-lloyd-wright-open-house-august-5-front-tickets-46820063069\">August 5 </a>and <a href=\"https://www.eventbrite.com/e/frank-lloyd-wright-open-house-september-2-front-tickets-46823524422\">September 2</a>, require advance registration and a $5 admission fee.</p>\r\n\r\n<p>This project was commissioned by <a href=\"http://www.frontart.org\">FRONT International: Cleveland Triennial for Contemporary Art</a>, and organized by Andrea Gyorody, Ellen Johnson &rsquo;33 Assistant Curator of Modern and Contemporary Art.</p>\r\n\r\n<p><i>Redwood</i> is presented with support from the Eric and&nbsp; Jane Nord Family Fund and the Nord Family Foundation.&nbsp;</p>\r\n",
+        "featured":false,
+        "geo":{
+            "latitude":"41.287216",
+            "longitude":"-82.23687",
+            "street":"534 Morgan Street",
+            "city":"Oberlin",
+            "state":"OH",
+            "country":"US",
+            "zip":"44074"
+        },
+        "filters":{
+            "departments":[
+                {
+                    "name":"Administrative",
+                    "id":17804},{
+                        "name":"Allen Memorial Art Museum",
+                        "id":17888
+                    }
+            ],
+            "event_types":[
+                {
+                    "name":"Arts",
+                    "id":17268
+                },
+                {
+                    "name":"Exhibits/Fairs/Tours",
+                    "id":17277
+                }
+            ]
+        },
+        "custom_fields":{
+            "contact_person":"Jill Greenwood",
+            "contact_phone_number":"440-775-8671",
+            "contact_email_address":"jgreenwo@oberlin.edu"
+        },
+        "localist_url":"https://calendar.oberlin.edu/event/juan_araujo_redwood",
+        "localist_ics_url":"https://calendar.oberlin.edu/event/juan_araujo_redwood.ics",
+        "photo_url":"https://d3e1o4bcbhmj8g.cloudfront.net/photos/677907/huge/cb662c43263a11ea5ed17fb1ec01e5fb460b570a.jpg",
+        "venue_url":"https://calendar.oberlin.edu/weltzheimer-johnson_house_frank_lloyd_wright_house"
+    }
+}
+
+
+
+
+
+
+
+
