@@ -4,8 +4,8 @@ import mapStyle from './mapStyle';
 import styledMapCanvas from './styledMapCanvas.js';
 
 export default props => {
-  console.log("zoom");
-
+  // console.log("zoom");
+  
   return (
     <div style={styledMapCanvas}>
     <GoogleMapReact
@@ -17,7 +17,7 @@ export default props => {
         zoom={props.zoom}
         options={{styles: mapStyle}}
       >
-        {Children.toArray(props.children)}
+        {props.children}
       </GoogleMapReact>
     </div>
   );
