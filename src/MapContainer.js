@@ -4,7 +4,6 @@ import mapStyle from './mapStyle';
 import styledMapCanvas from './styledMapCanvas.js';
 
 export default props => {
-  console.log("zoom");
 
   return (
     <div style={styledMapCanvas}>

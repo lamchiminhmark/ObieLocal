@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import MapContainer from './MapContainer';
 import NavBar from './NavBar';
 import "./App.css";
+import UserButton from "./UserButton";
 
 class App extends Component {
   render() {
@@ -10,6 +11,7 @@ class App extends Component {
         <MapContainer zoom={18}>
         </MapContainer>
         <NavBar />
+        <UserButton />
       </div>
     );
   }
