@@ -8,7 +8,7 @@
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
     "react-scripts": "2.1.1",
-    "mariadb": "2.0.0-alpha"
+    "mariadb": "2.0.0-alpha",
     "styled-components": "^4.1.1"
   },
   "scripts": {
