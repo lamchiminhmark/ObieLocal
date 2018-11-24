@@ -12,3 +12,13 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+
+.Sidepane-active {
+  position: fixed;
+  left: 0px;
+}
+
+.Sidepane-inactive {
+  position: absolute;
+  left: calc(-25%);
+}
