@@ -1,29 +1,23 @@
-import React, { Component} from "react";
-import MapContainer from './MapContainer';
-import Marker from './Marker'
+import React, { Component } from "react";
+import MapContainer from "./MapContainer";
+import Marker from "./Marker";
 import "./App.css";
-
-// const TestButton = props => {
-//   return (
-//     <button></button>
-//   )
-// }
 
 class App extends Component {
   render() {
     const markers = [
-    <Marker lat={41.293873} lng={-82.221939}/>,
-    <Marker lat={41.291687} lng={-82.219704}/>,
-    ]
+      { lat: "41.287216", lng: "-82.23687" },
+      { lat: "41.287320", lng: "-82.23690" }
+    ].map(obj => <Marker lat={obj.lat} lng={obj.lng} />);
+
     return (
       <div className="App">
-        <MapContainer zoom={18}>
+        <MapContainer zoom={18} >
           {markers}
-        </MapContainer>
+        </MapContainer>>
       </div>
     );
   }
 }
 
 export default App;
-
