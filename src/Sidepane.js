@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import styled from "styled-components";
+import React, { Component } from 'react';
+import styled from 'styled-components';
 
 const StyledPane = styled.div`
   margin: 0px;
@@ -26,14 +26,8 @@ const StyledPane = styled.div`
 class Sidepane extends Component {
   constructor() {
     super();
-    var desc = "This is a sample description of an event.";
-    var time = "April 20th, 2019 @ 4:20pm";
     this.state = {
-      eventInfo: {
-        title: "Event Title",
-        desc: desc,
-        time: time
-      },
+      eventInfo: {},
       active: true
     };
     this.toggleClass = this.toggleClass.bind(this);
@@ -43,17 +37,34 @@ class Sidepane extends Component {
     this.setState({ active: !this.state.active });
   }
 
+  componentDidMount() {
+    this.setState({ eventInfo: this.props.eventInfo });
+  }
+  /* componentDidMount() {
+    fetch('/query')
+      .then(res => res.json())
+      .then(json => json[0])
+      .then(event => {
+        console.log(event);
+        this.setState({ eventInfo: event });
+      })
+      .catch(err => console.log(err));
+  } */
+
   render() {
+    const where = this.state.eventInfo.time + '' + this.state.eventInfo.date;
+    const desc = this.state.eventInfo.desc;
+
     return (
       <StyledPane
-        className={this.state.active ? "Sidepane-active" : "Sidepane-inactive"}
+        className={this.state.active ? 'Sidepane-active' : 'Sidepane-inactive'}
         onClick={this.toggleClass}
       >
         <h1>{this.state.eventInfo.title}</h1>
-        <p>{this.state.eventInfo.desc}</p>
+        <p>{desc}</p>
         <p className="event-details">
           <em>Where and When: </em>
-          {this.state.eventInfo.time}
+          {where}
         </p>
       </StyledPane>
     );
