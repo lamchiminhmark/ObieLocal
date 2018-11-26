@@ -4,6 +4,7 @@ import NavBar from './NavBar';
 import './App.css';
 import UserButton from './UserButton';
 import Sidepane from './Sidepane';
+import Marker from "./Marker";
 
 class App extends Component {
   constructor() {
@@ -29,9 +30,16 @@ class App extends Component {
   }
 
   render() {
+    const markers = [
+      { lat: "41.287216", lng: "-82.23687" },
+      { lat: "41.287320", lng: "-82.23690" }
+    ].map(obj => <Marker lat={obj.lat} lng={obj.lng} handleMarkerClick={this.handleMarkerClick}/>);
+
     return (
       <div className="App">
-        <MapContainer zoom={18} />
+        <MapContainer zoom={18} >
+          {markers}
+        </MapContainer>
         <Sidepane eventInfo={this.state.activeEventInfo} />
         <NavBar />
         <UserButton />

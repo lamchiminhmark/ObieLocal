@@ -1,10 +1,9 @@
-import React, { Children } from "react";
+import React from "react";
 import GoogleMapReact from "google-map-react";
 import mapStyle from './mapStyle';
 import styledMapCanvas from './styledMapCanvas.js';
 
 export default props => {
-
   return (
     <div style={styledMapCanvas}>
     <GoogleMapReact
@@ -16,7 +15,7 @@ export default props => {
         zoom={props.zoom}
         options={{styles: mapStyle}}
       >
-        {Children.toArray(props.children)}
+        {props.children}
       </GoogleMapReact>
     </div>
   );
