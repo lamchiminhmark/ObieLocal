@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-// import Wrapper from './MarkerStyle'
 
 const Button = styled.button`
     width: 28px;
@@ -18,7 +17,7 @@ const Button = styled.button`
 
 const Marker = props => {
     return (
-        <Button></Button>
+        <Button onClick={() => props.handleMarkerClick(props.eventInfo)}></Button>
         // <Wrapper/>
     )
 }

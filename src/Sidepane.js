@@ -23,13 +23,15 @@ const StyledPane = styled.div`
   }
 `;
 
-class Sidepane extends Component {
-  constructor() {
-    super();
+export default class Sidepane extends Component {
+  constructor(props) {
+    super(props);
+
+    // COMMENT(ML): This component does not need to keep track of state of currentInfo
     this.state = {
-      eventInfo: {},
       active: true
     };
+
     this.toggleClass = this.toggleClass.bind(this);
   }
 
@@ -37,30 +39,16 @@ class Sidepane extends Component {
     this.setState({ active: !this.state.active });
   }
 
-  componentDidMount() {
-    this.setState({ eventInfo: this.props.eventInfo });
-  }
-  /* componentDidMount() {
-    fetch('/query')
-      .then(res => res.json())
-      .then(json => json[0])
-      .then(event => {
-        console.log(event);
-        this.setState({ eventInfo: event });
-      })
-      .catch(err => console.log(err));
-  } */
-
   render() {
-    const where = this.state.eventInfo.time + '' + this.state.eventInfo.date;
-    const desc = this.state.eventInfo.desc;
+    const where = this.props.eventInfo.time + '' + this.props.eventInfo.date;
+    const desc = this.props.eventInfo.desc;
 
     return (
       <StyledPane
         className={this.state.active ? 'Sidepane-active' : 'Sidepane-inactive'}
         onClick={this.toggleClass}
       >
-        <h1>{this.state.eventInfo.title}</h1>
+        <h1>{this.props.eventInfo.title}</h1>
         <p>{desc}</p>
         <p className="event-details">
           <em>Where and When: </em>
@@ -70,5 +58,3 @@ class Sidepane extends Component {
     );
   }
 }
-
-export default Sidepane;
