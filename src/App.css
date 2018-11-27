@@ -19,6 +19,7 @@
 }
 
 .Sidepane-inactive {
-  position: absolute;
-  left: calc(-25%);
+  position: fixed;
+  transform: translate(-90%, 0%);
+  cursor: pointer;
 }

@@ -13,7 +13,8 @@ const StyledPane = styled.div`
   border-right: 12px solid rgb(75, 75, 75);
   border-radius: 0px;
   border-style: inset;
-  transition: left 1s;
+  transition: all 1s;
+  
   h1,
   p {
     overflow: clip;
@@ -29,14 +30,15 @@ export default class Sidepane extends Component {
 
     // COMMENT(ML): This component does not need to keep track of state of currentInfo
     this.state = {
-      active: true
+      active: false
     };
 
     this.toggleClass = this.toggleClass.bind(this);
   }
 
   toggleClass(e) {
-    this.setState({ active: !this.state.active });
+    if (this.props.eventInfo.ID !== 0) this.setState({ active: !this.state.active });
+    else (alert("You must select an event marker to view event information."))
   }
 
   render() {
