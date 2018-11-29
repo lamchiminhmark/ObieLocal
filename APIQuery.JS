@@ -28,6 +28,7 @@ request('https://calendar.oberlin.edu/api/2/events', { json: true }, (err, res, 
 				var event = body.events[i];
 
 				//retrieve relevant information and format appropriately
+				var eventID = event.event["id"];
 				var title = event.event["title"];
 				if (title != null) {title = title.replace("\'","\'\'")}
 			  console.log(title);
@@ -64,7 +65,7 @@ request('https://calendar.oberlin.edu/api/2/events', { json: true }, (err, res, 
 
 				// Insert data into our database
 				pool
-					.query( `INSERT INTO Events (ID, title, created_at, updated_at, location_name, created_by, recurring, free, price, verified, venue_id, venue_url, filters, description, photo_url, address, latitude, longitude ) VALUES (${i},'${title}','${created_at}','${updated_at}','${location_name}','${created_by}','${recurring}','${free}',${price},'${verified}','${venue_id}','${venue_url}','${filters}','${description}','${photo_url}','${address}',${latitude},${longitude})` )
+					.query( `INSERT INTO Events (ID, title, created_at, updated_at, location_name, created_by, recurring, free, price, verified, venue_id, venue_url, filters, description, photo_url, address, latitude, longitude ) VALUES (${eventID},'${title}','${created_at}','${updated_at}','${location_name}','${created_by}','${recurring}','${free}',${price},'${verified}','${venue_id}','${venue_url}','${filters}','${description}','${photo_url}','${address}',${latitude},${longitude})` )
 
 					.then( rows  => {
 					  console.log(rows);
