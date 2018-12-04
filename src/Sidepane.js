@@ -27,8 +27,6 @@ const StyledPane = styled.div`
 export default class Sidepane extends Component {
   constructor(props) {
     super(props);
-
-    // COMMENT(ML): This component does not need to keep track of state of currentInfo
     this.state = {
       active: false
     };

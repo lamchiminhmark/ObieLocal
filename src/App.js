@@ -7,16 +7,13 @@ import Sidepane from "./Sidepane";
 import Marker from "./Marker";
 
 class App extends Component {
-  // COMMENT(ML): Needs to initiate with props
   constructor(props) {
     super(props);
-
-    // ASK(ML): What does the object queried from the server looks like?
     this.state = {
       activeEventInfo: {
         ID: 0,
         title: "NoTitle",
-        date: new Date(),
+        date: "NoDate",
         time: "NoTime",
         location: "No Location",
         price: 0,
