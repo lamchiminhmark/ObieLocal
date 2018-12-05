@@ -21,14 +21,21 @@ class App extends Component {
         photo_url: "None",
         address: "No address",
         filters: "None"
-      }
+      },
+      sidepaneOpen: false
     };
 
     this.handleMarkerClick = this.handleMarkerClick.bind(this);
+    this.handleSidepaneClick = this.handleSidepaneClick.bind(this);
   }
 
   handleMarkerClick(eventInfo) {
-    this.setState({ activeEventInfo: eventInfo });
+    this.setState({ activeEventInfo: eventInfo, sidepaneOpen: true });
+  }
+
+  handleSidepaneClick() {
+    if (this.state.activeEventInfo.ID !== 0) this.setState({ sidepaneOpen: !this.state.sidepaneOpen });
+    else (alert("You must select an event marker to view event information."))
   }
 
   render() {
@@ -47,7 +54,11 @@ class App extends Component {
     return (
       <div className="App">
         <MapContainer zoom={18}>{markers}</MapContainer>
-        <Sidepane eventInfo={this.state.activeEventInfo} />
+        <Sidepane 
+          eventInfo={this.state.activeEventInfo} 
+          active={this.state.sidepaneOpen} 
+          handleSidepaneClick={this.handleSidepaneClick} 
+        />
         <NavBar />
         <UserButton />
       </div>
