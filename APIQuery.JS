@@ -2,7 +2,7 @@
 const mariadb = require('mariadb');
 const request = require('request');
 
-// This bit sets the login and database for the 'mariadb' module
+/* Sets the login information for the mariadb module */
 const pool = mariadb.createPool({
 	host: 'localhost',
 	user: 'editor',
@@ -10,9 +10,13 @@ const pool = mariadb.createPool({
 	database: 'obielocal'
 });
 
+/* Assuming there are always 2 pages of events on the API */
 const numPages = 2;
 
-// This establishes the connection and then calls getEvents()
+/* The meat of the script. This establishes a connection and
+prints out a message on success or failure. If it succeeds, it
+calls the getEvents() function to pull from the API and 
+populate the database. */
 pool.getConnection()
   .then(conn => {
 		console.log("connected! connection id is " + conn.threadId);
@@ -24,14 +28,17 @@ pool.getConnection()
 		process.exit(1);
 	});
 
-// This bit uses the 'request' module to grab event objects from calendar.oberlin.edu
-// API and inserts it into the database.
+/* Uses the request module to send a request to the API and retrieve the JSON event
+objects that are stored on each page. Then, it inserts the events into the database.
+This should eventually be refactored into smaller, more manageable functions. */
 function getEvents(maxPages) {
 	let pagesRemaining = maxPages;
 	for (let page = 1; page <= maxPages; page++) {
 		request(`https://calendar.oberlin.edu/api/2/events?page=${page}`, { json: true, timeout: 1500 }, (err, res, body) => {
+
 			/* Upon request error, log the error and kill the process immediately.
-			 * This should be reworked at some point. */
+			This should be reworked at some point. Calling process.exit() is
+			kind of bad practice. */
 			if (err) {
 				console.log(err);
 				process.exit(1);
@@ -48,46 +55,75 @@ function getEvents(maxPages) {
 			for (let i =0; i < body.events.length; i++){ 
 				const event = body.events[i];
 
-				//retrieve relevant information and format appropriately
+				/* Begin formatting of information so that it is ready
+				to be inserted into the database. */
 				const eventID = event.event["id"];
 				let title = event.event["title"];
-				if (title != null) {title = title.replace(/'/g,"''")}
+				if (title != null) {
+					title = title.replace(/'/g,"''")
+				}
 				console.log(`Inserting event: ${title}.`);
 				let created_at = event.event["created_at"];
-				if (created_at != null) {created_at = created_at.substring(0,19).replace("T"," ")}
+				if (created_at != null) {
+					created_at = created_at.substring(0,19).replace("T"," ")
+				}
 				let updated_at = event.event["updated_at"];
-				if (updated_at != null) {updated_at = updated_at.substring(0,19).replace("T"," ")}
+				if (updated_at != null) {
+					updated_at = updated_at.substring(0,19).replace("T"," ")
+				}
 				let location_name = event.event["location_name"];
-				if (location_name != null) {location_name = location_name.replace(/'/g,"''");}
+				if (location_name != null) {
+					location_name = location_name.replace(/'/g,"''");
+				}
 				let created_by = event.event["created_by"];
-				if (created_by != null) {created_by = created_by.toString();}
+				if (created_by != null) {
+					created_by = created_by.toString();
+				}
 				const recurring = event.event["recurring"] ? 1 : 0;
 				const free = event.event["free"] ? 1 : 0;
 				let price = event.event["ticket_cost"];
-				if (free === 1) { price = 0;} else {  //TODO: How does input look like if the even is not free. Perhaps use parseFLoat(price)
+				if (free === 1) { 
+					price = 0;
+				} else {  // TODO: How does input look like if the even is not free. Perhaps use parseFLoat(price)
 					price = price.replace("$", "");
 					price = parseFloat(price);
 				} 
 				const verified = event.event["verified"] ? 1 : 0;
 				let venue_id = event.event["venue_id"];
-				if (venue_id == null) {venue_id = 0;}
+				if (venue_id == null) {
+					venue_id = 0;
+				}
 				let venue_url = event.event["venue_url"];
-				if (venue_url != null) {venue_url = venue_url.replace(/'/g,"''");}
+				if (venue_url != null) {
+					venue_url = venue_url.replace(/'/g,"''");
+			}
 				/* filters should hold a JSON object? */
 				let filters = event.event["filters"];
-				//if (filters != null) {filters = filters.replace(/'/g,"''");}
+				// if (filters != null) {filters = filters.replace(/'/g,"''");}
 				let description = event.event["description"];
-				if (description != null) {description = description.replace(/'/g,"''");} //NOTE: returns html code
+				if (description != null) {
+					description = description.replace(/'/g,"''");
+			} // NOTE: returns html code
 				let photo_url = event.event["photo_url"];
-				if (photo_url != null) {photo_url = photo_url.replace(/'/g,"''");}
+				if (photo_url != null) {
+					photo_url = photo_url.replace(/'/g,"''");
+				}
 				let address = event.event["address"];
-				if (address != null) {address = address.replace(/'/g,"''");}
+				if (address != null) {
+					address = address.replace(/'/g,"''");
+				}
 				let latitude = event.event["geo"]["latitude"];
-				if (latitude != null) {latitude = parseFloat(latitude);}
+				if (latitude != null) {
+					latitude = parseFloat(latitude);
+				}
 				let longitude = event.event["geo"]["longitude"];
-				if (longitude != null) {longitude = parseFloat(longitude);}
+				if (longitude != null) {
+					longitude = parseFloat(longitude);
+				}
 
-				// INSERT query to database
+				/* Begin insertion of event into database. If the INSERT query returns
+				an error, the script will log it and continue on to the next event. At
+				the end of all events, it will close the connection. */
 				pool.query( 
 					`INSERT INTO Events (
 						ID, 
@@ -135,7 +171,9 @@ function getEvents(maxPages) {
 					if (pagesRemaining === 0) pool.end();
 				})
 				.catch( err => {
-					console.log(`ERROR: EventID: ${eventID}, code: ${err.code}, i: ${i}`);
+					console.log(
+						`ERROR: EventID: ${eventID}, code: ${err.code}, i: ${i}`
+					);
 					if (i === body.events.length - 1) pagesRemaining--;
 					if (pagesRemaining === 0) pool.end();
 					// console.log(err);
