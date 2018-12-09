@@ -168,14 +168,20 @@ function getEvents(maxPages) {
 				.then( rows => {
 					console.log(rows);
 					if (i === body.events.length - 1) pagesRemaining--;
-					if (pagesRemaining === 0) pool.end();
+					if (pagesRemaining === 0) { 
+						pool.end()
+							.catch(() => {});
+					}
 				})
 				.catch( err => {
 					console.log(
 						`ERROR: EventID: ${eventID}, code: ${err.code}, i: ${i}`
 					);
 					if (i === body.events.length - 1) pagesRemaining--;
-					if (pagesRemaining === 0) pool.end();
+					if (pagesRemaining === 0) {
+						pool.end()
+							.catch(() => {});
+					}
 					// console.log(err);
 				});
 			};
