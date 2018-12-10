@@ -20,6 +20,8 @@ module.exports.tryConnection = function() {
     });
 };
 
+
+// ML: Returns a promise with a resolved 
 // Returns all of the rows in the Users table
 module.exports.selectAllUsers = function() {
   return (
