@@ -27,6 +27,8 @@ const StyledPane = styled.div`
 export default class Sidepane extends Component {
   constructor(props) {
     super(props);
+
+    // COMMENT(ML, CP): lift this state to App to allow marker click => side pane pops out
     this.state = {
       active: false
     };

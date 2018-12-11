@@ -19,6 +19,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+// Enable CORS for http://localhost:3000
+app.use(function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+  next();
+});
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
