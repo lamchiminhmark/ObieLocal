@@ -1,0 +1,2 @@
+MAILTO=ThomasNemeh2@gmail.com
+0 12 * * * /home/tnemeh/node APIQuery.JS
