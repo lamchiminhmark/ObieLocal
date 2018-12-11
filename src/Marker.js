@@ -13,6 +13,7 @@ const Button = styled.button`
     // fontSize: 10pt;
     // textAlign: center; */
     border:2pt solid blue;
+    cursor: pointer;
 `
 
 const Marker = props => {
