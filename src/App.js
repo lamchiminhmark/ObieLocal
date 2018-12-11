@@ -28,6 +28,16 @@ class App extends Component {
     this.handleMarkerClick = this.handleMarkerClick.bind(this);
     // this.initializeMarker = this.initializeMarker.bind(this);
   }
+  componentDidMount(){
+    this.fetchData()
+  }
+
+  fetchData(){
+    fetch('http://localhost:3001/query')
+    .then(response => response.json())
+    .then(parsedJSON => console.log(parsedJSON.results))
+    .catch(error => console.log('parsing failed', error))
+  }
   
   // initializeMarker(markerArr) {
   //   const markers = markerArr.map(obj => (
