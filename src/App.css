@@ -12,3 +12,14 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+
+.Sidepane-active {
+  position: fixed;
+  left: 0px;
+}
+
+.Sidepane-inactive {
+  position: fixed;
+  transform: translate(-90%, 0%);
+  cursor: pointer;
+}
