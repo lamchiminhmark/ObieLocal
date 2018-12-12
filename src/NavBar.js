@@ -81,7 +81,7 @@ class Popup extends React.Component {
   render() {
     return (
       <div className='popup'>
-        <div className='popup_inner' ref={node => this.node = node}>
+        <div className='popup_inner' ref={nodeInside => this.nodeInside = nodeInside}>
         <button onClick={this.props.closePopup} id = "x">
             X
         </button>
@@ -104,12 +104,27 @@ class Popup extends React.Component {
   }
 
   handleClick = (e) => {
-    if (this.node.contains(e.target)) {
+    if (this.nodeInside.contains(e.target)) {
       return;
     }
-
-      /*I need to get the state of NavBar and call the toggle functions!*/
+    else if (this.props.contact.contains(e.target)) {
+      this.props.closePopup();
+      this.props.openContact();
       return;
+    }
+    else if (this.props.about.contains(e.target)) {
+      this.props.closePopup();
+      this.props.openAbout();
+      return;
+    }
+    else if (this.props.use.contains(e.target)) {
+      this.props.closePopup();
+      this.props.openUse();
+      return;
+    }
+    else {
+      this.props.closePopup();
+    }
   }
 
 }
@@ -146,18 +161,24 @@ class NavBar extends Component {
     return (
       <StyledNav className="NavBar">
         <ul>
-          <li>
+          <li key="0">
             <a>Home</a>
           </li>
-          <li>
-            <a onClick={this.toggleAbout.bind(this)}>About</a>
-          </li>
-          <li>
-            <a onClick={this.toggleContact.bind(this)}>Contact</a>
-          </li>
-          <li>
-            <a onClick={this.toggleUse.bind(this)}>How to Use</a>
-          </li>
+          <div ref={nodeAbout => this.nodeAbout = nodeAbout}>
+            <li key="1">
+              <a onClick={this.toggleAbout.bind(this)}>About</a>
+            </li>
+          </div>
+          <div ref={nodeContact => this.nodeContact = nodeContact}>
+            <li key="2">
+              <a onClick={this.toggleContact.bind(this)}>Contact</a>
+            </li>
+          </div>
+          <div ref={nodeUse => this.nodeUse = nodeUse}>
+            <li key="3">
+              <a onClick={this.toggleUse.bind(this)}>How to Use</a>
+            </li>
+          </div>
         </ul>
 
         {this.state.showAbout ?
@@ -165,7 +186,8 @@ class NavBar extends Component {
             title='About'
             body="ObieLocal is a web service made by Oberlin students to help other students find events on campus. ObieLocal is currently
                  being developed by Colton Potter, Minh Lam, Lukas Griffin, and Thomas Nemeh for their CSCI 241 final project."
-            closePopup={this.toggleAbout.bind(this)}
+            closePopup={this.toggleAbout.bind(this)} openAbout={this.toggleAbout.bind(this)} openContact={this.toggleContact.bind(this)}
+            openUse={this.toggleUse.bind(this)} about={this.nodeAbout} contact={this.nodeContact} use={this.nodeUse}
           />
           : null
         }
@@ -174,7 +196,8 @@ class NavBar extends Component {
           <Popup
             title='Contact'
             body='Please send any comments, questions, or concerns to Tnemeh@oberlin.edu'
-            closePopup={this.toggleContact.bind(this)}
+            closePopup={this.toggleContact.bind(this)} openAbout={this.toggleAbout.bind(this)} openContact={this.toggleContact.bind(this)}
+            openUse={this.toggleUse.bind(this)} about={this.nodeAbout} contact={this.nodeContact} use={this.nodeUse}
           />
           : null
         }
@@ -183,7 +206,8 @@ class NavBar extends Component {
           <Popup
             title='How to use'
             body='Click on a pin and information for an event will be displayed.'
-            closePopup={this.toggleUse.bind(this)}
+            closePopup={this.toggleUse.bind(this)} openAbout={this.toggleAbout.bind(this)} openContact={this.toggleContact.bind(this)}
+            openUse={this.toggleUse.bind(this)} about={this.nodeAbout} contact={this.nodeContact} use={this.nodeUse}
           />
           : null
         }
