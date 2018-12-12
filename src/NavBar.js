@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+/*import App from "./App.js"; */
 
 const StyledNav = styled.div`
   background-color: rgba(255, 0, 0, 0.6);
@@ -35,20 +36,6 @@ const StyledNav = styled.div`
     background-color: rgba(200, 200, 200, 0.9);
   }
 
-  button {
-    padding: 10px;
-    border: 3px solid black;
-    background-color: rgba(255, 255, 255, 0.9);
-    text-decoration: none;
-    color: black;
-    display: inline-block;
-    height: 50px;
-  }
-
-  button:hover {
-    background-color: rgba(200, 200, 200, 0.9);
-  }
-
   .popup {
   position: fixed;
   width: 100%;
@@ -58,7 +45,7 @@ const StyledNav = styled.div`
   right: 0;
   bottom: 0;
   margin: auto;
-  background-color: rgba(0,0,0, 0.5);
+  /*background-color: rgba(0,0,0, 0.5);*/
 }
 .popup_inner {
   position: absolute;
@@ -68,6 +55,25 @@ const StyledNav = styled.div`
   bottom: 25%;
   margin: auto;
   background: white;
+  opacity: 0.7;
+}
+
+#x {
+    position: relative;
+    float: right;
+	  color: #DC143C;
+    width: 6.5%;
+    height: 10%;
+    opacity: 0.7;
+    /*background-color:#F2F2F2;*/
+    border: none;
+    background-color: rgba(255, 255, 255, 0.9);
+    /*
+    background:rgb(0,0,0);
+
+    background:rgba(0,0,0,0.4);
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#66000000,endColorstr=#66000000);
+    zoom: 1;  */
 }
 `;
 
@@ -75,25 +81,64 @@ class Popup extends React.Component {
   render() {
     return (
       <div className='popup'>
-        <div className='popup_inner'>
-          <h1>{this.props.text}</h1>
-        <button onClick={this.props.closePopup}>close me</button>
+        <div className='popup_inner' ref={node => this.node = node}>
+        <button onClick={this.props.closePopup} id = "x">
+            X
+        </button>
+          <h1>{this.props.title}</h1>
+          <p>
+            {this.props.body}
+
+        </p>
         </div>
       </div>
     );
   }
+
+  componentWillMount() {
+    document.addEventListener('mousedown', this.handleClick, false);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('mousedown', this.handleClick, false);
+  }
+
+  handleClick = (e) => {
+    if (this.node.contains(e.target)) {
+      return;
+    }
+
+      /*I need to get the state of NavBar and call the toggle functions!*/
+      return;
+  }
+
 }
 
 class NavBar extends Component {
   constructor() {
     super();
     this.state = {
-      showPopup: false
+      showAbout: false,
+      showContact: false,
+      showUse: false
     };
   }
-  togglePopup() {
+
+  toggleAbout() {
     this.setState({
-      showPopup: !this.state.showPopup
+      showAbout: !this.state.showAbout
+    });
+  }
+
+  toggleContact() {
+    this.setState({
+      showContact: !this.state.showContact
+    });
+  }
+
+  toggleUse() {
+    this.setState({
+      showUse: !this.state.showUse
     });
   }
 
@@ -105,20 +150,40 @@ class NavBar extends Component {
             <a>Home</a>
           </li>
           <li>
-            <a onClick={this.togglePopup.bind(this)}>About</a>
+            <a onClick={this.toggleAbout.bind(this)}>About</a>
           </li>
           <li>
-            <a onClick={this.togglePopup.bind(this)}>Contact</a>
+            <a onClick={this.toggleContact.bind(this)}>Contact</a>
           </li>
           <li>
-            <a onClick={this.togglePopup.bind(this)}>How to Use</a>
+            <a onClick={this.toggleUse.bind(this)}>How to Use</a>
           </li>
         </ul>
 
-        {this.state.showPopup ?
+        {this.state.showAbout ?
           <Popup
-            text='Close Me'
-            closePopup={this.togglePopup.bind(this)}
+            title='About'
+            body="ObieLocal is a web service made by Oberlin students to help other students find events on campus. ObieLocal is currently
+                 being developed by Colton Potter, Minh Lam, Lukas Griffin, and Thomas Nemeh for their CSCI 241 final project."
+            closePopup={this.toggleAbout.bind(this)}
+          />
+          : null
+        }
+
+        {this.state.showContact ?
+          <Popup
+            title='Contact'
+            body='Please send any comments, questions, or concerns to Tnemeh@oberlin.edu'
+            closePopup={this.toggleContact.bind(this)}
+          />
+          : null
+        }
+
+        {this.state.showUse ?
+          <Popup
+            title='How to use'
+            body='Click on a pin and information for an event will be displayed.'
+            closePopup={this.toggleUse.bind(this)}
           />
           : null
         }
