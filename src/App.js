@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Children } from "react";
 import MapContainer from "./MapContainer";
 import NavBar from "./NavBar";
 import "./App.css";
@@ -10,6 +10,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      markers: [],
       activeEventInfo: {
         ID: 0,
         title: "NoTitle",
@@ -25,8 +26,32 @@ class App extends Component {
       sidepaneOpen: false
     };
 
+    this.fetchData = this.fetchData.bind(this);
     this.handleMarkerClick = this.handleMarkerClick.bind(this);
     this.handleSidepaneClick = this.handleSidepaneClick.bind(this);
+  }
+
+  componentDidMount() {
+    this.fetchData();
+  }
+
+  // CONTINUE(ML): Finish rendering Markers onto the map
+  fetchData() {
+    fetch("http://localhost:3001/query")
+      .then(response => response.json())
+      .then(arr => {
+        console.log(arr);
+        const newArr = arr.map(obj => (
+          <Marker
+            lat={obj.latitude}
+            lng={obj.longitude}
+            handleMarkerClick={this.handleMarkerClick}
+            eventInfo={obj}
+          />
+        ));
+        this.setState({ markers: newArr });
+      })
+      .catch(error => console.log("parsing failed", error));
   }
 
   handleMarkerClick(eventInfo) {
@@ -39,21 +64,9 @@ class App extends Component {
   }
 
   render() {
-    const markers = [
-      { lat: "41.287216", lng: "-82.23687", date: "Dec 2", time: "10", desc: "Some desc", title: "A" },
-      { lat: "41.287320", lng: "-82.23690", date: "Dec 10", time: "9", desc: "Somestuff desc", title: "B" },
-    ].map(obj => (
-      <Marker
-        lat={obj.lat}
-        lng={obj.lng}
-        handleMarkerClick={this.handleMarkerClick}
-        eventInfo={obj}
-      />
-    ));
-
     return (
       <div className="App">
-        <MapContainer zoom={18}>{markers}</MapContainer>
+        <MapContainer zoom={18}>{Children.toArray(this.state.markers)}</MapContainer>
         <Sidepane 
           eventInfo={this.state.activeEventInfo} 
           active={this.state.sidepaneOpen} 

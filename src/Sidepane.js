@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import ReactHtmlParser from 'react-html-parser';
 
 const StyledPane = styled.div`
   margin: 0px;
@@ -26,7 +27,8 @@ const StyledPane = styled.div`
 
 export default class Sidepane extends Component {
   render() {
-    const where = this.props.eventInfo.time + '' + this.props.eventInfo.date;
+    const dateTime = new Date()
+    const where = this.props.eventInfo.address + '. ' + dateTime.toUTCString(this.props.eventInfo.updated_at);
     const desc = this.props.eventInfo.desc;
 
     return (
@@ -39,7 +41,8 @@ export default class Sidepane extends Component {
         <p className="event-details">
           <em>Where and When: </em>
           {where}
-        </p>
+          </p>
+          {ReactHtmlParser(this.props.eventInfo.description)}
       </StyledPane>
     );
   }

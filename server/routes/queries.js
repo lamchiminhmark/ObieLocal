@@ -10,9 +10,11 @@ router.get('/', function(req, res, next) {
   console.log('Received GET request!');
   database
     .selectAllEvents()
-    .then(response => Array.from(response))
-    .then(arr => arr.map(event => event.title))
-    .then(arr => res.send(arr))
+    //.then(response => Array.from(response))
+    // .then(arr => arr.map(event => event.title))
+    .then(arr => {
+      // console.log(arr);
+      res.send(arr);})
     .catch(err => res.send(err));
 });
 
