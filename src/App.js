@@ -25,67 +25,41 @@ class App extends Component {
       }
     };
 
+    this.fetchData = this.fetchData.bind(this);
     this.handleMarkerClick = this.handleMarkerClick.bind(this);
     // this.initializeMarker = this.initializeMarker.bind(this);
   }
-  componentDidMount(){
-    this.fetchData()
+
+  componentDidMount() {
+    this.fetchData();
   }
 
-  fetchData(){
-    fetch('http://localhost:3001/query')
-    .then(response => response.json())
-    .then(parsedJSON => console.log(parsedJSON.results))
-    .catch(error => console.log('parsing failed', error))
+  // CONTINUE(ML): Finish rendering Markers onto the map
+  fetchData() {
+    fetch("http://localhost:3001/query")
+      .then(response => response.json())
+      .then(arr => {
+        const newArr = arr.map(obj => (
+          <Marker
+            lat={obj.latitude}
+            lng={obj.longitude}
+            handleMarkerClick={this.handleMarkerClick}
+            eventInfo={obj}
+          />
+        ));
+        this.setState({ markers: newArr });
+      })
+      .catch(error => console.log("parsing failed", error));
   }
-  
-  // initializeMarker(markerArr) {
-  //   const markers = markerArr.map(obj => (
-  //     <Marker
-  //       lat={obj.lat}
-  //       lng={obj.lng}
-  //       handleMarkerClick={this.handleMarkerClick}
-  //       eventInfo={obj}
-  //     />
-  //   ));
-  //   this.setState({markers});
-  //   this.render();
-  // }
 
   handleMarkerClick(eventInfo) {
     this.setState({ activeEventInfo: eventInfo });
   }
 
   render() {
-    const markers = [
-      {
-        lat: "41.287216",
-        lng: "-82.23687",
-        date: "Dec 2",
-        time: "10",
-        desc: "Some desc",
-        title: "A"
-      },
-      {
-        lat: "41.287320",
-        lng: "-82.23690",
-        date: "Dec 10",
-        time: "9",
-        desc: "Somestuff desc",
-        title: "B"
-      }
-    ].map(obj => (
-      <Marker
-        lat={obj.lat}
-        lng={obj.lng}
-        handleMarkerClick={this.handleMarkerClick}
-        eventInfo={obj}
-      />
-    ));
-
     return (
       <div className="App">
-        <MapContainer zoom={18}>{Children.toArray(markers)}</MapContainer>
+        <MapContainer zoom={18}>{Children.toArray(this.state.markers)}</MapContainer>
         <Sidepane eventInfo={this.state.activeEventInfo} />
         <NavBar />
         <UserButton />
