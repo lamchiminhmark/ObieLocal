@@ -34,10 +34,12 @@ function clearDatabase(_callback) {
 	pool.query(
 		`DELETE FROM Events`
 	)
+	/*
 	.then( rows => {
 			pool.end()
 			.catch(() => {});
 	});
+	*/
 
 	_callback();
 }
