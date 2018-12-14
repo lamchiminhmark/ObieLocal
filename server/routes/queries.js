@@ -44,7 +44,7 @@ router.post('/', function(req, res, next) {
   console.log(body);
   console.log(contype);
 
-  if (contype.equals("application/x-www-form-urlencoded")) {
+  if (contype == 'application/x-www-form-urlencoded') {
     for(var attributename in body){
       console.log(attributename+": "+body[attributename]);
       body[attributename] = body[attributename].replace(/"/g, '\\"');
