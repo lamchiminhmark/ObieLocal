@@ -46,7 +46,7 @@ pool.getConnection()
 objects that are stored on each page. Then, it inserts the events into the database.
 This should eventually be refactored into smaller, more manageable functions. */
 function getEvents(maxPages) {
-	clearDatabase(() => console.log('Database cleared'))
+	clearDatabase(() => console.log('Database cleared'));
 
 	let pagesRemaining = maxPages;
 	for (let page = 1; page <= maxPages; page++) {
