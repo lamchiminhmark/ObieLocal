@@ -44,13 +44,20 @@ router.post('/', function(req, res, next) {
   console.log(body);
   console.log(contype);
 
-  for(var attributename in body){
-    console.log(attributename+": "+body[attributename]);
-    body[attributename] = body[attributename].replace(/"/g, '\\"');
-    body[attributename] = body[attributename].replace(/'/g,"''");
+  if (contype.equals("application/x-www-form-urlencoded")) {
+    for(var attributename in body){
+      console.log(attributename+": "+body[attributename]);
+      body[attributename] = body[attributename].replace(/"/g, '\\"');
+      body[attributename] = body[attributename].replace(/'/g,"''");
+    }
+
+    DBHandler.insertEvent(body);
+  }
+  else {
+    console.log("incorrect content type")
   }
 
-  DBHandler.insertEvent(body);
+
 
   /*
   for (let i =0; i < body.length; i++) {
