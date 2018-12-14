@@ -3,6 +3,7 @@ import MapContainer from "./MapContainer";
 import NavBar from "./NavBar";
 import "./App.css";
 import UserButton from "./UserButton";
+import PlusButton from "./PlusButton";
 import Sidepane from "./Sidepane";
 import Marker from "./Marker";
 
@@ -73,7 +74,10 @@ class App extends Component {
           handleSidepaneClick={this.handleSidepaneClick} 
         />
         <NavBar />
+        <PlusButton />
         <UserButton />
+
+        
       </div>
     );
   }
