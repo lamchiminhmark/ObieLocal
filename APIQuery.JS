@@ -15,7 +15,7 @@ const numPages = 2;
 
 /* The meat of the script. This establishes a connection and
 prints out a message on success or failure. If it succeeds, it
-calls the getEvents() function to pull from the API and 
+calls the getEvents() function to pull from the API and
 populate the database. */
 pool.getConnection()
   .then(conn => {
@@ -28,10 +28,31 @@ pool.getConnection()
 		process.exit(1);
 	});
 
+//*********************
+/*Asynchronous function to delete events from database before updating from oberlin.calendar.edu*/
+function clearDatabase(_callback) {
+	pool.query(
+		`DELETE FROM Events`
+	)
+	/*
+	.then( rows => {
+			pool.end()
+			.catch(() => {});
+	});
+	*/
+
+	_callback();
+}
+//**********************
+
 /* Uses the request module to send a request to the API and retrieve the JSON event
 objects that are stored on each page. Then, it inserts the events into the database.
 This should eventually be refactored into smaller, more manageable functions. */
 function getEvents(maxPages) {
+	//***********************
+	clearDatabase(() => console.log('Database cleared'));
+	//***********************
+
 	let pagesRemaining = maxPages;
 	for (let page = 1; page <= maxPages; page++) {
 		request(`https://calendar.oberlin.edu/api/2/events?page=${page}`, { json: true, timeout: 1500 }, (err, res, body) => {
@@ -44,7 +65,7 @@ function getEvents(maxPages) {
 				process.exit(1);
 				return;
 			}
-			
+
 			/* If there are no events on the page, then make sure to count it as complete */
 			console.log(`\nFound: ${body.events.length} events on page ${page}.\n`)
 			if (body.events.length === 0) {
@@ -52,7 +73,7 @@ function getEvents(maxPages) {
 			}
 
 			/* For each event found in the API's body */
-			for (let i =0; i < body.events.length; i++){ 
+			for (let i =0; i < body.events.length; i++){
 				const event = body.events[i];
 
 				/* Begin formatting of information so that it is ready
@@ -82,12 +103,12 @@ function getEvents(maxPages) {
 				const recurring = event.event["recurring"] ? 1 : 0;
 				const free = event.event["free"] ? 1 : 0;
 				let price = event.event["ticket_cost"];
-				if (free === 1) { 
+				if (free === 1) {
 					price = 0;
 				} else {  // TODO: How does input look like if the even is not free. Perhaps use parseFLoat(price)
 					price = price.replace("$", "");
 					price = parseFloat(price);
-				} 
+				}
 				const verified = event.event["verified"] ? 1 : 0;
 				let venue_id = event.event["venue_id"];
 				if (venue_id == null) {
@@ -124,26 +145,26 @@ function getEvents(maxPages) {
 				/* Begin insertion of event into database. If the INSERT query returns
 				an error, the script will log it and continue on to the next event. At
 				the end of all events, it will close the connection. */
-				pool.query( 
+				pool.query(
 					`INSERT INTO Events (
-						ID, 
-						title, 
-						created_at, 
-						updated_at, 
-						location_name, 
-						created_by, 
-						recurring, 
-						free, 
-						price, 
-						verified, 
-						venue_id, 
-						venue_url, 
-						filters, 
-						description, 
-						photo_url, 
-						address, 
-						latitude, 
-						longitude 
+						ID,
+						title,
+						created_at,
+						updated_at,
+						location_name,
+						created_by,
+						recurring,
+						free,
+						price,
+						verified,
+						venue_id,
+						venue_url,
+						filters,
+						description,
+						photo_url,
+						address,
+						latitude,
+						longitude
 					) VALUES (
 						${eventID},
 						'${title}',
@@ -163,12 +184,12 @@ function getEvents(maxPages) {
 						'${address}',
 						${latitude},
 						${longitude}
-					)` 
+					)`
 				)
 				.then( rows => {
 					console.log(rows);
 					if (i === body.events.length - 1) pagesRemaining--;
-					if (pagesRemaining === 0) { 
+					if (pagesRemaining === 0) {
 						pool.end()
 							.catch(() => {});
 					}
