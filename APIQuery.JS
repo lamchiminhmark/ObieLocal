@@ -30,7 +30,7 @@ pool.getConnection()
 
 	function clearDatabase(_callback) {
 		pool.query(
-			`DELETE * FROM EVENTS`
+			`DELETE FROM EVENTS`
 		)
 		.then( rows => {
 				pool.end()
