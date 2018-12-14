@@ -46,3 +46,52 @@ module.exports.selectAllEvents = function() {
       })
   );
 };
+
+// Inserts the JSON object 'event' into the correct fields of the
+// database. Logs if there is an error. Does not do any validation.
+module.exports.insertEvent = function(event) {
+  return pool.query(
+    `INSERT INTO Events (
+      ID, 
+      title, 
+      created_at, 
+      updated_at, 
+      location_name, 
+      created_by, 
+      recurring, 
+      free, 
+      price, 
+      verified, 
+      venue_id, 
+      venue_url, 
+      filters, 
+      description, 
+      photo_url, 
+      address, 
+      latitude, 
+      longitude 
+    ) VALUES (
+      ${event.id},
+      '${event.title}',
+      '${event.created_at}',
+      '${event.updated_at}',
+      '${event.location_name}',
+      '${event.created_by}',
+      '${event.recurring}',
+      '${event.free}',
+      ${event.price},
+      '${event.verified}',
+      '${event.venue_id}',
+      '${event.venue_url}',
+      '${event.filters}',
+      '${event.description}',
+      '${event.photo_url}',
+      '${event.address}',
+      ${event.latitude},
+      ${event.longitude}
+    )` 
+  )
+  .catch( err => {
+    console.log(err);
+  });
+};
