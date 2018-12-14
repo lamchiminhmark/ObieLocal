@@ -161,24 +161,18 @@ class NavBar extends Component {
     return (
       <StyledNav className="NavBar">
         <ul>
-          <li key="0">
+          <li>
             <a>Home</a>
           </li>
-          <div ref={nodeAbout => this.nodeAbout = nodeAbout}>
-            <li key="1">
-              <a onClick={this.toggleAbout.bind(this)}>About</a>
-            </li>
-          </div>
-          <div ref={nodeContact => this.nodeContact = nodeContact}>
-            <li key="2">
-              <a onClick={this.toggleContact.bind(this)}>Contact</a>
-            </li>
-          </div>
-          <div ref={nodeUse => this.nodeUse = nodeUse}>
-            <li key="3">
-              <a onClick={this.toggleUse.bind(this)}>How to Use</a>
-            </li>
-          </div>
+          <li>
+            <a onClick={this.toggleAbout.bind(this)} ref={nodeAbout => this.nodeAbout = nodeAbout}>About</a>
+          </li>
+          <li>
+            <a onClick={this.toggleContact.bind(this)} ref={nodeContact => this.nodeContact = nodeContact}>Contact</a>
+          </li>
+          <li>
+            <a onClick={this.toggleUse.bind(this)} ref={nodeUse => this.nodeUse = nodeUse}>How to Use</a>
+          </li>
         </ul>
 
         {this.state.showAbout ?
