@@ -40,7 +40,7 @@ class App extends Component {
     fetch("http://localhost:3001/query")
       .then(response => response.json())
       .then(arr => {
-        console.log(arr);
+        // console.log(arr);
         const newArr = arr.map(obj => (
           <Marker
             lat={obj.latitude}
