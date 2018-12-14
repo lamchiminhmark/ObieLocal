@@ -1,11 +1,11 @@
-import React, { Component, Children } from "react";
-import MapContainer from "./MapContainer";
-import NavBar from "./NavBar";
-import "./App.css";
-import UserButton from "./UserButton";
-import PlusButton from "./PlusButton";
-import Sidepane from "./Sidepane";
-import Marker from "./Marker";
+import React, { Component, Children } from 'react';
+import MapContainer from './MapContainer';
+import NavBar from './NavBar';
+import './App.css';
+import UserButton from './UserButton';
+import PlusButton from './PlusButton';
+import Sidepane from './Sidepane';
+import Marker from './Marker';
 
 class App extends Component {
   constructor(props) {
@@ -14,22 +14,24 @@ class App extends Component {
       markers: [],
       activeEventInfo: {
         ID: 0,
-        title: "NoTitle",
-        date: "NoDate",
-        time: "NoTime",
-        location: "No Location",
+        title: 'NoTitle',
+        date: 'NoDate',
+        time: 'NoTime',
+        location: 'No Location',
         price: 0,
-        desc: "No description",
-        photo_url: "None",
-        address: "No address",
-        filters: "None"
+        desc: 'No description',
+        photo_url: 'None',
+        address: 'No address',
+        filters: 'None'
       },
-      sidepaneOpen: false
+      sidepaneOpen: false,
+      createEventContainerOpen: false
     };
 
     this.fetchData = this.fetchData.bind(this);
     this.handleMarkerClick = this.handleMarkerClick.bind(this);
     this.handleSidepaneClick = this.handleSidepaneClick.bind(this);
+    this.toggleCreateEventContainer = this.toggleCreateEventContainer.bind(this);
   }
 
   componentDidMount() {
@@ -38,7 +40,7 @@ class App extends Component {
 
   // CONTINUE(ML): Finish rendering Markers onto the map
   fetchData() {
-    fetch("http://localhost:3001/query")
+    fetch('http://localhost:3001/query')
       .then(response => response.json())
       .then(arr => {
         console.log(arr);
@@ -52,7 +54,7 @@ class App extends Component {
         ));
         this.setState({ markers: newArr });
       })
-      .catch(error => console.log("parsing failed", error));
+      .catch(error => console.log('parsing failed', error));
   }
 
   handleMarkerClick(eventInfo) {
@@ -60,24 +62,30 @@ class App extends Component {
   }
 
   handleSidepaneClick() {
-    if (this.state.activeEventInfo.ID !== 0) this.setState({ sidepaneOpen: !this.state.sidepaneOpen });
-    else (alert("You must select an event marker to view event information."))
+    if (this.state.activeEventInfo.ID !== 0)
+      this.setState({ sidepaneOpen: !this.state.sidepaneOpen });
+    else alert('You must select an event marker to view event information.');
+  }
+
+  // TODO(ML): Implement ME
+  toggleCreateEventContainer() {
+    console.log("Hey! toggleCreateEventContainer called");
   }
 
   render() {
     return (
       <div className="App">
-        <MapContainer zoom={18}>{Children.toArray(this.state.markers)}</MapContainer>
-        <Sidepane 
-          eventInfo={this.state.activeEventInfo} 
-          active={this.state.sidepaneOpen} 
-          handleSidepaneClick={this.handleSidepaneClick} 
+        <MapContainer zoom={18}>
+          {Children.toArray(this.state.markers)}
+        </MapContainer>
+        <Sidepane
+          eventInfo={this.state.activeEventInfo}
+          active={this.state.sidepaneOpen}
+          handleSidepaneClick={this.handleSidepaneClick}
         />
         <NavBar />
-        <PlusButton />
+        <PlusButton toggleCreateEventContainer={this.toggleCreateEventContainer}/>
         <UserButton />
-
-        
       </div>
     );
   }
