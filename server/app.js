@@ -22,8 +22,10 @@ app.use(express.static(path.join(__dirname, "public")));
 // Enable CORS for http://localhost:3000
 app.use(function(req, res, next) {
   const origin = req.get("origin");
-  if (["http://localhost:3000", "http://localhost:80"].includes(origin)) {
+  if (["http://localhost:3000", "http://obielocal.cs.oberlin.edu"].includes(origin)) {
     res.header("Access-Control-Allow-Origin", origin);
+  } else {
+    next(createError(404));
   }
   next();
 });
