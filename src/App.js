@@ -6,6 +6,7 @@ import UserButton from './UserButton';
 import PlusButton from './PlusButton';
 import Sidepane from './Sidepane';
 import Marker from './Marker';
+import CreateEventContainer from './CreateEventContainer';
 
 class App extends Component {
   constructor(props) {
@@ -30,8 +31,10 @@ class App extends Component {
 
     this.fetchData = this.fetchData.bind(this);
     this.handleMarkerClick = this.handleMarkerClick.bind(this);
-    this.handleSidepaneClick = this.handleSidepaneClick.bind(this);
-    this.toggleCreateEventContainer = this.toggleCreateEventContainer.bind(this);
+    this.toggleSidepane = this.toggleSidepane.bind(this);
+    this.showCreateEventContainer = this.showCreateEventContainer.bind(
+      this
+    );
   }
 
   componentDidMount() {
@@ -61,15 +64,17 @@ class App extends Component {
     this.setState({ activeEventInfo: eventInfo, sidepaneOpen: true });
   }
 
-  handleSidepaneClick() {
-    if (this.state.activeEventInfo.ID !== 0)
+  /* Closes or opens sidepane. If close is true, just close side pane */
+  toggleSidepane(close = false) {
+    if (close) this.setState({sidepaneOpen: false});
+    else if (this.state.activeEventInfo.ID !== 0)
       this.setState({ sidepaneOpen: !this.state.sidepaneOpen });
     else alert('You must select an event marker to view event information.');
   }
 
-  // TODO(ML): Implement ME
-  toggleCreateEventContainer() {
-    console.log("Hey! toggleCreateEventContainer called");
+  
+  showCreateEventContainer() {
+    this.setState({createEventContainerOpen: true});
   }
 
   render() {
@@ -81,11 +86,15 @@ class App extends Component {
         <Sidepane
           eventInfo={this.state.activeEventInfo}
           active={this.state.sidepaneOpen}
-          handleSidepaneClick={this.handleSidepaneClick}
+          handleSidepaneClick={this.toggleSidepane}
         />
         <NavBar />
-        <PlusButton toggleCreateEventContainer={this.toggleCreateEventContainer}/>
+        <PlusButton
+          showCreateEventContainer={this.showCreateEventContainer}
+          toggleSidepane={this.toggleSidepane}
+        />
         <UserButton />
+        <CreateEventContainer active={this.state.createEventContainerOpen} />
       </div>
     );
   }
