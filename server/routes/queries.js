@@ -27,6 +27,7 @@ router.get('/', function(req, res, next) {
 });
 
 /*
+Example post request:
 fetch("http://localhost:3000/query", {
     body: "email=test@example.com&password=pw",
     headers: {
@@ -34,13 +35,28 @@ fetch("http://localhost:3000/query", {
     },
     method: "post",
 })
-*/
-/*replace each quote with a backslash quote*/
+Use npm start in src and server*/
+
+/*Handle HTTP:POST request*/
 router.post('/', function(req, res, next) {
   var body = req.body;
   var contype = req.headers['content-type'];
   console.log(body);
   console.log(contype);
+
+  for(var attributename in body){
+    console.log(attributename+": "+body[attributename]);
+    body[attributename] = body[attributename].replace(/"/g, '\\"');
+    body[attributename] = body[attributename].replace(/'/g,"''");
+  }
+
+  DBHandler.insertEvent(body);
+
+  /*
+  for (let i =0; i < body.length; i++) {
+
+  }
+  */
 });
 
 module.exports = router;
