@@ -28,23 +28,28 @@ pool.getConnection()
 		process.exit(1);
 	});
 
-	function clearDatabase(_callback) {
-		pool.query(
-			`DELETE FROM Events`
-		)
-		.then( rows => {
-				pool.end()
-				.catch(() => {});
-		});
+//*********************
+/*Asynchronous function to delete events from database before updating from oberlin.calendar.edu*/
+function clearDatabase(_callback) {
+	pool.query(
+		`DELETE FROM Events`
+	)
+	.then( rows => {
+			pool.end()
+			.catch(() => {});
+	});
 
-		_callback();
-	}
+	_callback();
+}
+//**********************
 
 /* Uses the request module to send a request to the API and retrieve the JSON event
 objects that are stored on each page. Then, it inserts the events into the database.
 This should eventually be refactored into smaller, more manageable functions. */
 function getEvents(maxPages) {
+	//***********************
 	clearDatabase(() => console.log('Database cleared'));
+	//***********************
 
 	let pagesRemaining = maxPages;
 	for (let page = 1; page <= maxPages; page++) {
