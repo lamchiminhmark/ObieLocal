@@ -35,7 +35,6 @@ pool.getConnection()
 		.then( rows => {
 				pool.end()
 				.catch(() => {});
-			}
 		});
 
 		_callback();
