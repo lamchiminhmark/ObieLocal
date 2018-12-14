@@ -36,8 +36,7 @@ pool.getConnection()
 				pool.end()
 				.catch(() => {});
 			}
-		})
-	});
+		});
 
 		_callback();
 	}
