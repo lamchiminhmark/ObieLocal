@@ -14,7 +14,7 @@ const Button = styled.button`
   color: black;
   position: fixed;
   top: 525px;
-  left: 1250px;
+  right: 40px;
   font-size: 20px;
 
   :hover {
@@ -40,7 +40,7 @@ class PlusButton extends Component {
       <div>
         <Button
           onClick={() => {
-            this.props.showCreateEventContainer();
+            this.props.toggleCreateEventContainer(true);
             this.props.toggleSidepane(true);
           }}
         >

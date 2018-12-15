@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import { type } from 'os';
 
 const StyledPane = styled.form`
   margin: 0px;
@@ -22,33 +23,96 @@ const StyledPane = styled.form`
   em {
     font-weight: bold;
   }
+
+  #x {
+    position: relative;
+    float: right;
+    color: #dc143c;
+    width: 6.5%;
+    height: 10%;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  #submit {
+    position: relative;
+    background-color: rgba(0, 0, 0, 0.5);
+    float: center;
+  }
 `;
 
 export default class CreateEventContainer extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            title: '',
-        }
+  constructor(props) {
+    super(props);
+    this.state = {
+      title: ''
+    };
 
-        this.handleChange = this.handleChange.bind(this);
-    }
+    this.handleChange = this.handleChange.bind(this);
+  }
 
-    handleChange(e) {
-      this.setState({title: e.target.value});
-    }
+  handleChange(field) {
+    return e => {
+      const temp = {};
+      temp[field] = e.target.value;
+      this.setState(temp);
+      console.log(this.state);
+    };
+  }
 
   render() {
-      return(<StyledPane
-        className={this.props.active ? 'Create-event-container-active' : 'Create-event-container-inactive'}
+    return (
+      <StyledPane
+        className={
+          this.props.active
+            ? 'Create-event-container-active'
+            : 'Create-event-container-inactive'
+        }
         action="http://localhost:3001/query"
         method="post"
-    >
-      <label>
-        Event Name: 
-        <input type="text" name="title" value={this.state.title} onChange={this.handleChange} />
-      </label>
-      <input type="submit" value="Add Event"/>
-      </StyledPane>)
+      >
+        <button
+          type="button"
+          onClick={() => this.props.toggleCreateEventContainer(false)}
+          id="x"
+        >
+          X
+        </button>
+        <label>
+          Event Name:
+          <input
+            type="text"
+            name="title"
+            value={this.state.title}
+            onChange={this.handleChange('title')}
+          />
+          </label>
+          <textarea
+            name="description"
+            value={this.state.description}
+            onChange={this.handleChange('description')}
+          />
+          <input
+            type="text"
+            name="title"
+            value={this.state.title}
+            onChange={this.handleChange}
+          />
+          <input
+            type="text"
+            name="title"
+            value={this.state.title}
+            onChange={this.handleChange}
+          />
+          <input
+            type="text"
+            name="title"
+            value={this.state.title}
+            onChange={this.handleChange}
+          />
+        </label>
+        <input id="submit" type="submit" value="Add Event" />
+      </StyledPane>
+    );
   }
 }

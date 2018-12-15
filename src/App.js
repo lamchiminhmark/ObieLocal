@@ -32,7 +32,7 @@ class App extends Component {
     this.fetchData = this.fetchData.bind(this);
     this.handleMarkerClick = this.handleMarkerClick.bind(this);
     this.toggleSidepane = this.toggleSidepane.bind(this);
-    this.showCreateEventContainer = this.showCreateEventContainer.bind(
+    this.toggleCreateEventContainer = this.toggleCreateEventContainer.bind(
       this
     );
   }
@@ -43,7 +43,7 @@ class App extends Component {
 
   // CONTINUE(ML): Finish rendering Markers onto the map
   fetchData() {
-    fetch('http://localhost:3001/query')
+    fetch('http://obielocal.cs.oberlin.edu:3001/query')
       .then(response => response.json())
       .then(arr => {
         console.log(arr);
@@ -61,6 +61,8 @@ class App extends Component {
   }
 
   handleMarkerClick(eventInfo) {
+    // If the CreateEvent panel is open, Sidepane can't be opened
+    if (this.state.createEventContainerOpen) return;
     this.setState({ activeEventInfo: eventInfo, sidepaneOpen: true });
   }
 
@@ -72,9 +74,9 @@ class App extends Component {
     else alert('You must select an event marker to view event information.');
   }
 
-  
-  showCreateEventContainer() {
-    this.setState({createEventContainerOpen: true});
+  /* If show is true, CreateEventContainer is opened, otherwise it is closed*/
+  toggleCreateEventContainer(show) {
+    this.setState({createEventContainerOpen: show});
   }
 
   render() {
@@ -90,11 +92,11 @@ class App extends Component {
         />
         <NavBar />
         <PlusButton
-          showCreateEventContainer={this.showCreateEventContainer}
+          toggleCreateEventContainer={this.toggleCreateEventContainer}
           toggleSidepane={this.toggleSidepane}
         />
         <UserButton />
-        <CreateEventContainer active={this.state.createEventContainerOpen} />
+        <CreateEventContainer active={this.state.createEventContainerOpen} toggleCreateEventContainer={this.toggleCreateEventContainer} />
       </div>
     );
   }
