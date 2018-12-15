@@ -20,7 +20,7 @@ populate the database. */
 pool.getConnection()
 	.then(conn => {
 		console.log("connected!");
-		conn.end();
+		return conn.end();
 	})
 	.then(() => {
 		return clearDatabase();
@@ -31,6 +31,10 @@ pool.getConnection()
 	.then(() => {
 		pool.end();
 	})
+
+// TODO : Use 'verified' to determine whether an event can be wiped without
+// checking its date. User created events will otherwise be wiped out every
+// 6 hours!
 
 /*Asynchronous function to delete events from database before updating from oberlin.calendar.edu*/
 function clearDatabase() {
