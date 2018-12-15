@@ -36,48 +36,7 @@ const StyledNav = styled.div`
   button:hover {
     background-color: rgba(200, 200, 200, 0.9);
   }
-
-  .popup {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: auto;
-  /*background-color: rgba(0,0,0, 0.5);*/
-}
-.popup_inner {
-  position: absolute;
-  left: 25%;
-  right: 25%;
-  top: 25%;
-  bottom: 25%;
-  margin: auto;
-  background: rgba(100,100,100,0.7);
-  border: 5px solid rgba(70,70,70, 0.7);
-  border-radius: 5px;
-}
-
-#x {
-    position: relative;
-    float: right;
-	  color: #DC143C;
-    width: 6.5%;
-    height: 10%;
-    opacity: 0.7;
-    /*background-color:#F2F2F2;*/
-    border: none;
-    background-color: rgba(255, 255, 255, 0.9);
-    /*
-    background:rgb(0,0,0);
-
-    background:rgba(0,0,0,0.4);
-    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#66000000,endColorstr=#66000000);
-    zoom: 1;  */
-}
-`;
+  `
 
 class NavBar extends Component {
   constructor(props) {
@@ -90,7 +49,6 @@ class NavBar extends Component {
   }
 
   togglePopup(e) {
-    e.preventDefault();
     const name = e.target.getAttribute("id");
     switch(name) {
       case "aboutBtn":
@@ -103,12 +61,18 @@ class NavBar extends Component {
         this.setState({show: "use"});
         break;
       default:
-        this.setState({show: "none"});
+      this.setState({show: "none"});
     }
   }
-
+  
   render() {
+    let popup = null;
+    if (this.state.show !== 'none') {
+      popup = <Popup type={this.state.show} handleClose={this.togglePopup}/>;
+    }
+    
     return (
+      <div className="contained">
       <StyledNav className="NavBar">
         <ul>
           {/* <div ref={nodeAbout => this.nodeAbout = nodeAbout}> */}
@@ -128,7 +92,6 @@ class NavBar extends Component {
           {/* </div> */}
         </ul>
 
-        <Popup type={this.state.show} handler={this.togglePopup}/>
 
         {/* {this.state.showAbout ?
           <Popup
@@ -161,6 +124,8 @@ class NavBar extends Component {
           : null
         } */}
       </StyledNav>
+      {popup}
+      </div>
     );
   }
 }
