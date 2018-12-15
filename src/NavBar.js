@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Popup from './Popup';
 import styled from "styled-components";
 /*import App from "./App.js"; */
 
@@ -24,7 +25,7 @@ const StyledNav = styled.div`
     padding: 15px 1px;
   }
 
-  a {
+  button {
     padding: 10px;
     border: 3px solid black;
     background-color: rgba(255, 255, 255, 0.9);
@@ -32,7 +33,7 @@ const StyledNav = styled.div`
     color: black;
   }
 
-  a:hover {
+  button:hover {
     background-color: rgba(200, 200, 200, 0.9);
   }
 
@@ -54,8 +55,9 @@ const StyledNav = styled.div`
   top: 25%;
   bottom: 25%;
   margin: auto;
-  background: white;
-  opacity: 0.7;
+  background: rgba(100,100,100,0.7);
+  border: 5px solid rgba(70,70,70, 0.7);
+  border-radius: 5px;
 }
 
 #x {
@@ -77,111 +79,58 @@ const StyledNav = styled.div`
 }
 `;
 
-class Popup extends React.Component {
-  render() {
-    return (
-      <div className='popup'>
-        <div className='popup_inner' ref={nodeInside => this.nodeInside = nodeInside}>
-        <button onClick={this.props.closePopup} id = "x">
-            X
-        </button>
-          <h1>{this.props.title}</h1>
-          <p>
-            {this.props.body}
-
-        </p>
-        </div>
-      </div>
-    );
-  }
-
-  componentWillMount() {
-    document.addEventListener('mousedown', this.handleClick, false);
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener('mousedown', this.handleClick, false);
-  }
-
-  handleClick = (e) => {
-    if (this.nodeInside.contains(e.target)) {
-      return;
-    }
-    else if (this.props.contact.contains(e.target)) {
-      this.props.closePopup();
-      this.props.openContact();
-      return;
-    }
-    else if (this.props.about.contains(e.target)) {
-      this.props.closePopup();
-      this.props.openAbout();
-      return;
-    }
-    else if (this.props.use.contains(e.target)) {
-      this.props.closePopup();
-      this.props.openUse();
-      return;
-    }
-    else {
-      this.props.closePopup();
-    }
-  }
-
-}
-
 class NavBar extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      showAbout: false,
-      showContact: false,
-      showUse: false
+      show: "none"
     };
+
+    this.togglePopup = this.togglePopup.bind(this);
   }
 
-  toggleAbout() {
-    this.setState({
-      showAbout: !this.state.showAbout
-    });
-  }
-
-  toggleContact() {
-    this.setState({
-      showContact: !this.state.showContact
-    });
-  }
-
-  toggleUse() {
-    this.setState({
-      showUse: !this.state.showUse
-    });
+  togglePopup(e) {
+    e.preventDefault();
+    const name = e.target.getAttribute("id");
+    switch(name) {
+      case "aboutBtn":
+        this.setState({show: "about"});
+        break;
+      case "contactBtn":
+        this.setState({show: "contact"});
+        break;
+      case "useBtn":
+        this.setState({show: "use"});
+        break;
+      default:
+        this.setState({show: "none"});
+    }
   }
 
   render() {
     return (
       <StyledNav className="NavBar">
         <ul>
-          <li key="0">
-            <a>Home</a>
-          </li>
-          <div ref={nodeAbout => this.nodeAbout = nodeAbout}>
+          {/* <div ref={nodeAbout => this.nodeAbout = nodeAbout}> */}
             <li key="1">
-              <a onClick={this.toggleAbout.bind(this)}>About</a>
+              <button id="aboutBtn" onClick={this.togglePopup}>About</button>
             </li>
-          </div>
-          <div ref={nodeContact => this.nodeContact = nodeContact}>
+          {/* </div> */}
+          {/* <div ref={nodeContact => this.nodeContact = nodeContact}> */}
             <li key="2">
-              <a onClick={this.toggleContact.bind(this)}>Contact</a>
+              <button id="contactBtn" onClick={this.togglePopup}>Contact</button>
             </li>
-          </div>
-          <div ref={nodeUse => this.nodeUse = nodeUse}>
+          {/* </div> */}
+          {/* <div ref={nodeUse => this.nodeUse = nodeUse}> */}
             <li key="3">
-              <a onClick={this.toggleUse.bind(this)}>How to Use</a>
+              <button id="useBtn" onClick={this.togglePopup}>How to Use</button>
             </li>
-          </div>
+          {/* </div> */}
         </ul>
 
-        {this.state.showAbout ?
+        <Popup type={this.state.show} handler={this.togglePopup}/>
+
+        {/* {this.state.showAbout ?
           <Popup
             title='About'
             body="ObieLocal is a web service made by Oberlin students to help other students find events on campus. ObieLocal is currently
@@ -210,7 +159,7 @@ class NavBar extends Component {
             openUse={this.toggleUse.bind(this)} about={this.nodeAbout} contact={this.nodeContact} use={this.nodeUse}
           />
           : null
-        }
+        } */}
       </StyledNav>
     );
   }
