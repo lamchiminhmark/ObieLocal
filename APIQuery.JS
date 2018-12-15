@@ -35,9 +35,7 @@ pool.getConnection()
 /*Asynchronous function to delete events from database before updating from oberlin.calendar.edu*/
 function clearDatabase() {
 	return (
-		pool.query(
-		`DELETE FROM Events`
-		)
+		pool.query(`DELETE FROM Events`)
 	)
 }
 
@@ -45,9 +43,7 @@ function clearDatabase() {
 objects that are stored on each page. Then, it inserts the events into the database.
 This should eventually be refactored into smaller, more manageable functions. */
 function getEvents(maxPages) {
-
 	return new Promise(function(resolve, reject) {
-
 		let pagesRemaining = maxPages;
 		for (let page = 1; page <= maxPages; page++) {
 			request(`https://calendar.oberlin.edu/api/2/events?page=${page}`, { json: true, timeout: 1500 }, (err, res, body) => {
@@ -185,15 +181,18 @@ function getEvents(maxPages) {
 							${longitude}
 						)`
 					)
+					/* Log the rows as they are inserted into the database.
+					Upon reaching the final event, resolve the promise. */
 					.then( rows => {
 						console.log(rows);
 						if (i === body.events.length - 1) pagesRemaining--;
 						if (pagesRemaining === 0) {
-							// pool.end()
-							// 	.catch(() => {});
 							resolve();
 						}
 					})
+					/* These errors are anticipated to be from duplicate 
+					entries, so the loop will continue to reach every event. 
+					Upon reaching the final event, resolve the promise. */
 					.catch( err => {
 						console.log(
 							`ERROR: EventID: ${eventID}, code: ${err.code}, i: ${i}`
