@@ -11,6 +11,7 @@
     "google-map-react": "^1.0.9",
     "mariadb": "2.0.0-alpha",
     "react": "^16.6.0",
+    "react-awesome-modal": "^2.0.5",
     "react-dom": "^16.6.0",
     "react-html-parser": "^2.0.2",
     "react-scripts": "2.1.1",
