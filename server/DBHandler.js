@@ -120,8 +120,8 @@ module.exports.insertEvent = function(event) {
         address, 
         latitude, 
         longitude,
-        start,
-        end
+        start_time,
+        end_time
       ) VALUES (
         ${event.ID},
         ${event.title},
@@ -143,8 +143,8 @@ module.exports.insertEvent = function(event) {
         ${event.longitude},
         /* Start and end are in datatime format. Future implementation
         would require that the date be sliced and just the time returned.*/
-        ${event.event_instances.event_instance.start},
-        ${event.event_instances.event_instance.end}
+        ${event.start_time},
+        ${event.end_time}
       )`
     )
 };
