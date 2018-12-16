@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
-library.add(faUser);
 
 const Button = styled.button`
   width: 40px;
@@ -32,10 +28,6 @@ const Button = styled.button`
 `;
 
 class PlusButton extends Component {
-  handleClick(e) {
-    alert("You can't create an event yet!");
-  }
-
   render() {
     return (
       <div>
