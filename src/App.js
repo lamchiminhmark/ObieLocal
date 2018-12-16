@@ -43,7 +43,8 @@ class App extends Component {
 
   // CONTINUE(ML): Finish rendering Markers onto the map
   fetchData() {
-    fetch('http://obielocal.cs.oberlin.edu:3001/query')
+    // TODO(ML): Change this back into obielocal.cs.oberlin.edu instead
+    fetch('http://localhost:3001/query')
       .then(response => response.json())
       .then(arr => {
         console.log(arr);
