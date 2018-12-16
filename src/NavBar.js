@@ -1,5 +1,7 @@
-import React, { Component } from "react";
-import styled from "styled-components";
+import React, { Component } from 'react';
+import Popup from './Popup';
+import styled from 'styled-components';
+/*import App from "./App.js"; */
 
 const StyledNav = styled.div`
   background-color: rgba(255, 0, 0, 0.6);
@@ -7,23 +9,19 @@ const StyledNav = styled.div`
   top: 0px;
 
   ul {
-    /* display: inline-block; */
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     list-style-type: none;
-    /* background-color:  */
     padding: 0px;
     margin: 0px;
-    /* width: 100%; */
   }
 
   li {
-    /* display: inline; */
     padding: 15px 1px;
   }
 
-  a {
+  button {
     padding: 10px;
     border: 3px solid black;
     background-color: rgba(255, 255, 255, 0.9);
@@ -31,29 +29,66 @@ const StyledNav = styled.div`
     color: black;
   }
 
-  a:hover {
+  button:hover {
     background-color: rgba(200, 200, 200, 0.9);
   }
 `;
 
 class NavBar extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      show: 'none'
+    };
+
+    this.togglePopup = this.togglePopup.bind(this);
+  }
+
+  togglePopup(e) {
+    const name = e.target.getAttribute('id');
+    switch (name) {
+      case 'aboutBtn':
+        this.setState({ show: 'about' });
+        break;
+      case 'contactBtn':
+        this.setState({ show: 'contact' });
+        break;
+      case 'useBtn':
+        this.setState({ show: 'use' });
+        break;
+      default:
+        this.setState({ show: 'none' });
+    }
+  }
+
   render() {
+    let popupElement = null;
+    if (this.state.show !== 'none') {
+      popupElement = (
+        <Popup type={this.state.show} handleClose={this.togglePopup} />
+      );
+    }
+
     return (
-      <StyledNav className="NavBar">
+      <StyledNav id="navbar">
         <ul>
-          <li>
-            <a href="/">Home</a>
+          <li key="1">
+            <button id="aboutBtn" onClick={this.togglePopup}>
+              About
+            </button>
           </li>
-          <li>
-            <a href="/">About</a>
+          <li key="2">
+            <button id="contactBtn" onClick={this.togglePopup}>
+              Contact
+            </button>
           </li>
-          <li>
-            <a href="/">Contact</a>
-          </li>
-          <li>
-            <a href="/">How to Use</a>
+          <li key="3">
+            <button id="useBtn" onClick={this.togglePopup}>
+              How to Use
+            </button>
           </li>
         </ul>
+        {popupElement}
       </StyledNav>
     );
   }

@@ -23,3 +23,7 @@
   transform: translate(-90%, 0%);
   cursor: pointer;
 }
+
+button {
+  cursor: pointer;
+}
