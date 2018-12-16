@@ -143,8 +143,8 @@ module.exports.insertEvent = function(event) {
         ${event.longitude},
         /* Start and end are in datatime format. Future implementation
         would require that the date be sliced and just the time returned.*/
-        ${event.start_time},
-        ${event.end_time}
+        ${event.event_instances.event_instance.start},
+        ${event.event_instances.event_instance.end}
       )`
     )
 };

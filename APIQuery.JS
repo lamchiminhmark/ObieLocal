@@ -142,7 +142,14 @@ function getEvents(maxPages) {
 					if (longitude != null) {
 						longitude = parseFloat(longitude);
 					}
-	
+					let start_time = event.event["event_instances"]["event_instance"]["start"];
+					if (start_time != null) {
+						start_time = start_time.replace(/'/g,"''");
+					}
+					let end_time = event.event["event_instances"]["event_instance"]["end"];;
+					if (end_time != null) {
+						end_time = end_time.replace(/'/g,"''");
+					}	
 					/* Begin insertion of event into database. If the INSERT query returns
 					an error, the script will log it and continue on to the next event. At
 					the end of all events, it will close the connection. */
@@ -165,7 +172,9 @@ function getEvents(maxPages) {
 							photo_url,
 							address,
 							latitude,
-							longitude
+							longitude,
+							start_time,
+							end_time
 						) VALUES (
 							${eventID},
 							'${title}',
@@ -184,7 +193,9 @@ function getEvents(maxPages) {
 							'${photo_url}',
 							'${address}',
 							${latitude},
-							${longitude}
+							${longitude},
+							${start_time},
+							${end_time},
 						)`
 					)
 					/* Log the rows as they are inserted into the database.
