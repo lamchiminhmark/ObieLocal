@@ -27,10 +27,8 @@ const StyledPane = styled.div`
 
 export default class Sidepane extends Component {
   render() {
-    // TODO Change this to the correct start time
     const startTime = new Date(this.props.eventInfo.start_time);
     const where = this.props.eventInfo.address + '. ' + startTime.toUTCString();
-    // console.log(`The start time is ${startTime)}`);
     const desc = this.props.eventInfo.desc;
 
     return (

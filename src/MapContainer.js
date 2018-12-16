@@ -6,7 +6,7 @@ import styledMapCanvas from './styledMapCanvas.js';
 export default props => {
   return (
     <div style={styledMapCanvas}>
-    <GoogleMapReact
+    <GoogleMapReact 
         bootstrapURLKeys={{
           key: "AIzaSyDG4jsaUZwec9Udazw_zB974fe27FkevL8",
           language: "en"

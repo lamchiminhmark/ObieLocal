@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { type } from 'os';
 
 const StyledPane = styled.form`
   margin: 0px;
@@ -50,7 +49,12 @@ export default class CreateEventContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: ''
+      title: '',
+      description: '',  
+      start_time: '',
+      end_time: '',
+      location_name: '',
+      address: '',
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -61,10 +65,11 @@ export default class CreateEventContainer extends Component {
       const temp = {};
       temp[field] = e.target.value;
       this.setState(temp);
-      console.log(this.state);
+      // console.log(this.state);
     };
   }
 
+  // TODO(ML): Make sure after form is submitted, website doesn't go to new page
   render() {
     return (
       <StyledPane
@@ -104,36 +109,36 @@ export default class CreateEventContainer extends Component {
           Start Date and Time:
           <input
             type="datetime-local"
-            name="start"
-            value={this.state.start}
-            onChange={this.handleChange('start')}
+            name="start_time"
+            value={this.state.start_time}
+            onChange={this.handleChange('start_time')}
           />
         </label>
         <label>
           End Date and Time:
           <input
             type="datetime-local"
-            name="end"
-            value={this.state.end}
-            onChange={this.handleChange('end')}
+            name="end_time"
+            value={this.state.end_time}
+            onChange={this.handleChange('end_time')}
           />
         </label>
         <label>
           Event Place:
           <input
             type="text"
-            name="title"
-            value={this.state.title}
-            onChange={this.handleChange('title')}
+            name="location_name"
+            value={this.state.location_name}
+            onChange={this.handleChange('location_name')}
           />
         </label>
         <label>
           Address:
           <input
             type="text"
-            name="title"
-            value={this.state.title}
-            onChange={this.handleChange('title')}
+            name="address"
+            value={this.state.address}
+            onChange={this.handleChange('address')}
           />
         <input id="submit" type="submit" value="Add Event" />
         </label>
