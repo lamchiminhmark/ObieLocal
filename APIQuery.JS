@@ -39,7 +39,7 @@ pool.getConnection()
 /*Asynchronous function to delete events from database before updating from oberlin.calendar.edu*/
 function clearDatabase() {
 	return (
-		pool.query(`DELETE FROM Events`)
+		pool.query(`DELETE FROM Events WHERE verified=1`)
 	)
 }
 
@@ -51,7 +51,7 @@ function getEvents(maxPages) {
 		let pagesRemaining = maxPages;
 		for (let page = 1; page <= maxPages; page++) {
 			request(`https://calendar.oberlin.edu/api/2/events?page=${page}`, { json: true, timeout: 1500 }, (err, res, body) => {
-	
+
 				/* Upon request error, log the error and kill the process immediately.
 				This should be reworked at some point. Calling process.exit() is
 				kind of bad practice. */
@@ -60,7 +60,7 @@ function getEvents(maxPages) {
 					process.exit(1);
 					return;
 				}
-	
+
 				/* If there are no events on the page, then make sure to count it as complete */
 				console.log(`\nFound: ${body.events.length} events on page ${page}.\n`)
 				if (body.events.length === 0) {
@@ -70,11 +70,11 @@ function getEvents(maxPages) {
 				if (pagesRemaining === 0) {
 					resolve();
 				}
-	
+
 				/* For each event found in the API's body */
 				for (let i =0; i < body.events.length; i++){
 					const event = body.events[i];
-	
+
 					/* Begin formatting of information so that it is ready
 					to be inserted into the database. */
 					const eventID = event.event["id"];
@@ -140,7 +140,7 @@ function getEvents(maxPages) {
 					if (longitude != null) {
 						longitude = parseFloat(longitude);
 					}
-	
+
 					/* Begin insertion of event into database. If the INSERT query returns
 					an error, the script will log it and continue on to the next event. At
 					the end of all events, it will close the connection. */
@@ -194,8 +194,8 @@ function getEvents(maxPages) {
 							resolve();
 						}
 					})
-					/* These errors are anticipated to be from duplicate 
-					entries, so the loop will continue to reach every event. 
+					/* These errors are anticipated to be from duplicate
+					entries, so the loop will continue to reach every event.
 					Upon reaching the final event, resolve the promise. */
 					.catch( err => {
 						console.log(
