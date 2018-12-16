@@ -3,45 +3,32 @@ import styled from 'styled-components';
 
 const StyledPopup = styled.div`
   .popup {
-  position: fixed;
-  width: 80%;
-  height: 80%;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: auto;
-  /*background-color: rgba(0,0,0, 0.5);*/
-}
-.popup_inner {
-  position: absolute;
-  left: 25%;
-  right: 25%;
-  top: 25%;
-  bottom: 25%;
-  margin: auto;
-  background: rgba(100,100,100,0.7);
-  border: 5px solid rgba(70,70,70, 0.7);
-  border-radius: 5px;
-}
+    position: fixed;
+    width: 60%;
+    height: 60%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    background: rgba(60,60,60,0.7);
+    border: 5px solid rgba(35,35,35,0.7);
+    border-radius: 14px;
+  }
 
-#x {
+  #x {
     position: relative;
     float: right;
-	  color: #DC143C;
-    width: 6.5%;
+    color: #ffffff;
+    width: 10.5%;
     height: 10%;
-    opacity: 0.7;
+    opacity: 0.8;
+    cursor: pointer;
     /*background-color:#F2F2F2;*/
     border: none;
-    background-color: rgba(255, 255, 255, 0.9);
-    /*
-    background:rgb(0,0,0);
-
-    background:rgba(0,0,0,0.4);
-    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#66000000,endColorstr=#66000000);
-    zoom: 1;  */
-}
+    border-radius: 25%;
+    background-color: rgba(255, 0, 0, 0.48);
+  }
 `
 
 const bodyTexts = {
@@ -60,12 +47,21 @@ const titles = {
 
 class Popup extends React.Component {
 
+  handleClick = (e) => {
+    const navbar = document.getElementById("navbar");
+    if (this.node.contains(e.target) || navbar.contains(e.target)) {
+      return;
+    } else {
+      this.props.handleClose(e);
+    }
+  }
+
   componentWillMount() {
-    document.addEventListener('mousedown', this.props.handleClose, false);
+    document.addEventListener('mousedown', this.handleClick, false);
   }
 
   componentWillUnmount() {
-    document.removeEventListener('mousedown', this.props.handleClose, false);
+    document.removeEventListener('mousedown', this.handleClick, false);
   }
   
   render() {
@@ -74,14 +70,12 @@ class Popup extends React.Component {
 
     return (
       <StyledPopup>
-        <div className='popup'>
-          <div className='popup_inner'>
+        <div className='popup' ref={node => this.node = node}>
           <button onClick={this.props.handleClose} id = "x">
               X
           </button>
             <h1>{title}</h1>
             <p>{body}</p>
-          </div>
         </div>
       </StyledPopup>
     );
