@@ -1,11 +1,14 @@
 var database = require('../DBHandler');
 var express = require('express');
 var router = express.Router();
-var bodyParser = require('body-parser')
-router.use( bodyParser.json() );       // to support JSON-encoded bodies
-router.use(bodyParser.urlencoded({     // to support URL-encoded bodies
-  extended: true
-}));
+var bodyParser = require('body-parser');
+router.use(bodyParser.json()); // to support JSON-encoded bodies
+router.use(
+  bodyParser.urlencoded({
+    // to support URL-encoded bodies
+    extended: true
+  })
+);
 
 router.use(express.json());       // to support JSON-encoded bodies
 router.use(express.urlencoded()); // to support URL-encoded bodies
@@ -22,7 +25,8 @@ router.get('/', function(req, res, next) {
     // .then(arr => arr.map(event => event.title))
     .then(arr => {
       // console.log(arr);
-      res.send(arr);})
+      res.send(arr);
+    })
     .catch(err => res.send(err));
 });
 
@@ -35,35 +39,36 @@ fetch("http://localhost:3000/query", {
     },
     method: "post",
 })
-Use npm start in src and server*/
+*/
 
-/*Handle HTTP:POST request*/
+/* Handle a POST request to this route to insert new event 
+into the database. */
 router.post('/', function(req, res, next) {
   var body = req.body;
   var contype = req.headers['content-type'];
-  console.log(body);
-  console.log(contype);
 
-  if (contype == 'application/x-www-form-urlencoded') {
-    for(var attributename in body){
-      console.log(attributename+": "+body[attributename]);
-      body[attributename] = body[attributename].replace(/"/g, '\\"');
-      body[attributename] = body[attributename].replace(/'/g,"''");
+  /* Stringify the attributes in the body to protect against
+  SQL injection attacks. Stringify() will automatically escape
+  conflicting characters. */
+  if (contype === 'application/x-www-form-urlencoded') {
+    for (let attributename in body) {
+      let str = JSON.stringify(body[attributename]);
+      console.log('Inserting with: ' + attributename + ' = ' + str);
+      body[attributename] = str;
     }
-
-    DBHandler.insertEvent(body);
+    database
+      .insertEvent(body)
+      .then(() => {
+        res.status(200).end();
+      })
+      .catch(err => {
+        console.log('There was an error inserting into the database: ' + err);
+        res.status(500).end();
+      });
+  } else {
+    console.log('Incorrect content type received from POST request.');
+    res.status(415).end();
   }
-  else {
-    console.log("incorrect content type")
-  }
-
-
-
-  /*
-  for (let i =0; i < body.length; i++) {
-
-  }
-  */
 });
 
 module.exports = router;

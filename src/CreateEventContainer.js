@@ -135,7 +135,6 @@ export default class CreateEventContainer extends Component {
             value={this.state.title}
             onChange={this.handleChange('title')}
           />
-        </label>
         <input id="submit" type="submit" value="Add Event" />
       </StyledPane>
     );
