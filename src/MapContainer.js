@@ -2,7 +2,7 @@ import React from "react";
 import GoogleMapReact from "google-map-react";
 import mapStyle from './mapStyle';
 import styledMapCanvas from './styledMapCanvas.js';
-import config from '../config';
+import config from './config';
 
 export default props => {
   return (

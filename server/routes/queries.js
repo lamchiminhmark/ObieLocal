@@ -3,7 +3,7 @@ var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
 var request = require('request');
-var config = require('../../config');
+var config = require('../../src/config');
 
 router.use(bodyParser.json()); // to support JSON-encoded bodies
 router.use(
