@@ -16,6 +16,7 @@ const Button = styled.button`
   top: 525px;
   right: 40px;
   font-size: 20px;
+  cursor: pointer;
 
   :hover {
     /* background: rgb(255,100,100); */
@@ -41,7 +42,7 @@ class PlusButton extends Component {
         <Button
           onClick={() => {
             this.props.toggleCreateEventContainer(true);
-            this.props.toggleSidepane({close: true});
+            this.props.toggleSidepane({ close: true });
           }}
         >
           +

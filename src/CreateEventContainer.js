@@ -15,7 +15,12 @@ const StyledPane = styled.form`
   border-style: inset;
   transition: all 1s;
 
-  h1,
+  h1 {
+    text-decoration: solid black underline;
+    padding: 20px 0px;
+    background-color: rgba(255, 184, 29, 0.7);
+  }
+
   p {
     overflow: clip;
   }
@@ -31,17 +36,47 @@ const StyledPane = styled.form`
     height: 10%;
     border: none;
     background-color: rgba(0, 0, 0, 0.5);
+    cursor: pointer;
   }
 
   label {
     display: block;
-    margin:auto;
+    margin: auto;
+    text-align: left;
+  }
+
+  input,
+  textarea {
+    width: 100%;
+  }
+
+  td {
+    text-align: right;
+  }
+
+  table {
+    margin: auto;
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 30px;
+    box-shadow: 0px 0px 50px 40px rgba(255, 255, 255, 0.2);
+    border-radius: 25px;
   }
 
   #submit {
+    margin: 20px 0px;
+    padding: 10px;
+    padding: 6px 73px;
     position: relative;
+    width: auto;
+    color: rgba(255, 255, 255, 0.9);
     background-color: rgba(0, 0, 0, 0.5);
-    float: center;
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    border-radius: 40px;
+    cursor: pointer;
+  }
+
+  #submit:hover {
+    background-color: rgba(40, 40, 40, 0.5);
   }
 `;
 
@@ -50,11 +85,11 @@ export default class CreateEventContainer extends Component {
     super(props);
     this.state = {
       title: '',
-      description: '',  
+      description: '',
       start_time: '',
       end_time: '',
       location_name: '',
-      address: '',
+      address: ''
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -81,6 +116,7 @@ export default class CreateEventContainer extends Component {
         action="http://localhost:3001/query"
         method="post"
       >
+        <h1>Create an Event</h1>
         <button
           type="button"
           onClick={() => this.props.toggleCreateEventContainer(false)}
@@ -88,60 +124,91 @@ export default class CreateEventContainer extends Component {
         >
           X
         </button>
-        <label>
-          Event Name:
-          <input
-            type="text"
-            name="title"
-            value={this.state.title}
-            onChange={this.handleChange('title')}
-          />
-        </label>
-        <label>
-          Description:
-          <textarea
-            name="description"
-            value={this.state.description}
-            onChange={this.handleChange('description')}
-          />
-          </label>
-          <label>
-          Start Date and Time:
-          <input
-            type="datetime-local"
-            name="start_time"
-            value={this.state.start_time}
-            onChange={this.handleChange('start_time')}
-          />
-        </label>
-        <label>
-          End Date and Time:
-          <input
-            type="datetime-local"
-            name="end_time"
-            value={this.state.end_time}
-            onChange={this.handleChange('end_time')}
-          />
-        </label>
-        <label>
-          Event Place:
-          <input
-            type="text"
-            name="location_name"
-            value={this.state.location_name}
-            onChange={this.handleChange('location_name')}
-          />
-        </label>
-        <label>
-          Address:
-          <input
-            type="text"
-            name="address"
-            value={this.state.address}
-            onChange={this.handleChange('address')}
-          />
-        <input id="submit" type="submit" value="Add Event" />
-        </label>
+        <table>
+          <tr>
+            <td>
+              <label for="title">Event Name:</label>
+            </td>
+            <td>
+              <input
+                type="text"
+                name="title"
+                value={this.state.title}
+                onChange={this.handleChange('title')}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label>Description:</label>
+            </td>
+            <td>
+              <textarea
+                name="description"
+                value={this.state.description}
+                onChange={this.handleChange('description')}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label>Start Date and Time: </label>
+            </td>
+            <td>
+              <input
+                type="datetime-local"
+                name="start_time"
+                value={this.state.start_time}
+                onChange={this.handleChange('start_time')}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label>End Date and Time: </label>
+            </td>
+            <td>
+              <input
+                type="datetime-local"
+                name="end_time"
+                value={this.state.end_time}
+                onChange={this.handleChange('end_time')}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label>Event Place: </label>
+            </td>
+            <td>
+              <input
+                type="text"
+                name="location_name"
+                value={this.state.location_name}
+                onChange={this.handleChange('location_name')}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label>Address: </label>
+            </td>
+            <td>
+              <input
+                type="text"
+                name="address"
+                value={this.state.address}
+                onChange={this.handleChange('address')}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td />
+            <td>
+              <input id="submit" type="submit" value="Add Event" />
+            </td>
+          </tr>
+        </table>
       </StyledPane>
     );
   }
