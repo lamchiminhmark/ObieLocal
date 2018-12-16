@@ -108,7 +108,7 @@ function getEvents(maxPages) {
 						price = price.replace("$", "");
 						price = parseFloat(price);
 					}
-					const verified = event.event["verified"] ? 1 : 0;
+					// const verified = event.event["verified"] ? 1 : 0;
 					let venue_id = event.event["venue_id"];
 					if (venue_id == null) {
 						venue_id = 0;
@@ -174,7 +174,7 @@ function getEvents(maxPages) {
 							'${recurring}',
 							'${free}',
 							${price},
-							'${verified}',
+							'1',
 							'${venue_id}',
 							'${venue_url}',
 							'${filters}',
