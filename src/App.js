@@ -22,12 +22,13 @@ class App extends Component {
         photo_url: "None",
         address: "No address",
         filters: "None"
-      }
+      },
+      sidepaneOpen: false
     };
 
     this.fetchData = this.fetchData.bind(this);
     this.handleMarkerClick = this.handleMarkerClick.bind(this);
-    // this.initializeMarker = this.initializeMarker.bind(this);
+    this.handleSidepaneClick = this.handleSidepaneClick.bind(this);
   }
 
   componentDidMount() {
@@ -36,9 +37,10 @@ class App extends Component {
 
   // CONTINUE(ML): Finish rendering Markers onto the map
   fetchData() {
-    fetch("http://localhost:3001/query")
+    fetch("http://obielocal.cs.oberlin.edu:3001/query")
       .then(response => response.json())
       .then(arr => {
+        // console.log(arr);
         const newArr = arr.map(obj => (
           <Marker
             lat={obj.latitude}
@@ -53,14 +55,23 @@ class App extends Component {
   }
 
   handleMarkerClick(eventInfo) {
-    this.setState({ activeEventInfo: eventInfo });
+    this.setState({ activeEventInfo: eventInfo, sidepaneOpen: true });
+  }
+
+  handleSidepaneClick() {
+    if (this.state.activeEventInfo.ID !== 0) this.setState({ sidepaneOpen: !this.state.sidepaneOpen });
+    else (alert("You must select an event marker to view event information."))
   }
 
   render() {
     return (
       <div className="App">
         <MapContainer zoom={18}>{Children.toArray(this.state.markers)}</MapContainer>
-        <Sidepane eventInfo={this.state.activeEventInfo} />
+        <Sidepane 
+          eventInfo={this.state.activeEventInfo} 
+          active={this.state.sidepaneOpen} 
+          handleSidepaneClick={this.handleSidepaneClick} 
+        />
         <NavBar />
         <UserButton />
       </div>
