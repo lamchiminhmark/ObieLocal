@@ -34,6 +34,11 @@ const StyledPane = styled.form`
     background-color: rgba(0, 0, 0, 0.5);
   }
 
+  label {
+    display: block;
+    margin:auto;
+  }
+
   #submit {
     position: relative;
     background-color: rgba(0, 0, 0, 0.5);
@@ -86,29 +91,49 @@ export default class CreateEventContainer extends Component {
             value={this.state.title}
             onChange={this.handleChange('title')}
           />
-          </label>
+        </label>
+        <label>
+          Description:
           <textarea
             name="description"
             value={this.state.description}
             onChange={this.handleChange('description')}
           />
+          </label>
+          <label>
+          Start Date and Time:
           <input
-            type="text"
-            name="title"
-            value={this.state.title}
-            onChange={this.handleChange}
+            type="datetime-local"
+            name="start"
+            value={this.state.start}
+            onChange={this.handleChange('start')}
           />
+        </label>
+        <label>
+          End Date and Time:
           <input
-            type="text"
-            name="title"
-            value={this.state.title}
-            onChange={this.handleChange}
+            type="datetime-local"
+            name="end"
+            value={this.state.end}
+            onChange={this.handleChange('end')}
           />
+        </label>
+        <label>
+          Event Place:
           <input
             type="text"
             name="title"
             value={this.state.title}
-            onChange={this.handleChange}
+            onChange={this.handleChange('title')}
+          />
+        </label>
+        <label>
+          Address:
+          <input
+            type="text"
+            name="title"
+            value={this.state.title}
+            onChange={this.handleChange('title')}
           />
         </label>
         <input id="submit" type="submit" value="Add Event" />

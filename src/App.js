@@ -66,9 +66,12 @@ class App extends Component {
     this.setState({ activeEventInfo: eventInfo, sidepaneOpen: true });
   }
 
-  /* Closes or opens sidepane. If close is true, just close side pane */
-  toggleSidepane(close = false) {
-    if (close) this.setState({sidepaneOpen: false});
+  /* Closes or opens sidepane. If obj.close is true, just close side pane */
+  toggleSidepane(obj) {
+    //if (close) this.setState({sidepaneOpen: false});
+    if (this.state.createEventContainerOpen) return;
+    if (obj) 
+    this.setState({ sidepaneOpen: !obj.close });
     else if (this.state.activeEventInfo.ID !== 0)
       this.setState({ sidepaneOpen: !this.state.sidepaneOpen });
     else alert('You must select an event marker to view event information.');

@@ -41,7 +41,7 @@ class PlusButton extends Component {
         <Button
           onClick={() => {
             this.props.toggleCreateEventContainer(true);
-            this.props.toggleSidepane(true);
+            this.props.toggleSidepane({close: true});
           }}
         >
           +
