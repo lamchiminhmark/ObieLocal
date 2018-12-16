@@ -119,7 +119,9 @@ module.exports.insertEvent = function(event) {
         photo_url, 
         address, 
         latitude, 
-        longitude 
+        longitude,
+        start,
+        end
       ) VALUES (
         ${event.ID},
         ${event.title},
@@ -138,7 +140,11 @@ module.exports.insertEvent = function(event) {
         ${event.photo_url},
         ${event.address} ,
         ${event.latitude},
-        ${event.longitude}
+        ${event.longitude},
+        /* Start and end are in datatime format. Future implementation
+        would require that the date be sliced and just the time returned.*/
+        ${event.event_instances.event_instance.start},
+        ${event.event_instances.event_instance.end}
       )`
     )
 };

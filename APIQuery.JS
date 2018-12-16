@@ -45,7 +45,9 @@ function clearDatabase() {
 
 /* Uses the request module to send a request to the API and retrieve the JSON event
 objects that are stored on each page. Then, it inserts the events into the database.
-This should eventually be refactored into smaller, more manageable functions. */
+This should eventually be refactored into smaller, more manageable functions.
+Future Work: Find a way to implement future events with this Api Query, 
+'https://calendar.oberlin.edu/api/2/events?start=2018-12-15&end=2018-12-19&page=1' */
 function getEvents(maxPages) {
 	return new Promise(function(resolve, reject) {
 		let pagesRemaining = maxPages;
