@@ -38,9 +38,9 @@ pool.getConnection()
 
 /*Asynchronous function to delete events from database before updating from oberlin.calendar.edu*/
 function clearDatabase() {
+	var datetime = require('node-datetime');
+	currentTime=datetime.create().format('Y-m-d H:M:S');
 	return (
-		var datetime = require('node-datetime');
-		currentTime=datetime.create().format('Y-m-d H:M:S');
 		pool.query(`DELETE FROM Events WHERE verified=1 OR end_time < ${currentTime}`)
 	)
 }
