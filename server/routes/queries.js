@@ -2,6 +2,9 @@ var database = require('../DBHandler');
 var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
+var request = require('request');
+var config = require('../../config');
+
 router.use(bodyParser.json()); // to support JSON-encoded bodies
 router.use(
   bodyParser.urlencoded({
@@ -10,7 +13,7 @@ router.use(
   })
 );
 
-router.use(express.json());       // to support JSON-encoded bodies
+router.use(express.json()); // to support JSON-encoded bodies
 router.use(express.urlencoded()); // to support URL-encoded bodies
 
 // If the server is running and a GET request is sent
@@ -41,6 +44,21 @@ fetch("http://localhost:3000/query", {
 })
 */
 
+// CONTINUE: ML Finish this function to assign the coordinates returned by Google Map to the Database by accessing the results property
+/**
+ * @param {String} address
+ */
+function getCoordinates(address) {
+  address = address.replace(' ', '+');
+  request = request(
+    `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${config.GOOGLE_MAP_API_KEY}`,
+    { json: true },
+    (err, res, body) => {
+      console.log(body);
+    }
+  );
+}
+
 /* Handle a POST request to this route to insert new event 
 into the database. */
 router.post('/', function(req, res, next) {
@@ -56,6 +74,8 @@ router.post('/', function(req, res, next) {
       console.log('Inserting with: ' + attributename + ' = ' + str);
       body[attributename] = str;
     }
+    // TODO: ML Add error handling if address is not available;
+    //const coordinates = getCoordinates(body.address);
     database
       .insertEvent(body)
       .then(() => {
