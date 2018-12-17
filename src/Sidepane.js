@@ -18,10 +18,12 @@ const StyledPane = styled.div`
 
   h1 {
     background-color: rgba(255, 184, 29, 0.7);
+    cursor: default;
   }
 
   p {
     overflow: clip;
+    cursor: default;
   }
   
   em {

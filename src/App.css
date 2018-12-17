@@ -16,6 +16,7 @@
 .Sidepane-active {
   position: fixed;
   left: 0px;
+  cursor: pointer;
 }
 
 .Sidepane-inactive {
