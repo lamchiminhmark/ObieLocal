@@ -32,10 +32,6 @@ pool.getConnection()
 		pool.end();
 	})
 
-// TODO : Use 'verified' to determine whether an event can be wiped without
-// checking its date. User created events will otherwise be wiped out every
-// 6 hours!
-
 /*Asynchronous function to delete events from database before updating from oberlin.calendar.edu*/
 function clearDatabase() {
 	return (
@@ -104,11 +100,10 @@ function getEvents(maxPages) {
 					let price = event.event["ticket_cost"];
 					if (free === 1) {
 						price = 0;
-					} else {  // TODO: How does input look like if the even is not free. Perhaps use parseFLoat(price)
+					} else { 
 						price = price.replace("$", "");
 						price = parseFloat(price);
 					}
-					// const verified = event.event["verified"] ? 1 : 0;
 					let venue_id = event.event["venue_id"];
 					if (venue_id == null) {
 						venue_id = 0;
@@ -119,7 +114,6 @@ function getEvents(maxPages) {
 					}
 					/* filters should hold a JSON object? */
 					let filters = event.event["filters"];
-					// if (filters != null) {filters = filters.replace(/'/g,"''");}
 					let description = event.event["description"];
 					if (description != null) {
 						description = description.replace(/'/g,"''");
