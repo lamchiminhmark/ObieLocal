@@ -6,7 +6,6 @@ const Button = styled.button`
     height: 24px;
     border-radius: 50%;
     color: rgb(255, 184, 29);
-    background-color: #cf102d;
     opacity: 0.8;
     padding: 14px;
     //* / fontWeight: bolder;
