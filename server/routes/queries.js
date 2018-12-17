@@ -58,8 +58,9 @@ async function getCoordinates(address) {
   };
   const response = await rp(options);
   if (response.err) console.log('error');
-  
+
   // TODO: ML Add error handling if results is an empty array
+  if (response.results.length === 0) return {err: true};
   const { lat, lng } = response.results[0].geometry.location;
   console.log('coordinates are ' + lat + ' ' + lng);
   return {latitude: lat, longitude: lng};
@@ -82,8 +83,11 @@ router.post('/', async function(req, res, next) {
       console.log('Inserting with: ' + attributename + ' = ' + str);
       body[attributename] = str;
     }
-    // TODO: ML Add error handling if address is not available;
+
     const coordinates = await getCoordinates(body.address);
+    if (coordinates.err) {
+       // TODO: ML Add error handling here 
+    }
     body = Object.assign(body, coordinates);
     database
       .insertEvent(body)
