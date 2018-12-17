@@ -56,7 +56,7 @@ export default class Sidepane extends Component {
     }
 
     /*construct strings to display in sidepan*/
-    const where = `${this.props.eventInfo.address}. ${startTime} ${endTime ? '-' + endTime : ''}`;
+    const where = `${this.props.eventInfo.address}. ${startTime} ${endTime ? '- ' + endTime : ''}`;
     const desc = this.props.eventInfo.desc;
 
     return (

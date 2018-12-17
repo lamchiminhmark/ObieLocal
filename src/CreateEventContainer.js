@@ -140,8 +140,8 @@ export default class CreateEventContainer extends Component {
     console.log('toSubmit');
     console.log(toSubmit);
 
-    // fetch(`http://obielocal.cs.oberlin.edu:3001/query`, {
-      fetch(`http://localhost:3001/query`, {
+    fetch(`http://obielocal.cs.oberlin.edu:3001/query`, {
+      // fetch(`http://localhost:3001/query`, {
       method: 'POST',
       mode: 'cors',
       headers: { 'Content-Type': 'application/json' },
