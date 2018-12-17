@@ -15,15 +15,17 @@ const StyledNav = styled.div`
     list-style-type: none;
     padding: 0px;
     margin: 0px;
+    border-right: 2px solid rgb(75, 75, 75);
+    border-bottom: 2px solid rgb(75, 75, 75);
   }
 
   li {
-    padding: 15px 1px;
+    padding: 7px 3px;
   }
 
   button {
     padding: 10px;
-    border: 3px solid black;
+    border: 2px solid rgb(25, 25, 25);
     background-color: rgba(255, 255, 255, 0.9);
     text-decoration: none;
     color: black;

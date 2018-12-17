@@ -6,7 +6,6 @@ const Button = styled.button`
     height: 24px;
     border-radius: 50%;
     color: rgb(255, 184, 29);
-    background-color: #cf102d;
     opacity: 0.8;
     padding: 14px;
     //* / fontWeight: bolder;
@@ -15,11 +14,12 @@ const Button = styled.button`
     // textAlign: center; */
     border:2pt solid #ffb81d;
     cursor: pointer;
+
 `
 
 const Marker = props => {
     return (
-        <Button onClick={() => props.handleMarkerClick(props.eventInfo)}></Button>
+        <Button className={props.eventInfo.verified === 1 ? 'Marker-verified' : 'Marker-unverified'} onClick={() => props.handleMarkerClick(props.eventInfo)}></Button>
         // <Wrapper/>
     )
 }

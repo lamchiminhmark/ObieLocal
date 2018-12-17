@@ -5,6 +5,7 @@ import ReactHtmlParser from 'react-html-parser';
 const StyledPane = styled.div`
   margin: 0px;
   padding: 0px;
+  overflow: auto;
   top: 60px;
   width: 25%;
   min-width: 150px;
@@ -18,10 +19,12 @@ const StyledPane = styled.div`
 
   h1 {
     background-color: rgba(255, 184, 29, 0.7);
+    cursor: default;
   }
 
   p {
     overflow: clip;
+    cursor: default;
   }
 
   em {

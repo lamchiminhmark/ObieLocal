@@ -32,6 +32,7 @@ const Button = styled.button`
       rgba(165, 25, 25, 0.6) 100%
     );
   }
+  :focus {outline:0;}
 `;
 
 class UserButton extends Component {

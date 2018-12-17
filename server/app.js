@@ -24,6 +24,7 @@ app.use(function(req, res, next) {
   const origin = req.get("origin");
   if (["http://localhost:3000", "http://obielocal.cs.oberlin.edu"].includes(origin)) {
     res.header("Access-Control-Allow-Origin", origin);
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
   } else {
     next(createError(404));
   }
