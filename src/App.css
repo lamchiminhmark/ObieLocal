@@ -28,3 +28,22 @@
 button {
   cursor: pointer;
 }
+.Create-event-container-active {
+  position: fixed;
+  left: 50px;
+}
+
+.Create-event-container-inactive {
+  position: fixed;
+  transform: translate(0%, -150%);
+  left: 50px;
+  cursor: pointer;
+}
+
+.Marker-verified {
+  background-color: #cf102d;
+}
+
+.Marker-unverified {
+  background-color: rgb(42, 129, 158);
+}

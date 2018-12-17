@@ -5,6 +5,7 @@ import ReactHtmlParser from 'react-html-parser';
 const StyledPane = styled.div`
   margin: 0px;
   padding: 0px;
+  overflow: auto;
   top: 60px;
   width: 25%;
   min-width: 150px;
@@ -33,8 +34,8 @@ const StyledPane = styled.div`
 
 export default class Sidepane extends Component {
   render() {
-    const dateTime = new Date()
-    const where = this.props.eventInfo.address + '. ' + dateTime.toUTCString(this.props.eventInfo.updated_at);
+    const startTime = new Date(this.props.eventInfo.start_time);
+    const where = this.props.eventInfo.location_name + '. ' + startTime.toString();
     const desc = this.props.eventInfo.desc;
 
     return (

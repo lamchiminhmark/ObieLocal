@@ -15,11 +15,12 @@ const Button = styled.button`
     // textAlign: center; */
     border:2pt solid #ffb81d;
     cursor: pointer;
+
 `
 
 const Marker = props => {
     return (
-        <Button onClick={() => props.handleMarkerClick(props.eventInfo)}></Button>
+        <Button className={props.eventInfo.verified === 1 ? 'Marker-verified' : 'Marker-unverified'} onClick={() => props.handleMarkerClick(props.eventInfo)}></Button>
         // <Wrapper/>
     )
 }
