@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
-library.add(faUser);
 
 const Button = styled.button`
   width: 40px;
@@ -15,6 +12,7 @@ const Button = styled.button`
   top: 525px;
   right: 40px;
   font-size: 20px;
+  cursor: pointer;
 
   :hover {
     /* background: rgb(255,100,100); */
@@ -30,17 +28,13 @@ const Button = styled.button`
 `;
 
 class PlusButton extends Component {
-  handleClick(e) {
-    alert("You can't create an event yet!");
-  }
-
   render() {
     return (
       <div>
         <Button
           onClick={() => {
             this.props.toggleCreateEventContainer(true);
-            this.props.toggleSidepane({close: true});
+            this.props.toggleSidepane({ close: true });
           }}
         >
           +

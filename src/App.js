@@ -41,7 +41,6 @@ class App extends Component {
     this.fetchData();
   }
 
-  // CONTINUE(ML): Finish rendering Markers onto the map
   fetchData() {
     // TODO(ML): Change this back into obielocal.cs.oberlin.edu instead
     fetch('http://localhost:3001/query')
@@ -71,7 +70,7 @@ class App extends Component {
   toggleSidepane(obj) {
     //if (close) this.setState({sidepaneOpen: false});
     if (this.state.createEventContainerOpen) return;
-    if (obj) 
+    if (obj && obj.close) 
     this.setState({ sidepaneOpen: !obj.close });
     else if (this.state.activeEventInfo.ID !== 0)
       this.setState({ sidepaneOpen: !this.state.sidepaneOpen });
