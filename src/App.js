@@ -13,15 +13,15 @@ class App extends Component {
       markers: [],
       activeEventInfo: {
         ID: 0,
-        title: "NoTitle",
-        date: "NoDate",
-        time: "NoTime",
-        location: "No Location",
+        title: "",
+        date: "",
+        time: "",
+        location: "",
         price: 0,
-        desc: "No description",
-        photo_url: "None",
-        address: "No address",
-        filters: "None"
+        desc: "",
+        photo_url: "",
+        address: "",
+        filters: ""
       },
       sidepaneOpen: false
     };

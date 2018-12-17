@@ -16,10 +16,14 @@ const StyledPane = styled.div`
   border-style: inset;
   transition: all 1s;
 
-  h1,
+  h1 {
+    background-color: rgba(255, 184, 29, 0.7);
+  }
+
   p {
     overflow: clip;
   }
+  
   em {
     font-weight: bold;
   }
