@@ -21,11 +21,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 // Enable CORS for http://localhost:3000
 app.use(function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
   const origin = req.get("origin");
   if (["http://localhost:3000", "http://obielocal.cs.oberlin.edu"].includes(origin)) {
     res.header("Access-Control-Allow-Origin", origin);
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
   } else {
     next(createError(404));
   }
