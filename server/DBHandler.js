@@ -36,7 +36,9 @@ const fieldList = [
   'photo_url',
   'address',
   'latitude',
-  'longitude'
+  'longitude',
+  'start_time',
+  'end_time'
 ];
 
 // Establishes the connection and prints out a success/failure message
