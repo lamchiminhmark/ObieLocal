@@ -78,17 +78,23 @@ const StyledPane = styled.form`
   #submit:hover {
     background-color: rgba(40, 40, 40, 0.5);
   }
+
+  #warning-text {
+    text-align: center;
+    color: whitesmoke;
+  }
 `;
 
 export default class CreateEventContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      form:{},
+      form: {}
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.changeWarningText = this.changeWarningText.bind(this);
   }
 
   handleChange(field) {
@@ -96,34 +102,48 @@ export default class CreateEventContainer extends Component {
       const temp = {};
       temp[field] = e.target.value;
       this.setState(state => {
-        return {form: Object.assign(state.form, temp)}
+        return { form: Object.assign(state.form, temp) };
       });
       // console.log(this.state);
     };
   }
 
+  changeWarningText(str) {
+    this.setState({ warningText: str });
+  }
+
   /* Sends a POST request to 3001/query with current state */
   handleSubmit() {
-    // Checks that the 3 required field 
+    // Erase any warning text
+    this.changeWarningText('');
+
+    // Checks that the 3 required field
     const form = this.state.form;
-    if (!(form.start_time && form.title && form.address)) alert('Event Place, Start Date and Time and Address are required'); 
+    if (!(form.start_time && form.title && form.address)) {
+      this.changeWarningText(
+        'Event Place, Start Date and Time and Address are required'
+      );
+      return;
+    }
+
     fetch(`http://localhost:3001/query`, {
       method: 'POST',
       mode: 'cors',
-      headers: { 'Content-Type': 'application/json'},
-      body: JSON.stringify(this.state.form),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(this.state.form)
     })
-    .then(async res => {
-      // console.log("res: ");
-      // console.log(res);
-      const resObject = await res.json();
-      if (res.status === 200 && resObject.eventAdded) {
-        this.props.fetchMarkers();
-        this.props.toggleCreateEventContainer(false);
-      }
-      if (res.status === 200 && resObject.addressUnknown) {}
-    })
-    .catch(e => console.log('Error' + e));
+      .then(async res => {
+        // console.log("res: ");
+        // console.log(res);
+        const resObject = await res.json();
+        if (res.status === 200 && resObject.eventAdded) {
+          this.props.fetchMarkers();
+          this.props.toggleCreateEventContainer(false);
+        }
+        if (res.status === 200 && resObject.addressUnknown)
+          this.changeWarningText('Address not found');
+      })
+      .catch(e => console.log('Error' + e));
   }
 
   render() {
@@ -236,6 +256,7 @@ export default class CreateEventContainer extends Component {
             </td>
           </tr>
         </table>
+        <text id="warning-text">{this.state.warningText}</text>
       </StyledPane>
     );
   }

@@ -60,7 +60,10 @@ async function getCoordinates(address) {
   if (response.err) console.log('error');
 
   // TODO: ML Add error handling if results is an empty array
-  if (response.results.length === 0) return { err: true };
+  console.log(response.results.length);
+  if (response.results.length === 0) {
+    console.log('Error in getCoordinates');
+    throw Error('Address not found');}
   const { lat, lng } = response.results[0].geometry.location;
   console.log('coordinates are ' + lat + ' ' + lng);
   return { latitude: lat, longitude: lng };
@@ -87,6 +90,7 @@ router.post('/', async function(req, res, next) {
     try {
       coordinates = await getCoordinates(body.address);
     } catch (e) {
+      console.log('Error has been caught');
       res.send(200, {addressUnknown: true}).end();
       return;
     }
