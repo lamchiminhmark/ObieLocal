@@ -18,7 +18,7 @@ class App extends Component {
         title: "",
         date: "",
         time: "",
-        location: "",
+        location_name: "",
         price: 0,
         desc: "",
         photo_url: "",
