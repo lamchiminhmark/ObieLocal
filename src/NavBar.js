@@ -22,6 +22,7 @@ const StyledNav = styled.div`
   li {
     /* display: inline; */
     padding: 15px 1px;
+    cursor: pointer;
   }
 
   a {
