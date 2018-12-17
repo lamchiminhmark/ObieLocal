@@ -26,7 +26,7 @@ const StyledPane = styled.div`
     overflow: clip;
     cursor: default;
   }
-  
+
   em {
     font-weight: bold;
   }
@@ -34,8 +34,29 @@ const StyledPane = styled.div`
 
 export default class Sidepane extends Component {
   render() {
-    const startTime = new Date(this.props.eventInfo.start_time);
-    const where = this.props.eventInfo.location_name + '. ' + startTime.toString();
+    /*If there is no start time, display 'Time unknown.'*/
+    var startTime = "Time unknown."
+
+    if (this.props.eventInfo.start_time) {
+      /*number of muliseconds in a minute*/
+      const MS_PER_MINUTE = 60000;
+
+      /*get time of event in universal standard time*/
+      const startTimeUTC = new Date(this.props.eventInfo.start_time);
+
+      /*get start time and end time, converting UTC to user's local time*/
+      var offset = startTimeUTC.getTimezoneOffset();
+      const startTimeLocal = new Date(startTimeUTC - offset * MS_PER_MINUTE).toString();
+      const endTimeUTC = new Date(this.props.eventInfo.end_time);
+      const endTimeLocal = new Date(endTimeUTC - offset * MS_PER_MINUTE).toString();
+      /*format times to display hour, minute, and period in 12 hour time*/
+      var dateTime = require('node-datetime');
+      startTime = dateTime.create(startTimeLocal, 'I:M p').format();
+      var endTime = dateTime.create(endTimeLocal, 'I:M p').format();
+    }
+
+    /*construct strings to display in sidepan*/
+    const where = `${this.props.eventInfo.address}. ${startTime} ${endTime ? '-' + endTime : ''}`;
     const desc = this.props.eventInfo.desc;
 
     return (
