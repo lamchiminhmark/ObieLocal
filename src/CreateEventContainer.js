@@ -116,8 +116,6 @@ export default class CreateEventContainer extends Component {
     //   formData.append(key, this.state.form[key]);
     // }
 
-    // CONTINUE(ML): Find out why 1. there is a date time error and
-    // 2. the browser is sending requests every 5 minutes
     fetch(`http://localhost:3001/query`, {
       method: 'POST',
       mode: 'cors',
