@@ -11,9 +11,15 @@ const StyledPopup = styled.div`
     right: 0;
     bottom: 0;
     margin: auto;
-    background: rgba(60,60,60,0.7);
-    border: 5px solid rgba(35,35,35,0.7);
+    color: rgba(255, 255, 255, 0.8);
+    background: rgba(60, 60, 60, 0.8);
+    border: 5px solid rgba(35, 35, 35, 0.7);
     border-radius: 14px;
+  }
+
+  h1 {
+    background-color: rgba(255, 184, 29, 0.7);
+    color: #cf102d;
   }
 
   #x {
@@ -24,37 +30,39 @@ const StyledPopup = styled.div`
     height: 10%;
     opacity: 0.8;
     cursor: pointer;
-    /*background-color:#F2F2F2;*/
     border: none;
     border-radius: 25%;
-    background-color: rgba(255, 0, 0, 0.48);
+    background-color: rgba(255, 0, 0, 0.5);
   }
-`
+`;
 
 const bodyTexts = {
-  contact: `Please send any comments, questions, or concerns to Tnemeh@oberlin.edu`,
+  contact: `Comments, questions, or suggestions for how we can make ObieLocal better?
+    Feel free to contact us by emailing Colton.Potter@oberlin.edu`,
   about: `ObieLocal is a web service made by Oberlin students to help other students 
-    find events on campus. ObieLocal is currently being developed by Colton Potter, 
-    Minh Lam, Lukas Griffin, and Thomas Nemeh for their CSCI 241 final project.`,
-  use: `Click on a pin and information for an event will be displayed.`
+    find out what's happening on campus through a visual interface. 
+    ObieLocal was developed by Colton Potter, Minh Lam, Thomas Nemeh, 
+    and Lukas Griffin for their 'Systems Programming' final project.`,
+  use: `Click on a pin and information for an event will be displayed. To add a custom event,
+    click on the plus button in the lower right hand corner of the screen. The user button 
+    will be functional soon enough!`
 };
 
 const titles = {
   contact: `Contact`,
   about: `About`,
-  use: `Use`
-}
+  use: `Usage`
+};
 
-class Popup extends React.Component {
-
-  handleClick = (e) => {
-    const navbar = document.getElementById("navbar");
+class Popup extends React.Component {
+  handleClick = e => {
+    const navbar = document.getElementById('navbar');
     if (this.node.contains(e.target) || navbar.contains(e.target)) {
       return;
     } else {
       this.props.handleClose(e);
     }
-  }
+  };
 
   componentWillMount() {
     document.addEventListener('mousedown', this.handleClick, false);
@@ -63,19 +71,19 @@ class Popup extends React.Component {
   componentWillUnmount() {
     document.removeEventListener('mousedown', this.handleClick, false);
   }
-  
+
   render() {
     const title = titles[this.props.type];
     const body = bodyTexts[this.props.type];
 
     return (
       <StyledPopup>
-        <div className='popup' ref={node => this.node = node}>
-          <button onClick={this.props.handleClose} id = "x">
-              X
+        <div className="popup" ref={node => (this.node = node)}>
+          <button onClick={this.props.handleClose} id="x">
+            X
           </button>
-            <h1>{title}</h1>
-            <p>{body}</p>
+          <h1>{title}</h1>
+          <p>{body}</p>
         </div>
       </StyledPopup>
     );
