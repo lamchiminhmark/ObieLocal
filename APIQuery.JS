@@ -142,14 +142,18 @@ function getEvents(maxPages) {
 					if (longitude != null) {
 						longitude = parseFloat(longitude);
 					}
-					let start_time = event.event["event_instances"]["event_instance"]["start"];
+					let start_time = event.event["event_instances"][0]["event_instance"]["start"];
 					if (start_time != null) {
-						start_time = start_time.replace(/'/g,"''");
+						start_time = `'${start_time.substring(0,19).replace("T"," ")}'`;
+					} else {
+						start_time = "NULL"
 					}
-					let end_time = event.event["event_instances"]["event_instance"]["end"];;
+					let end_time = event.event["event_instances"][0]["event_instance"]["end"];
 					if (end_time != null) {
-						end_time = end_time.replace(/'/g,"''");
-					}	
+						end_time = `'${end_time.substring(0,19).replace("T", " ")}'`;
+					}	else {
+						end_time = "NULL";
+					}
 					/* Begin insertion of event into database. If the INSERT query returns
 					an error, the script will log it and continue on to the next event. At
 					the end of all events, it will close the connection. */
@@ -195,7 +199,7 @@ function getEvents(maxPages) {
 							${latitude},
 							${longitude},
 							${start_time},
-							${end_time},
+							${end_time}
 						)`
 					)
 					/* Log the rows as they are inserted into the database.
