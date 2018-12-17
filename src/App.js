@@ -42,8 +42,9 @@ class App extends Component {
   }
 
   fetchData() {
-    fetch("http://obielocal.cs.oberlin.edu:3001/query")
-      .then(response => response.json())
+    // fetch("http://obielocal.cs.oberlin.edu:3001/query")
+    fetch("http://localhost:3001/query")  
+    .then(response => response.json())
       .then(arr => {
         // console.log(arr);
         const newArr = arr.map(obj => (

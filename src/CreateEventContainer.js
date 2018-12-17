@@ -112,6 +112,16 @@ export default class CreateEventContainer extends Component {
     this.setState({ warningText: str });
   }
 
+  /** returns an object with the start_time and end_time converted to UTC */
+  convertTime() {
+    const newObj = Object.assign({}, this.state.form);
+    const uTCStartTime = new Date(newObj.start_time).toISOString().substring(0, 16);
+    const uTCEndTime = new Date(newObj.end_time).toISOString().substring(0,16);
+    newObj.start_time = uTCStartTime;
+    newObj.end_time= uTCEndTime;
+    return newObj;
+  }
+
   /* Sends a POST request to 3001/query with current state */
   handleSubmit() {
     // Erase any warning text
@@ -126,11 +136,16 @@ export default class CreateEventContainer extends Component {
       return;
     }
 
-    fetch(`http://obielocal.cs.oberlin.edu:3001/query`, {
+    const toSubmit = this.convertTime();
+    console.log('toSubmit');
+    console.log(toSubmit);
+
+    // fetch(`http://obielocal.cs.oberlin.edu:3001/query`, {
+      fetch(`http://localhost:3001/query`, {
       method: 'POST',
       mode: 'cors',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(this.state.form)
+      body: JSON.stringify(toSubmit)
     })
       .then(async res => {
         // console.log("res: ");
