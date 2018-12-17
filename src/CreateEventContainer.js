@@ -84,14 +84,7 @@ export default class CreateEventContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      form:{
-        title: '',
-        description: '',
-        start_time: null,
-        end_time: null,
-        location_name: '',
-        address: ''
-      },
+      form:{},
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -111,21 +104,24 @@ export default class CreateEventContainer extends Component {
 
   /* Sends a POST request to 3001/query with current state */
   handleSubmit() {
-    // const formData = new FormData();
-    // for (let key in this.state.form) {
-    //   formData.append(key, this.state.form[key]);
-    // }
-
+    // Checks that the 3 required field 
+    const form = this.state.form;
+    if (!(form.start_time && form.title && form.address)) alert('Event Place, Start Date and Time and Address are required'); 
     fetch(`http://localhost:3001/query`, {
       method: 'POST',
       mode: 'cors',
       headers: { 'Content-Type': 'application/json'},
       body: JSON.stringify(this.state.form),
     })
-    .then(res => {
+    .then(async res => {
       // console.log("res: ");
       // console.log(res);
-      if (res.status === 200) this.props.toggleCreateEventContainer(false);
+      const resObject = await res.json();
+      if (res.status === 200 && resObject.eventAdded) {
+        this.props.fetchMarkers();
+        this.props.toggleCreateEventContainer(false);
+      }
+      if (res.status === 200 && resObject.addressUnknown) {}
     })
     .catch(e => console.log('Error' + e));
   }
@@ -156,8 +152,9 @@ export default class CreateEventContainer extends Component {
               <input
                 type="text"
                 name="title"
-                value={this.state.form.title}
+                value={this.state.form.title || ''}
                 onChange={this.handleChange('title')}
+                required
               />
             </td>
           </tr>
@@ -168,7 +165,7 @@ export default class CreateEventContainer extends Component {
             <td>
               <textarea
                 name="description"
-                value={this.state.form.description}
+                value={this.state.form.description || ''}
                 onChange={this.handleChange('description')}
               />
             </td>
@@ -183,6 +180,7 @@ export default class CreateEventContainer extends Component {
                 name="start_time"
                 value={this.state.form.start_time}
                 onChange={this.handleChange('start_time')}
+                required
               />
             </td>
           </tr>
@@ -207,7 +205,7 @@ export default class CreateEventContainer extends Component {
               <input
                 type="text"
                 name="location_name"
-                value={this.state.form.location_name}
+                value={this.state.form.location_name || ''}
                 onChange={this.handleChange('location_name')}
               />
             </td>
@@ -220,8 +218,9 @@ export default class CreateEventContainer extends Component {
               <input
                 type="text"
                 name="address"
-                value={this.state.form.address}
+                value={this.state.form.address || ''}
                 onChange={this.handleChange('address')}
+                required
               />
             </td>
           </tr>

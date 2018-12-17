@@ -60,10 +60,10 @@ async function getCoordinates(address) {
   if (response.err) console.log('error');
 
   // TODO: ML Add error handling if results is an empty array
-  if (response.results.length === 0) return {err: true};
+  if (response.results.length === 0) return { err: true };
   const { lat, lng } = response.results[0].geometry.location;
   console.log('coordinates are ' + lat + ' ' + lng);
-  return {latitude: lat, longitude: lng};
+  return { latitude: lat, longitude: lng };
 }
 
 /* Handle a POST request to this route to insert new event 
@@ -76,23 +76,26 @@ router.post('/', async function(req, res, next) {
   SQL injection attacks. Stringify() will automatically escape
   conflicting characters. */
   // if (contype === 'application/x-www-form-urlencoded') {
-    if (contype === 'application/json') {
-
+  if (contype === 'application/json') {
     for (let attributename in body) {
       let str = JSON.stringify(body[attributename]);
       console.log('Inserting with: ' + attributename + ' = ' + str);
       body[attributename] = str;
     }
 
-    const coordinates = await getCoordinates(body.address);
-    if (coordinates.err) {
-       // TODO: ML Add error handling here 
+    let coordinates;
+    try {
+      coordinates = await getCoordinates(body.address);
+    } catch (e) {
+      res.send(200, {addressUnknown: true}).end();
+      return;
     }
+
     body = Object.assign(body, coordinates);
     database
       .insertEvent(body)
       .then(() => {
-        res.status(200).end();
+        res.send(200, {eventAdded: true}).end();
       })
       .catch(err => {
         console.log('There was an error inserting into the database: ' + err);

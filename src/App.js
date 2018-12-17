@@ -70,8 +70,7 @@ class App extends Component {
   toggleSidepane(obj) {
     //if (close) this.setState({sidepaneOpen: false});
     if (this.state.createEventContainerOpen) return;
-    if (obj && obj.close) 
-    this.setState({ sidepaneOpen: !obj.close });
+    if (obj && obj.close) this.setState({ sidepaneOpen: !obj.close });
     else if (this.state.activeEventInfo.ID !== 0)
       this.setState({ sidepaneOpen: !this.state.sidepaneOpen });
     else alert('You must select an event marker to view event information.');
@@ -79,7 +78,7 @@ class App extends Component {
 
   /* If show is true, CreateEventContainer is opened, otherwise it is closed*/
   toggleCreateEventContainer(show) {
-    this.setState({createEventContainerOpen: show});
+    this.setState({ createEventContainerOpen: show });
   }
 
   render() {
@@ -99,7 +98,11 @@ class App extends Component {
           toggleSidepane={this.toggleSidepane}
         />
         <UserButton />
-        <CreateEventContainer active={this.state.createEventContainerOpen} toggleCreateEventContainer={this.toggleCreateEventContainer} />
+        <CreateEventContainer
+          active={this.state.createEventContainerOpen}
+          toggleCreateEventContainer={this.toggleCreateEventContainer}
+          fetchMarkers={this.fetchData}
+        />
       </div>
     );
   }
