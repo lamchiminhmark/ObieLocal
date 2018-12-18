@@ -38,24 +38,14 @@ export default class Sidepane extends Component {
     var startTime = "Time unknown."
 
     if (this.props.eventInfo.start_time) {
-      /*number of muliseconds in a minute*/
-      const MS_PER_MINUTE = 60000;
-
-      /*get time of event in universal standard time*/
+      /* Note that the Date constructor automatically adjusts for timezone */
       const startTimeUTC = new Date(this.props.eventInfo.start_time);
-
-      /*get start time and end time, converting UTC to user's local time*/
-      var offset = -1 * startTimeUTC.getTimezoneOffset() * MS_PER_MINUTE;
-      console.log(offset);
-      console.log(startTimeUTC);
-      const startTimeLocal = new Date(startTimeUTC - offset).toString();
-      console.log(startTimeLocal);
       const endTimeUTC = new Date(this.props.eventInfo.end_time);
-      const endTimeLocal = new Date(endTimeUTC - offset).toString();
-      /*format times to display hour, minute, and period in 12 hour time*/
+
       var dateTime = require('node-datetime');
-      startTime = dateTime.create(startTimeLocal, 'I:M p').format();
-      var endTime = dateTime.create(endTimeLocal, 'I:M p').format();
+      /*format times to display hour, minute, and period in 12 hour time*/
+      startTime = dateTime.create(startTimeUTC, 'I:M p').format();
+      var endTime = dateTime.create(endTimeUTC, 'I:M p').format();
     }
 
     /*construct strings to display in sidepan*/
