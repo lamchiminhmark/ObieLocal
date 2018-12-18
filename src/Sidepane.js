@@ -45,10 +45,13 @@ export default class Sidepane extends Component {
       const startTimeUTC = new Date(this.props.eventInfo.start_time);
 
       /*get start time and end time, converting UTC to user's local time*/
-      var offset = startTimeUTC.getTimezoneOffset();
-      const startTimeLocal = new Date(startTimeUTC - offset * MS_PER_MINUTE).toString();
+      var offset = -1 * startTimeUTC.getTimezoneOffset() * MS_PER_MINUTE;
+      console.log(offset);
+      console.log(startTimeUTC);
+      const startTimeLocal = new Date(startTimeUTC - offset).toString();
+      console.log(startTimeLocal);
       const endTimeUTC = new Date(this.props.eventInfo.end_time);
-      const endTimeLocal = new Date(endTimeUTC - offset * MS_PER_MINUTE).toString();
+      const endTimeLocal = new Date(endTimeUTC - offset).toString();
       /*format times to display hour, minute, and period in 12 hour time*/
       var dateTime = require('node-datetime');
       startTime = dateTime.create(startTimeLocal, 'I:M p').format();
