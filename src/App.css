@@ -35,7 +35,7 @@ button {
 
 .Create-event-container-inactive {
   position: fixed;
-  transform: translate(0%, -150%);
+  transform: translate(0%, -300%);
   left: 50px;
   cursor: pointer;
 }
