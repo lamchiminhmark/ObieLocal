@@ -138,12 +138,14 @@ function getEvents(maxPages) {
 					}
 					let start_time = event.event["event_instances"][0]["event_instance"]["start"];
 					if (start_time != null) {
+						start_time = new Date(start_time).toISOString();
 						start_time = `'${start_time.substring(0,19).replace("T"," ")}'`;
 					} else {
 						start_time = "NULL"
 					}
 					let end_time = event.event["event_instances"][0]["event_instance"]["end"];
 					if (end_time != null) {
+						end_time = new Date(end_time).toISOString();
 						end_time = `'${end_time.substring(0,19).replace("T", " ")}'`;
 					}	else {
 						end_time = "NULL";

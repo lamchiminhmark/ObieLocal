@@ -112,13 +112,15 @@ export default class CreateEventContainer extends Component {
     this.setState({ warningText: str });
   }
 
-  /** returns an object with the start_time and end_time converted to UTC */
-  convertTime() {
+  /* returns an object with the start_time and end_time converted to UTC
+  and the created_at field set to the current time (in UTC) */
+  calculateTime() {
     const newObj = Object.assign({}, this.state.form);
     const uTCStartTime = new Date(newObj.start_time).toISOString().substring(0, 16);
     const uTCEndTime = new Date(newObj.end_time).toISOString().substring(0,16);
     newObj.start_time = uTCStartTime;
     newObj.end_time= uTCEndTime;
+    newObj.created_at = new Date().toISOString().substring(0,16);
     return newObj;
   }
 
@@ -136,7 +138,7 @@ export default class CreateEventContainer extends Component {
       return;
     }
 
-    const toSubmit = this.convertTime();
+    const toSubmit = this.calculateTime();
     console.log('toSubmit');
     console.log(toSubmit);
 
