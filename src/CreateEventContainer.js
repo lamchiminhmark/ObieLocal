@@ -191,6 +191,7 @@ export default class CreateEventContainer extends Component {
                 name="title"
                 value={this.state.form.title || ''}
                 placeholder="President Ambar's Inauguration"
+                autoComplete="off"
                 onChange={this.handleChange('title')}
                 required
               />
@@ -245,6 +246,7 @@ export default class CreateEventContainer extends Component {
                 name="location_name"
                 value={this.state.form.location_name || ''}
                 placeholder="Finney Chapel"
+                autoComplete="off"
                 onChange={this.handleChange('location_name')}
               />
             </td>
@@ -259,6 +261,7 @@ export default class CreateEventContainer extends Component {
                 name="address"
                 value={this.state.form.address || ''}
                 placeholder="90 N Professor St, Oberlin, OH 44074"
+                autoComplete="off"
                 onChange={this.handleChange('address')}
                 required
               />
