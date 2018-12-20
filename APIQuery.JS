@@ -137,29 +137,12 @@ function getEvents(maxPages) {
 						longitude = parseFloat(longitude);
 					}
 
-					const minuteToMilliseconds = 60000;
 					// TODO : We will need to find a way to deal with multiple event instances here
 					let start_time = event.event["event_instances"][0]["event_instance"]["start"];
-					if (start_time != null) {
-						const date = new Date(start_time);
-						const offset = date.getTimezoneOffset();
-						date.setTime(date.getTime() - offset * minuteToMilliseconds);
-						start_time = date.toISOString();
-						start_time = `'${start_time.substring(0, 19).replace("T", " ")}'`;
-					} else {
-						start_time = "NULL";
-					}
-
+					start_time = formatDate(start_time);
+					
 					let end_time = event.event["event_instances"][0]["event_instance"]["end"];
-					if (end_time != null) {
-						const date = new Date(end_time);
-						const offset = date.getTimezoneOffset();
-						date.setTime(date.getTime() - offset * minuteToMilliseconds);
-						end_time = date.toISOString();
-						end_time = `'${end_time.substring(0, 19).replace("T", " ")}'`;
-					} else {
-						end_time = "NULL";
-					}
+					end_time = formatDate(end_time);
 					
 					/* Begin insertion of event into database. If the INSERT query returns
 					an error, the script will log it and continue on to the next event. At
@@ -234,4 +217,19 @@ function getEvents(maxPages) {
 			});
 		}
 	});
+}
+
+function formatDate(str) {
+	const minuteToMilliseconds = 60000;
+	let dateString = str;
+	if (dateString != null) {
+		const date = new Date(dateString);
+		const offset = date.getTimezoneOffset();
+		date.setTime(date.getTime() - offset * minuteToMilliseconds);
+		dateString = date.toISOString();
+		dateString = `'${dateString.substring(0, 19).replace("T", " ")}'`;
+	} else {
+		dateString = "NULL";
+	}
+	return dateString;
 }
