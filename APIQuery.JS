@@ -100,7 +100,7 @@ function getEvents(maxPages) {
 					const recurring = event.event["recurring"] ? 1 : 0;
 					const free = event.event["free"] ? 1 : 0;
 					let price = event.event["ticket_cost"];
-					if (free === 1) {
+					if (isNaN(price) || free === 1) {
 						price = 0;
 					} else { 
 						price = price.replace("$", "");
