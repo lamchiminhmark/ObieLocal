@@ -41,23 +41,41 @@ class App extends Component {
     this.fetchData();
   }
 
+  /* Fetch all markers from the database and display markers
+  that are within the given time frame. Note that HOUR_LIMIT
+  is the amount of hours before the current time that markers
+  with no end_time will stop showing. */
   fetchData() {
-    fetch("http://obielocal.cs.oberlin.edu:3001/query")
-    // fetch("http://localhost:3001/query")  
-    .then(response => response.json())
+    const now = new Date();
+    const [HOUR_LIMIT, HOUR_TO_MILLISECONDS] = [4, 3600000];
+    const earlyBound = new Date(
+      now.getTime() - HOUR_LIMIT * HOUR_TO_MILLISECONDS
+    );
+
+    fetch('http://obielocal.cs.oberlin.edu:3001/query')
+      // fetch("http://localhost:3001/query")
+      .then(response => response.json())
       .then(arr => {
-        // console.log(arr);
         const newArr = arr.map(obj => (
-          <Marker
-            lat={obj.latitude}
-            lng={obj.longitude}
-            handleMarkerClick={this.handleMarkerClick}
-            eventInfo={obj}
-          />
-        ));
+              <Marker
+                lat={obj.latitude}
+                lng={obj.longitude}
+                handleMarkerClick={this.handleMarkerClick}
+                eventInfo={obj}
+              />
+          ))
+          .filter(marker => {
+            const endTime = marker.props.eventInfo.end_time;
+            const startTime = marker.props.eventInfo.start_time;
+            if (endTime) {
+              return endTime > now.toISOString();
+            } else {
+              return startTime > earlyBound.toISOString();
+            }
+          });
         this.setState({ markers: newArr });
       })
-      .catch(error => console.log('parsing failed', error));
+      .catch(error => console.error('Loading markers failed! ', error));
   }
 
   handleMarkerClick(eventInfo) {
