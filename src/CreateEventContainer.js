@@ -104,10 +104,9 @@ export default class CreateEventContainer extends Component {
       this.setState(state => {
         return { form: Object.assign(state.form, temp) };
       });
-      // console.log(this.state);
     };
   }
-
+    
   changeWarningText(str) {
     this.setState({ warningText: str });
   }
@@ -139,8 +138,6 @@ export default class CreateEventContainer extends Component {
     }
 
     const toSubmit = this.calculateTime();
-    console.log('toSubmit');
-    console.log(toSubmit);
 
     fetch(`http://obielocal.cs.oberlin.edu:3001/query`, {
       // fetch(`http://localhost:3001/query`, {
