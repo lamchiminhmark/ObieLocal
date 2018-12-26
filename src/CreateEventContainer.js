@@ -101,32 +101,32 @@ export default class CreateEventContainer extends Component {
     return e => {
       const temp = {};
       switch (field) {
-        case "select_location":
-          this.changeLocation(e);
+        case 'select_location':
+          this.selectLocation(e);
           break;
-        case "location_name":
-        case "address":
-          this.checkPlace(e);
-          temp[field] = e.target.value;
-          // falls through
+        case 'location_name':
+        case 'address':
+          this.changePlace(e);
+        // falls through
         default:
+          temp[field] = e.target.value;
           this.setState(state => {
             return { form: Object.assign(state.form, temp) };
           });
       }
     };
   }
-    
-  changeLocation(e) {
+
+  selectLocation(e) {
     const index = e.target.selectedIndex;
     let location_name;
     let address;
     if (index === 0 || index === e.target.length - 1) {
-      location_name = "";
-      address = "";
+      location_name = '';
+      address = '';
     } else {
       location_name = e.target[index].innerText;
-      address = e.target[index].dataset.address + " Oberlin OH";
+      address = e.target[index].dataset.address + ' Oberlin OH';
     }
     this.setState(state => ({
       form: {
@@ -136,10 +136,10 @@ export default class CreateEventContainer extends Component {
       }
     }));
   }
-    
-  checkPlace(e) {
+
+  changePlace(e) {
     // location.selectedIndex = 0;
-    const selector = document.getElementById("location-selector");
+    const selector = document.getElementById('location-selector');
     const typed = e.target.value;
     let address = this.state.form.address;
     let location_name = this.state.form.location_name;
@@ -155,7 +155,7 @@ export default class CreateEventContainer extends Component {
       form: {
         ...state.form,
         address,
-        location_name,
+        location_name
       }
     }));
   }
@@ -168,11 +168,11 @@ export default class CreateEventContainer extends Component {
   and the created_at field set to the current time (in UTC) */
   calculateTime() {
     const newObj = Object.assign({}, this.state.form);
-    const uTCStartTime = new Date(newObj.start_time).toISOString().substring(0, 16);
-    const uTCEndTime = new Date(newObj.end_time).toISOString().substring(0,16);
-    newObj.start_time = uTCStartTime;
-    newObj.end_time= uTCEndTime;
-    newObj.created_at = new Date().toISOString().substring(0,16);
+    const UTCStartTime = new Date(newObj.start_time).toISOString().substring(0, 16);
+    const UTCEndTime = new Date(newObj.end_time).toISOString().substring(0, 16);
+    newObj.start_time = UTCStartTime;
+    newObj.end_time = UTCEndTime;
+    newObj.created_at = new Date().toISOString().substring(0, 16);
     return newObj;
   }
 
@@ -291,7 +291,11 @@ export default class CreateEventContainer extends Component {
               <label>Event Place: </label>
             </td>
             <td>
-              <select id="location-selector" name="select_location" onChange={this.handleChange('select_location')}>
+              <select
+                id="location-selector"
+                name="select_location"
+                onChange={this.handleChange('select_location')}
+              >
                 <option value="none" data-address="" selected>Select a Location</option>
                 <optgroup label="Residence Halls">
                   <option value="barrows" data-address="145 Woodland St">Barrows Hall</option>
