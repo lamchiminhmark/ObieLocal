@@ -231,145 +231,147 @@ export default class CreateEventContainer extends Component {
           X
         </button>
         <table>
-          <tr>
-            <td>
-              <label for="title">Event Name:</label>
-            </td>
-            <td>
-              <input
-                type="text"
-                name="title"
-                value={this.state.form.title || ''}
-                placeholder="President Ambar's Inauguration"
-                autoComplete="off"
-                onChange={this.handleChange('title')}
-                required
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <label>Description:</label>
-            </td>
-            <td>
-              <textarea
-                name="description"
-                value={this.state.form.description || ''}
-                onChange={this.handleChange('description')}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <label>Start Date and Time: </label>
-            </td>
-            <td>
-              <input
-                type="datetime-local"
-                name="start_time"
-                value={this.state.form.start_time}
-                onChange={this.handleChange('start_time')}
-                required
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <label>End Date and Time: </label>
-            </td>
-            <td>
-              <input
-                type="datetime-local"
-                name="end_time"
-                value={this.state.form.end_time}
-                onChange={this.handleChange('end_time')}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <label>Event Place: </label>
-            </td>
-            <td>
-              <select
-                id="location-selector"
-                name="select_location"
-                onChange={this.handleChange('select_location')}
-              >
-                <option value="none" data-address="" selected>Select a Location</option>
-                <optgroup label="Residence Halls">
-                  <option value="barrows" data-address="145 Woodland St">Barrows Hall</option>
-                  <option value="dascomb" data-address="140 W College St">Dascomb Hall</option>
-                  <option value="kahn" data-address="169 N Professor St">Kahn Hall</option>
-                  <option value="langston" data-address="95 Union St">Langston Hall</option>
-                  <option value="talcott" data-address="2 S Professor St">Talcott Hall</option>
-                  <option value="burton" data-address="194 N Professor St">Burton Hall</option>
-                  <option value="fairchild" data-address="93 Elm St">Fairchild Hall</option>
-                  <option value="east" data-address="176 N Professor St">East Hall</option>
-                  <option value="noah" data-address="167 Woodland St">Noah Hall</option>
-                  <option value="south" data-address="121 Elm St">South Hall</option>
-                  <option value="zechiel" data-address="207 Woodland St">Zechiel House</option>
-                </optgroup>
-                <optgroup label="Academic Buildings">
-                  <option value="king" data-address="10 N Professor St">King Hall</option>
-                </optgroup>
-                <option value="other" data-address="">Other Location</option>
-              </select>
-            </td>
-            {/* <td>
-              <input
-                type="text"
-                name="location_name"
-                value={this.state.form.location_name || ''}
-                placeholder="Finney Chapel"
-                autoComplete="off"
-                onChange={this.handleChange('location_name')}
-              />
-            </td> */}
-          </tr>
-          <tr>
-            <td>
-              <label>Location Name</label>
-            </td>
-            <td>
-              <input
-                type="text"
-                name="location_name"
-                value={this.state.form.location_name || ''}
-                placeholder="Finney Chapel"
-                autoComplete="off"
-                onChange={this.handleChange('location_name')}
-                required
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <label>Address: </label>
-            </td>
-            <td>
-              <input
-                type="text"
-                name="address"
-                value={this.state.form.address || ''}
-                placeholder="90 N Professor St, Oberlin, OH 44074"
-                autoComplete="off"
-                onChange={this.handleChange('address')}
-                required
-              />
-            </td>
-          </tr>
-          <tr>
-            <td />
-            <td>
-              <input
-                id="submit"
-                type="button"
-                value="Add Event"
-                onClick={this.handleSubmit}
-              />
-            </td>
-          </tr>
+          <tbody>
+            <tr>
+              <td>
+                <label for="title">Event Name:</label>
+              </td>
+              <td>
+                <input
+                  type="text"
+                  name="title"
+                  value={this.state.form.title || ''}
+                  placeholder="President Ambar's Inauguration"
+                  autoComplete="off"
+                  onChange={this.handleChange('title')}
+                  required
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label>Description:</label>
+              </td>
+              <td>
+                <textarea
+                  name="description"
+                  value={this.state.form.description || ''}
+                  onChange={this.handleChange('description')}
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label>Start Date and Time: </label>
+              </td>
+              <td>
+                <input
+                  type="datetime-local"
+                  name="start_time"
+                  value={this.state.form.start_time}
+                  onChange={this.handleChange('start_time')}
+                  required
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label>End Date and Time: </label>
+              </td>
+              <td>
+                <input
+                  type="datetime-local"
+                  name="end_time"
+                  value={this.state.form.end_time}
+                  onChange={this.handleChange('end_time')}
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label>Event Place: </label>
+              </td>
+              <td>
+                <select
+                  id="location-selector"
+                  name="select_location"
+                  onChange={this.handleChange('select_location')}
+                >
+                  <option value="none" data-address="" selected>Select a Location</option>
+                  <optgroup label="Residence Halls">
+                    <option value="barrows" data-address="145 Woodland St">Barrows Hall</option>
+                    <option value="dascomb" data-address="140 W College St">Dascomb Hall</option>
+                    <option value="kahn" data-address="169 N Professor St">Kahn Hall</option>
+                    <option value="langston" data-address="95 Union St">Langston Hall</option>
+                    <option value="talcott" data-address="2 S Professor St">Talcott Hall</option>
+                    <option value="burton" data-address="194 N Professor St">Burton Hall</option>
+                    <option value="fairchild" data-address="93 Elm St">Fairchild Hall</option>
+                    <option value="east" data-address="176 N Professor St">East Hall</option>
+                    <option value="noah" data-address="167 Woodland St">Noah Hall</option>
+                    <option value="south" data-address="121 Elm St">South Hall</option>
+                    <option value="zechiel" data-address="207 Woodland St">Zechiel House</option>
+                  </optgroup>
+                  <optgroup label="Academic Buildings">
+                    <option value="king" data-address="10 N Professor St">King Hall</option>
+                  </optgroup>
+                  <option value="other" data-address="">Other Location</option>
+                </select>
+              </td>
+              {/* <td>
+                <input
+                  type="text"
+                  name="location_name"
+                  value={this.state.form.location_name || ''}
+                  placeholder="Finney Chapel"
+                  autoComplete="off"
+                  onChange={this.handleChange('location_name')}
+                />
+              </td> */}
+            </tr>
+            <tr>
+              <td>
+                <label>Location Name</label>
+              </td>
+              <td>
+                <input
+                  type="text"
+                  name="location_name"
+                  value={this.state.form.location_name || ''}
+                  placeholder="Finney Chapel"
+                  autoComplete="off"
+                  onChange={this.handleChange('location_name')}
+                  required
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label>Address: </label>
+              </td>
+              <td>
+                <input
+                  type="text"
+                  name="address"
+                  value={this.state.form.address || ''}
+                  placeholder="90 N Professor St, Oberlin, OH 44074"
+                  autoComplete="off"
+                  onChange={this.handleChange('address')}
+                  required
+                />
+              </td>
+            </tr>
+            <tr>
+              <td />
+              <td>
+                <input
+                  id="submit"
+                  type="button"
+                  value="Add Event"
+                  onClick={this.handleSubmit}
+                />
+              </td>
+            </tr>
+          </tbody>
         </table>
         <text id="warning-text">{this.state.warningText}</text>
       </StyledPane>
