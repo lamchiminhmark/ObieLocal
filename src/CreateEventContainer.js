@@ -100,13 +100,66 @@ export default class CreateEventContainer extends Component {
   handleChange(field) {
     return e => {
       const temp = {};
-      temp[field] = e.target.value;
-      this.setState(state => {
-        return { form: Object.assign(state.form, temp) };
-      });
+      switch (field) {
+        case "select_location":
+          this.changeLocation(e);
+          break;
+        case "location_name":
+        case "address":
+          this.checkPlace(e);
+          temp[field] = e.target.value;
+          // falls through
+        default:
+          this.setState(state => {
+            return { form: Object.assign(state.form, temp) };
+          });
+      }
     };
   }
     
+  changeLocation(e) {
+    const index = e.target.selectedIndex;
+    let location_name;
+    let address;
+    if (index === 0 || index === e.target.length - 1) {
+      location_name = "";
+      address = "";
+    } else {
+      location_name = e.target[index].innerText;
+      address = e.target[index].dataset.address + " Oberlin OH";
+    }
+    this.setState(state => ({
+      form: {
+        ...state.form,
+        address,
+        location_name
+      }
+    }));
+  }
+    
+  checkPlace(e) {
+    // location.selectedIndex = 0;
+    const selector = document.getElementById("location-selector");
+    const typed = e.target.value;
+    let address = this.state.form.address;
+    let location_name = this.state.form.location_name;
+    for (let i = 1; i < selector.length - 1; i++) {
+      if (typed === selector[i].innerText || typed === selector[i].dataset.address) {
+        selector.selectedIndex = i;
+        address = selector[i].dataset.address;
+        location_name = selector[i].innerText;
+        break;
+      }
+    }
+    this.setState(state => ({
+      form: {
+        ...state.form,
+        address,
+        location_name,
+      }
+    }));
+  }
+
   changeWarningText(str) {
     this.setState({ warningText: str });
   }
@@ -238,6 +291,28 @@ export default class CreateEventContainer extends Component {
               <label>Event Place: </label>
             </td>
             <td>
+              <select id="location-selector" name="select_location" onChange={this.handleChange('select_location')}>
+                <option value="none" data-address="" selected>Select a Location</option>
+                <optgroup label="Residence Halls">
+                  <option value="barrows" data-address="145 Woodland St">Barrows Hall</option>
+                  <option value="dascomb" data-address="140 W College St">Dascomb Hall</option>
+                  <option value="kahn" data-address="169 N Professor St">Kahn Hall</option>
+                  <option value="langston" data-address="95 Union St">Langston Hall</option>
+                  <option value="talcott" data-address="2 S Professor St">Talcott Hall</option>
+                  <option value="burton" data-address="194 N Professor St">Burton Hall</option>
+                  <option value="fairchild" data-address="93 Elm St">Fairchild Hall</option>
+                  <option value="east" data-address="176 N Professor St">East Hall</option>
+                  <option value="noah" data-address="167 Woodland St">Noah Hall</option>
+                  <option value="south" data-address="121 Elm St">South Hall</option>
+                  <option value="zechiel" data-address="207 Woodland St">Zechiel House</option>
+                </optgroup>
+                <optgroup label="Academic Buildings">
+                  <option value="king" data-address="10 N Professor St">King Hall</option>
+                </optgroup>
+                <option value="other" data-address="">Other Location</option>
+              </select>
+            </td>
+            {/* <td>
               <input
                 type="text"
                 name="location_name"
@@ -245,6 +320,22 @@ export default class CreateEventContainer extends Component {
                 placeholder="Finney Chapel"
                 autoComplete="off"
                 onChange={this.handleChange('location_name')}
+              />
+            </td> */}
+          </tr>
+          <tr>
+            <td>
+              <label>Location Name</label>
+            </td>
+            <td>
+              <input
+                type="text"
+                name="location_name"
+                value={this.state.form.location_name || ''}
+                placeholder="Finney Chapel"
+                autoComplete="off"
+                onChange={this.handleChange('location_name')}
+                required
               />
             </td>
           </tr>
