@@ -146,7 +146,7 @@ export default class CreateEventContainer extends Component {
     for (let i = 1; i < selector.length - 1; i++) {
       if (typed === selector[i].innerText || typed === selector[i].dataset.address) {
         selector.selectedIndex = i;
-        address = selector[i].dataset.address;
+        address = selector[i].dataset.address + " Oberlin OH";
         location_name = selector[i].innerText;
         break;
       }
