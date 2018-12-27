@@ -296,8 +296,9 @@ export default class CreateEventContainer extends Component {
                   id="location-selector"
                   name="select_location"
                   onChange={this.handleChange('select_location')}
+                  defaultValue="none"
                 >
-                  <option value="none" data-address="" selected>Select a Location</option>
+                  <option value="none" data-address="">Select a Location</option>
                   <optgroup label="Residence Halls">
                     <option value="barrows" data-address="145 Woodland St">Barrows Hall</option>
                     <option value="dascomb" data-address="140 W College St">Dascomb Hall</option>
