@@ -234,11 +234,12 @@ export default class CreateEventContainer extends Component {
           <tbody>
             <tr>
               <td>
-                <label for="title">Event Name:</label>
+                <label htmlFor="input-title">Event Name:</label>
               </td>
               <td>
                 <input
                   type="text"
+                  id="input-title"
                   name="title"
                   value={this.state.form.title || ''}
                   placeholder="President Ambar's Inauguration"
@@ -250,11 +251,12 @@ export default class CreateEventContainer extends Component {
             </tr>
             <tr>
               <td>
-                <label>Description:</label>
+                <label htmlFor="input-description">Description:</label>
               </td>
               <td>
                 <textarea
                   name="description"
+                  id="input-description"
                   value={this.state.form.description || ''}
                   onChange={this.handleChange('description')}
                 />
@@ -262,12 +264,13 @@ export default class CreateEventContainer extends Component {
             </tr>
             <tr>
               <td>
-                <label>Start Date and Time: </label>
+                <label htmlFor="input-start_time">Start Date and Time: </label>
               </td>
               <td>
                 <input
                   type="datetime-local"
                   name="start_time"
+                  id="input-start_time"
                   value={this.state.form.start_time}
                   onChange={this.handleChange('start_time')}
                   required
@@ -276,12 +279,13 @@ export default class CreateEventContainer extends Component {
             </tr>
             <tr>
               <td>
-                <label>End Date and Time: </label>
+                <label htmlFor="input-end_time">End Date and Time: </label>
               </td>
               <td>
                 <input
                   type="datetime-local"
                   name="end_time"
+                  id="input-end_time"
                   value={this.state.form.end_time}
                   onChange={this.handleChange('end_time')}
                 />
@@ -289,7 +293,7 @@ export default class CreateEventContainer extends Component {
             </tr>
             <tr>
               <td>
-                <label>Event Place: </label>
+                <label htmlFor="location-selector">Event Place: </label>
               </td>
               <td>
                 <select
@@ -331,12 +335,13 @@ export default class CreateEventContainer extends Component {
             </tr>
             <tr>
               <td>
-                <label>Location Name</label>
+                <label htmlFor="input-location_name">Location Name</label>
               </td>
               <td>
                 <input
                   type="text"
                   name="location_name"
+                  id="input-location_name"
                   value={this.state.form.location_name || ''}
                   placeholder="Finney Chapel"
                   autoComplete="off"
@@ -347,12 +352,13 @@ export default class CreateEventContainer extends Component {
             </tr>
             <tr>
               <td>
-                <label>Address: </label>
+                <label htmlFor="input-address">Address: </label>
               </td>
               <td>
                 <input
                   type="text"
                   name="address"
+                  id="input-address"
                   value={this.state.form.address || ''}
                   placeholder="90 N Professor St, Oberlin, OH 44074"
                   autoComplete="off"
@@ -374,7 +380,7 @@ export default class CreateEventContainer extends Component {
             </tr>
           </tbody>
         </table>
-        <label for="submit" id="warning-text">{this.state.warningText}</label>
+        <label htmlFor="submit" id="warning-text">{this.state.warningText}</label>
       </StyledPane>
     );
   }
