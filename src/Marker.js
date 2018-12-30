@@ -6,7 +6,9 @@ const Button = styled.button`
     height: 24px;
     border-radius: 50%;
     color: rgb(255, 184, 29);
-    opacity: 0.8;
+    background-color: #cf102d;
+    /* background-color: ${props => props.backgroundColor || "rgb(255,255,255);"}; */
+    opacity: ${props => props.opacity};
     padding: 14px;
     //* / fontWeight: bolder;
     // fontFamily: Arial;
@@ -17,11 +19,24 @@ const Button = styled.button`
 
 `
 
-const Marker = props => {
-    return (
-        <Button className={props.eventInfo.verified === 1 ? 'Marker-verified' : 'Marker-unverified'} onClick={() => props.handleMarkerClick(props.eventInfo)}></Button>
-        // <Wrapper/>
-    )
+class Marker extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.getOpacity = this.getOpacity.bind(this);
+    }
+
+    getOpacity() {
+        const hoursUntilStart = this.props.hoursUntilStart;
+        return (10 - hoursUntilStart) / 10;
+    }
+
+    render() {
+
+        return (
+            <Button className={this.props.eventInfo.verified === 1 ? 'Marker-verified' : 'Marker-unverified'} onClick={() => this.props.handleMarkerClick(this.props.eventInfo)}opacity={this.getOpacity}></Button>
+        )    
+    }
 }
 
 export default Marker;
