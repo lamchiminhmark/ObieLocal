@@ -2,21 +2,38 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Button = styled.button`
-    width: 24px;
-    height: 24px;
+    width: 40px; height: 40px;
+    padding: 0px;
     border-radius: 50%;
     color: rgb(255, 184, 29);
-    background-color: #cf102d;
-    /* background-color: ${props =>
-      props.backgroundColor || 'rgb(255,255,255);'}; */
     opacity: ${props => props.opacity};
-    padding: 14px;
-    //* / fontWeight: bolder;
-    // fontFamily: Arial;
-    // fontSize: 10pt;
-    // textAlign: center; */
-    border:2pt solid #ffb81d;
+    animation-delay: -65s;
+    border: 3px solid #ffb81d;
     cursor: pointer;
+
+    @keyframes spin {
+      to { transform: rotate(.5turn); }
+    }
+
+    @keyframes bg {
+      50% { background: #cf102d; }
+    }
+
+    ::before {
+      content: ' ';
+      display: block;
+      padding: 0px;
+      margin-left: 50%;
+      height:100%;
+      border-radius: 0 100% 100% 0 / 50%;
+      background-color: slategray;
+      transform-origin: left;
+      transform: rotate(0);
+      animation: spin 50s linear infinite, bg 100s step-end infinite;
+      /* animation-play-state: paused; */
+      animation-delay: inherit;
+      overflow: hidden;
+    }
 `;
 
 class Marker extends React.Component {

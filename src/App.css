@@ -39,11 +39,11 @@ button {
   left: 50px;
   cursor: pointer;
 }
-/* 
+
 .Marker-verified {
-  background-color: #cf102d;
+  background-image: linear-gradient(to right, slategray 50%, #cf102d 0);
 }
 
 .Marker-unverified {
-  background-color: rgb(42, 129, 158);
-} */
+  background-image: linear-gradient(to right, slategray 50%, rgb(42, 129, 158) 0);
+}
