@@ -6,8 +6,7 @@ const Button = styled.button`
     padding: 0px;
     border-radius: 50%;
     color: rgb(255, 184, 29);
-    opacity: ${props => props.opacity};
-    animation-delay: -65s;
+    animation-delay: ${props => props.animationDelay};
     border: 3px solid #ffb81d;
     cursor: pointer;
 
@@ -21,24 +20,32 @@ const Button = styled.button`
       background-color: slategray;
       transform-origin: left;
       transform: rotate(0);
-      animation: 
-        spin 50s linear infinite, 
-        ${props => props.backgroundAnimation} 100s step-end infinite;
-      /* animation-play-state: paused; */
-      animation-delay: inherit;
       overflow: hidden;
+
+      /* Each marker represents an animation of 6 hours */
+      animation: 
+        spin 10800s linear infinite, 
+        ${props => props.backgroundAnimation} 21600s step-end infinite;
+      animation-play-state: paused;
+      animation-delay: inherit;
     }
 `;
 
 class Marker extends React.Component {
   constructor(props) {
     super(props);
-    this.getOpacity = this.getOpacity.bind(this);
+    this.getFillAmount = this.getFillAmount.bind(this);
   }
 
-  getOpacity() {
-    const hoursUntilStart = this.props.hoursUntilStart;
-    return (10 - hoursUntilStart) / 10;
+  getFillAmount() {
+    const minutesUntilStart = this.props.hoursUntilStart * 60;
+    if (minutesUntilStart > 360 || minutesUntilStart < 0) {
+      return '0';
+    } else {
+      const deg = (360 - minutesUntilStart);
+      const sec = deg * 60;
+      return `-${sec}s`;
+    }
   }
 
   render() {
@@ -48,8 +55,8 @@ class Marker extends React.Component {
       <Button
         className={verified ? 'Marker-verified' : 'Marker-unverified'}
         onClick={() => this.props.handleMarkerClick(this.props.eventInfo)}
-        opacity={this.getOpacity}
         backgroundAnimation={backgroundAnimation}
+        animationDelay={this.getFillAmount}
       />
     );
   }
