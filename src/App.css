@@ -47,3 +47,15 @@ button {
 .Marker-unverified {
   background-image: linear-gradient(to right, slategray 50%, rgb(42, 129, 158) 0);
 }
+
+@keyframes bg-verified {
+  50% { background: #cf102d; }
+}
+
+@keyframes bg-unverified {
+  50% { background: rgb(42, 129, 158); }
+}
+
+@keyframes spin {
+  to { transform: rotate(.5turn); }
+}

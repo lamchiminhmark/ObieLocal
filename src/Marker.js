@@ -11,14 +11,6 @@ const Button = styled.button`
     border: 3px solid #ffb81d;
     cursor: pointer;
 
-    @keyframes spin {
-      to { transform: rotate(.5turn); }
-    }
-
-    @keyframes bg {
-      50% { background: #cf102d; }
-    }
-
     ::before {
       content: ' ';
       display: block;
