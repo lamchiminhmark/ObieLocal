@@ -21,7 +21,9 @@ const Button = styled.button`
       background-color: slategray;
       transform-origin: left;
       transform: rotate(0);
-      animation: spin 50s linear infinite, bg 100s step-end infinite;
+      animation: 
+        spin 50s linear infinite, 
+        ${props => props.backgroundAnimation} 100s step-end infinite;
       /* animation-play-state: paused; */
       animation-delay: inherit;
       overflow: hidden;
@@ -31,7 +33,6 @@ const Button = styled.button`
 class Marker extends React.Component {
   constructor(props) {
     super(props);
-
     this.getOpacity = this.getOpacity.bind(this);
   }
 
@@ -41,15 +42,14 @@ class Marker extends React.Component {
   }
 
   render() {
+    const verified = this.props.eventInfo.verified;
+    const backgroundAnimation = verified ? 'bg-verified' : 'bg-unverified';
     return (
       <Button
-        className={
-          this.props.eventInfo.verified === 1
-            ? 'Marker-verified'
-            : 'Marker-unverified'
-        }
+        className={verified ? 'Marker-verified' : 'Marker-unverified'}
         onClick={() => this.props.handleMarkerClick(this.props.eventInfo)}
         opacity={this.getOpacity}
+        backgroundAnimation={backgroundAnimation}
       />
     );
   }
