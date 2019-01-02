@@ -56,14 +56,21 @@ class App extends Component {
       // fetch("http://localhost:3001/query")
       .then(response => response.json())
       .then(arr => {
-        const newArr = arr.map(obj => (
+        const newArr = arr
+          .map(obj => {
+            const startTime = new Date(obj.start_time);
+            const hoursUntilStart =
+              (startTime.getTime() - now.getTime()) / 3600000;
+            return (
               <Marker
                 lat={obj.latitude}
                 lng={obj.longitude}
                 handleMarkerClick={this.handleMarkerClick}
                 eventInfo={obj}
+                hoursUntilStart={hoursUntilStart}
               />
-          ))
+            );
+          })
           .filter(marker => {
             const endTime = marker.props.eventInfo.end_time;
             const startTime = marker.props.eventInfo.start_time;
