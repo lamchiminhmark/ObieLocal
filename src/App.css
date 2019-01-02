@@ -28,6 +28,7 @@
 button {
   cursor: pointer;
 }
+
 .Create-event-container-active {
   position: fixed;
   left: 50px;
