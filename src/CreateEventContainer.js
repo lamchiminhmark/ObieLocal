@@ -276,7 +276,7 @@ export default class CreateEventContainer extends Component {
             </td>
           </tr>
         </table>
-        <text id="warning-text">{this.state.warningText}</text>
+        <label for="submit" id="warning-text">{this.state.warningText}</label>
       </StyledPane>
     );
   }
