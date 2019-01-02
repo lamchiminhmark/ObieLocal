@@ -8,6 +8,7 @@ const Button = styled.button`
   border-radius: 50%;
   color: rgb(255, 184, 29);
   animation-delay: ${props => props.animationDelay};
+  opacity: ${props => props.opacity};
   border: 3px solid #ffb81d;
 
   /* The rotating semicircle in the animation. */
@@ -25,7 +26,7 @@ const Button = styled.button`
 
     /* Each marker represents 6 hours, so the animation reflects that. */
     animation: spin 10800s linear infinite,
-      ${props => props.backgroundAnimation} 21600s step-end infinite;
+      ${props => props.animationName} 21600s step-end infinite;
     animation-play-state: paused;
     animation-delay: inherit;
   }
@@ -34,7 +35,7 @@ const Button = styled.button`
 class Marker extends React.Component {
   constructor(props) {
     super(props);
-    this.getFillAmount = this.getFillAmount.bind(this);
+    this.getDisplayData = this.getDisplayData.bind(this);
   }
 
   /**
@@ -44,28 +45,39 @@ class Marker extends React.Component {
    * number of seconds as CSS to begin and pause the animation in the right
    * place. Any events that have already begun will be shown as full.
    */
-  getFillAmount() {
+  getDisplayData() {
     const minutesUntilStart = this.props.hoursUntilStart * 60;
+    const displayData = {
+      animationDelay: '0s',
+      opacity: 1.0,
+      animationName: this.props.eventInfo.verified 
+        ? 'bg-verified' 
+        : 'bg-unverified'
+    };
     if (minutesUntilStart > 360) {
-      return '0';
+      displayData.animationDelay = '0s';
+      displayData.opacity = 0.7;
     } else if (minutesUntilStart < 0) {
-      return '-21599s';
+      displayData.animationDelay = '-21599s';
+      displayData.opacity = 0.1;
     } else {
       const deg = 360 - minutesUntilStart;
       const sec = deg * 60;
-      return `-${sec}s`;
+      displayData.animationDelay = `-${sec}s`;
     }
+    return displayData;
   }
 
   render() {
     const verified = this.props.eventInfo.verified;
-    const backgroundAnimation = verified ? 'bg-verified' : 'bg-unverified';
+    const displayData = this.getDisplayData();
     return (
       <Button
         className={verified ? 'Marker-verified' : 'Marker-unverified'}
         onClick={() => this.props.handleMarkerClick(this.props.eventInfo)}
-        backgroundAnimation={backgroundAnimation}
-        animationDelay={this.getFillAmount}
+        opacity={displayData.opacity}
+        animationName={displayData.animationName}
+        animationDelay={displayData.animationDelay}
       />
     );
   }
