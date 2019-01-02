@@ -42,13 +42,14 @@ class Marker extends React.Component {
    * event's start time. Note that since the animation is hardcoded to last for
    * 6 hours (the max time of each marker), this function returns the correct
    * number of seconds as CSS to begin and pause the animation in the right
-   * place. There should be no markers rendered with a start time that has
-   * already passed, but the check remains for safety.
+   * place. Any events that have already begun will be shown as full.
    */
   getFillAmount() {
     const minutesUntilStart = this.props.hoursUntilStart * 60;
-    if (minutesUntilStart > 360 || minutesUntilStart < 0) {
+    if (minutesUntilStart > 360) {
       return '0';
+    } else if (minutesUntilStart < 0) {
+      return '-21599s';
     } else {
       const deg = 360 - minutesUntilStart;
       const sec = deg * 60;
