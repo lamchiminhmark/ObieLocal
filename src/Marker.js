@@ -15,9 +15,9 @@ const Button = styled.button`
       display: block;
       padding: 0px;
       margin-left: 50%;
-      height:100%;
+      height:99%;
       border-radius: 0 100% 100% 0 / 50%;
-      background-color: slategray;
+      background-color: #4f0611;
       transform-origin: left;
       transform: rotate(0);
       overflow: hidden;
