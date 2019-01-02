@@ -35,7 +35,7 @@ const StyledPane = styled.div`
 export default class Sidepane extends Component {
   render() {
     /*If there is no start time, display 'Time unknown.'*/
-    var startTime = "Time unknown."
+    var startTime = 'Time unknown.';
 
     if (this.props.eventInfo.start_time) {
       /* Note that the Date constructor automatically adjusts for timezone */
@@ -49,7 +49,9 @@ export default class Sidepane extends Component {
     }
 
     /*construct strings to display in sidepan*/
-    const where = `${this.props.eventInfo.address}. ${startTime} ${endTime ? '- ' + endTime : ''}`;
+    const where = `${this.props.eventInfo.address}. ${startTime} ${
+      endTime ? '- ' + endTime : ''
+    }`;
     const desc = this.props.eventInfo.desc;
 
     return (
@@ -62,8 +64,8 @@ export default class Sidepane extends Component {
         <p className="event-details">
           <em>Where and When: </em>
           {where}
-          </p>
-          {ReactHtmlParser(this.props.eventInfo.description)}
+        </p>
+        {ReactHtmlParser(this.props.eventInfo.description)}
       </StyledPane>
     );
   }

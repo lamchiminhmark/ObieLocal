@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import styled from "styled-components";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 library.add(faUser);
 
 const Button = styled.button`
@@ -32,7 +32,9 @@ const Button = styled.button`
       rgba(165, 25, 25, 0.6) 100%
     );
   }
-  :focus {outline:0;}
+  :focus {
+    outline: 0;
+  }
 `;
 
 class UserButton extends Component {

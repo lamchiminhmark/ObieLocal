@@ -1,5 +1,5 @@
-import React from "react";
-import GoogleMapReact from "google-map-react";
+import React from 'react';
+import GoogleMapReact from 'google-map-react';
 import mapStyle from './mapStyle';
 import styledMapCanvas from './styledMapCanvas.js';
 import config from './config';
@@ -7,14 +7,14 @@ import config from './config';
 export default props => {
   return (
     <div style={styledMapCanvas}>
-    <GoogleMapReact 
+      <GoogleMapReact
         bootstrapURLKeys={{
           key: config.GOOGLE_MAP_API_KEY,
-          language: "en",
+          language: 'en'
         }}
         center={{ lat: 41.2926, lng: -82.2183 }}
         zoom={props.zoom}
-        options={{styles: mapStyle}}
+        options={{ styles: mapStyle }}
       >
         {props.children}
       </GoogleMapReact>
