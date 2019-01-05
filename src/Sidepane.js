@@ -10,7 +10,7 @@ const StyledPane = styled.div`
   width: 25%;
   min-width: 150px;
   height: 85%;
-  background-color: rgba(255, 0, 0, 0.6);
+  background-color: #fb6060e3;
   border: 3px solid white;
   border-right: 12px solid rgb(75, 75, 75);
   border-radius: 0px;
