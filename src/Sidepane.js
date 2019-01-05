@@ -30,6 +30,11 @@ const StyledPane = styled.div`
   em {
     font-weight: bold;
   }
+
+  img {
+    max-width: 95%;
+    margin: auto;
+  }
 `;
 
 export default class Sidepane extends Component {
@@ -65,6 +70,7 @@ export default class Sidepane extends Component {
           <em>Where and When: </em>
           {where}
         </p>
+        <img src={this.props.eventInfo.photo_url} alt="" />
         {ReactHtmlParser(this.props.eventInfo.description)}
       </StyledPane>
     );
