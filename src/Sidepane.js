@@ -5,7 +5,7 @@ import ReactHtmlParser from 'react-html-parser';
 const StyledPane = styled.div`
   margin: 0px;
   padding: 0px;
-  overflow: auto;
+  overflow: hidden auto;
   top: 60px;
   width: 25%;
   min-width: 150px;
