@@ -13,7 +13,7 @@ class App extends Component {
     super(props);
     this.state = {
       markers: [],
-      activeEventInfo: {
+      activeEventArray: [{
         ID: 0,
         title: "",
         date: "",
@@ -24,7 +24,7 @@ class App extends Component {
         photo_url: "",
         address: "",
         filters: ""
-      },
+      }],
       sidepaneOpen: false,
       createEventContainerOpen: false
     };
@@ -56,39 +56,59 @@ class App extends Component {
       // fetch("http://localhost:3001/query")
       .then(response => response.json())
       .then(arr => {
-        const newArr = arr
-          .map(obj => {
-            const startTime = new Date(obj.start_time);
-            const hoursUntilStart =
-              (startTime.getTime() - now.getTime()) / 3600000;
-            return (
-              <Marker
-                lat={obj.latitude}
-                lng={obj.longitude}
-                handleMarkerClick={this.handleMarkerClick}
-                eventInfo={obj}
-                hoursUntilStart={hoursUntilStart}
-              />
-            );
-          })
-          .filter(marker => {
-            const endTime = marker.props.eventInfo.end_time;
-            const startTime = marker.props.eventInfo.start_time;
+        const markers = arr
+          .filter(rawEvent => {
+            const endTime = rawEvent.end_time;
+            const startTime = rawEvent.start_time;
             if (endTime) {
               return endTime > now.toISOString();
             } else {
               return startTime > earlyBound.toISOString();
             }
+          })
+          .reduce((result, rawEvent) => {
+            const markerExists = result.some(markerObj => {
+              if (
+                markerObj.geo.latitude === rawEvent.latitude &&
+                markerObj.geo.longitude === rawEvent.longitude
+              ) {
+                const { latitude, longitude, ...event } = rawEvent;
+                markerObj.events.push(event);
+                return true;
+              } else return false;
+            });
+            if (!markerExists) {
+              const { latitude, longitude, ...event } = rawEvent;
+              result.push({
+                geo: {
+                  latitude: rawEvent.latitude,
+                  longitude: rawEvent.longitude
+                },
+                events: [event]
+              });
+            }
+            return result;
+          }, [])
+          // TODO: add a forEach to put the events in each array in chronological order.
+          .map(markerObj => {
+            return (
+              <Marker
+                lat={markerObj.geo.latitude}
+                lng={markerObj.geo.longitude}
+                handleMarkerClick={this.handleMarkerClick}
+                eventArray={markerObj.events}
+              />
+            );
           });
-        this.setState({ markers: newArr });
+        this.setState({ markers });
       })
       .catch(error => console.error('Loading markers failed! ', error));
   }
 
-  handleMarkerClick(eventInfo) {
+  handleMarkerClick(eventArray) {
     // If the CreateEvent panel is open, Sidepane can't be opened
     if (this.state.createEventContainerOpen) return;
-    this.setState({ activeEventInfo: eventInfo, sidepaneOpen: true });
+    this.setState({ activeEventArray: eventArray, sidepaneOpen: true });
   }
 
   /* Closes or opens sidepane. If obj.close is true, just close side pane */
@@ -113,7 +133,7 @@ class App extends Component {
           {Children.toArray(this.state.markers)}
         </MapContainer>
         <Sidepane
-          eventInfo={this.state.activeEventInfo}
+          eventArray={this.state.activeEventArray}
           active={this.state.sidepaneOpen}
           handleSidepaneClick={this.toggleSidepane}
         />

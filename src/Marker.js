@@ -46,11 +46,16 @@ class Marker extends React.Component {
    * place. Any events that have already begun will be shown as full.
    */
   getDisplayData() {
-    const minutesUntilStart = this.props.hoursUntilStart * 60;
+    const HOUR_TO_MILLISECONDS = 3600000;
+    const now = new Date();
+    const startTime = new Date(this.props.eventArray[0].start_time);
+    const hoursUntilStart = 
+      (startTime.getTime() - now.getTime()) / HOUR_TO_MILLISECONDS;
+    const minutesUntilStart = hoursUntilStart * 60;
     const displayData = {
       animationDelay: '0s',
       opacity: 1.0,
-      animationName: this.props.eventInfo.verified
+      animationName: this.props.eventArray[0].verified
         ? 'bg-verified'
         : 'bg-unverified'
     };
@@ -69,12 +74,12 @@ class Marker extends React.Component {
   }
 
   render() {
-    const verified = this.props.eventInfo.verified;
+    const verified = this.props.eventArray[0].verified;
     const displayData = this.getDisplayData();
     return (
       <Button
         className={verified ? 'Marker-verified' : 'Marker-unverified'}
-        onClick={() => this.props.handleMarkerClick(this.props.eventInfo)}
+        onClick={() => this.props.handleMarkerClick(this.props.eventArray)}
         opacity={displayData.opacity}
         animationName={displayData.animationName}
         animationDelay={displayData.animationDelay}

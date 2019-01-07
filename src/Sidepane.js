@@ -42,10 +42,10 @@ export default class Sidepane extends Component {
     /*If there is no start time, display 'Time unknown.'*/
     var startTime = 'Time unknown.';
 
-    if (this.props.eventInfo.start_time) {
+    if (this.props.eventArray[0].start_time) {
       /* Note that the Date constructor automatically adjusts for timezone */
-      const startTimeUTC = new Date(this.props.eventInfo.start_time);
-      const endTimeUTC = new Date(this.props.eventInfo.end_time);
+      const startTimeUTC = new Date(this.props.eventArray[0].start_time);
+      const endTimeUTC = new Date(this.props.eventArray[0].end_time);
 
       var dateTime = require('node-datetime');
       /*format times to display hour, minute, and period in 12 hour time*/
@@ -54,24 +54,24 @@ export default class Sidepane extends Component {
     }
 
     /*construct strings to display in sidepan*/
-    const where = `${this.props.eventInfo.address}. ${startTime} ${
+    const where = `${this.props.eventArray[0].address}. ${startTime} ${
       endTime ? '- ' + endTime : ''
     }`;
-    const desc = this.props.eventInfo.desc;
+    const desc = this.props.eventArray[0].desc;
 
     return (
       <StyledPane
         className={this.props.active ? 'Sidepane-active' : 'Sidepane-inactive'}
         onClick={this.props.handleSidepaneClick}
       >
-        <h1>{this.props.eventInfo.title}</h1>
+        <h1>{this.props.eventArray[0].title}</h1>
         <p>{desc}</p>
         <p className="event-details">
           <em>Where and When: </em>
           {where}
         </p>
-        <img src={this.props.eventInfo.photo_url} alt="" />
-        {ReactHtmlParser(this.props.eventInfo.description)}
+        <img src={this.props.eventArray[0].photo_url} alt="" />
+        {ReactHtmlParser(this.props.eventArray[0].description)}
       </StyledPane>
     );
   }
