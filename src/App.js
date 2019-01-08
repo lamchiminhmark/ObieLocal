@@ -96,12 +96,14 @@ class App extends Component {
           filters: ''
         }
       ],
+      activeEventIdx: 0,
       sidepaneOpen: false,
       createEventContainerOpen: false
     };
 
     this.fetchData = this.fetchData.bind(this);
     this.handleMarkerClick = this.handleMarkerClick.bind(this);
+    this.handleEventSwitch = this.handleEventSwitch.bind(this);
     this.toggleSidepane = this.toggleSidepane.bind(this);
     this.toggleCreateEventContainer = this.toggleCreateEventContainer.bind(
       this
@@ -133,12 +135,27 @@ class App extends Component {
   handleMarkerClick(eventArray) {
     // If the CreateEvent panel is open, Sidepane can't be opened
     if (this.state.createEventContainerOpen) return;
-    this.setState({ activeEventArray: eventArray, sidepaneOpen: true });
+    this.setState({
+      activeEventArray: eventArray,
+      activeEventIdx: 0,
+      sidepaneOpen: true
+    });
+  }
+
+  handleEventSwitch(e) {
+    switch (e.target.id) {
+      case 'button-prev-event':
+        this.setState({ activeEventIdx: this.state.activeEventIdx - 1 });
+        break;
+      case 'button-next-event':
+        this.setState({ activeEventIdx: this.state.activeEventIdx + 1 });
+        break;
+      default:
+    }
   }
 
   /* Closes or opens sidepane. If obj.close is true, just close side pane */
   toggleSidepane(obj) {
-    //if (close) this.setState({sidepaneOpen: false});
     if (this.state.createEventContainerOpen) return;
     if (obj && obj.close) this.setState({ sidepaneOpen: !obj.close });
     else if (this.state.activeEventArray[0].ID !== 0)
@@ -161,6 +178,8 @@ class App extends Component {
           eventArray={this.state.activeEventArray}
           active={this.state.sidepaneOpen}
           handleSidepaneClick={this.toggleSidepane}
+          handleEventSwitch={this.handleEventSwitch}
+          eventIdx={this.state.activeEventIdx}
         />
         <NavBar />
         <PlusButton

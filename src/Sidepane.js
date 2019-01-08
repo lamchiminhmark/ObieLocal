@@ -37,14 +37,34 @@ const StyledPane = styled.div`
   }
 `;
 
+const Div = styled.div`
+  position: absolute;
+  width: 50%;
+  min-width: 120px;
+  top: 0px;
+  right: 0px;
+
+  button {
+    position: absolute;
+    background: lightblue;
+    border: none;
+    border-radius: 10px;
+  }
+
+  #button-prev-event {
+    left: 25%;
+  }
+
+  #button-next-event {
+    right: 25%;
+  }
+`;
+
 export default class Sidepane extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      eventIdx: 0
-    };
-
     this.getEventTimeString = this.getEventTimeString.bind(this);
+    this.getEventSwitchButtons = this.getEventSwitchButtons.bind(this);
   }
 
   getEventTimeString(eventIdx) {
@@ -60,33 +80,64 @@ export default class Sidepane extends Component {
       startTime = dateTime.create(startTimeUTC, 'I:M p').format();
     }
     if (this.props.eventArray[eventIdx].end_time) {
-        const endTimeUTC = new Date(this.props.eventArray[eventIdx].end_time);
-        endTime = dateTime.create(endTimeUTC, 'I:M p').format();
+      const endTimeUTC = new Date(this.props.eventArray[eventIdx].end_time);
+      endTime = dateTime.create(endTimeUTC, 'I:M p').format();
     }
     endTime = endTime ? ` - ${endTime}` : ``;
     return `${startTime}${endTime}`;
   }
 
+  getEventSwitchButtons() {
+    let prevButton, nextButton;
+    if (this.props.eventIdx < this.props.eventArray.length - 1) {
+      nextButton = (
+        <button id="button-next-event" onClick={this.props.handleEventSwitch}>
+          >>
+        </button>
+      );
+    }
+    if (this.props.eventIdx > 0) {
+      prevButton = (
+        <button
+          id="button-prev-event"
+          onClick={this.props.handleEventSwitch}
+        >{`<<`}</button>
+      );
+    }
+    return (
+      <Div id="multi-event-buttons">
+        {prevButton}
+        {nextButton}
+      </Div>
+    );
+  }
+
   render() {
-    // const [startTime, endTime] = this.getEventTimes(this.state.eventIdx);
-    /*construct strings to display in sidepane*/
-    const timeString = this.getEventTimeString(this.state.eventIdx);
-    const locationString = this.props.eventArray[this.state.eventIdx].address;
-    const desc = this.props.eventArray[this.state.eventIdx].desc;
+    const timeString = this.getEventTimeString(this.props.eventIdx);
+    const locationString = this.props.eventArray[this.props.eventIdx].address;
+    const desc = this.props.eventArray[this.props.eventIdx].desc;
+    const eventSwitchButtons = this.getEventSwitchButtons();
 
     return (
       <StyledPane
         className={this.props.active ? 'Sidepane-active' : 'Sidepane-inactive'}
-        onClick={this.props.handleSidepaneClick}
       >
-        <h1>{this.props.eventArray[this.state.eventIdx].title}</h1>
-        <p>{desc}</p>
-        <p className="event-details">
-          <em>Where and When: </em>
-          {`${locationString} ${timeString}`}
-        </p>
-        <img src={this.props.eventArray[this.state.eventIdx].photo_url} alt="" />
-        {ReactHtmlParser(this.props.eventArray[this.state.eventIdx].description)}
+        <div onClick={this.props.handleSidepaneClick}>
+          <h1>{this.props.eventArray[this.props.eventIdx].title}</h1>
+          <p>{desc}</p>
+          <p className="event-details">
+            <em>Where and When: </em>
+            {`${locationString} ${timeString}`}
+          </p>
+          <img
+            src={this.props.eventArray[this.props.eventIdx].photo_url}
+            alt=""
+          />
+          {ReactHtmlParser(
+            this.props.eventArray[this.props.eventIdx].description
+          )}
+        </div>
+        {eventSwitchButtons}
       </StyledPane>
     );
   }
