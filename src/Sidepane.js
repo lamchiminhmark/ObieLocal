@@ -37,6 +37,12 @@ const StyledPane = styled.div`
   }
 `;
 
+const PaneBody = styled.div`
+  height: 100%;
+  width: 100%;
+  position: absolute;
+`;
+
 const Div = styled.div`
   position: absolute;
   width: 50%;
@@ -122,7 +128,7 @@ export default class Sidepane extends Component {
       <StyledPane
         className={this.props.active ? 'Sidepane-active' : 'Sidepane-inactive'}
       >
-        <div onClick={this.props.handleSidepaneClick}>
+        <PaneBody onClick={this.props.handleSidepaneClick}>
           <h1>{this.props.eventArray[this.props.eventIdx].title}</h1>
           <p>{desc}</p>
           <p className="event-details">
@@ -136,7 +142,7 @@ export default class Sidepane extends Component {
           {ReactHtmlParser(
             this.props.eventArray[this.props.eventIdx].description
           )}
-        </div>
+        </PaneBody>
         {eventSwitchButtons}
       </StyledPane>
     );
