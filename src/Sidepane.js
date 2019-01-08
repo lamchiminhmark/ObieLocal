@@ -38,40 +38,55 @@ const StyledPane = styled.div`
 `;
 
 export default class Sidepane extends Component {
-  render() {
-    /*If there is no start time, display 'Time unknown.'*/
-    var startTime = 'Time unknown.';
+  constructor(props) {
+    super(props);
+    this.state = {
+      eventIdx: 0
+    };
 
-    if (this.props.eventArray[0].start_time) {
+    this.getEventTimeString = this.getEventTimeString.bind(this);
+  }
+
+  getEventTimeString(eventIdx) {
+    let startTime = 'Time unknown';
+    let endTime;
+    const dateTime = require('node-datetime');
+    // TODO: (CP) Do we actually need to check for start time in the event
+    // object here?
+    if (this.props.eventArray[eventIdx].start_time) {
       /* Note that the Date constructor automatically adjusts for timezone */
-      const startTimeUTC = new Date(this.props.eventArray[0].start_time);
-      const endTimeUTC = new Date(this.props.eventArray[0].end_time);
-
-      var dateTime = require('node-datetime');
+      const startTimeUTC = new Date(this.props.eventArray[eventIdx].start_time);
       /*format times to display hour, minute, and period in 12 hour time*/
       startTime = dateTime.create(startTimeUTC, 'I:M p').format();
-      var endTime = dateTime.create(endTimeUTC, 'I:M p').format();
     }
+    if (this.props.eventArray[eventIdx].end_time) {
+        const endTimeUTC = new Date(this.props.eventArray[eventIdx].end_time);
+        endTime = dateTime.create(endTimeUTC, 'I:M p').format();
+    }
+    endTime = endTime ? ` - ${endTime}` : ``;
+    return `${startTime}${endTime}`;
+  }
 
-    /*construct strings to display in sidepan*/
-    const where = `${this.props.eventArray[0].address}. ${startTime} ${
-      endTime ? '- ' + endTime : ''
-    }`;
-    const desc = this.props.eventArray[0].desc;
+  render() {
+    // const [startTime, endTime] = this.getEventTimes(this.state.eventIdx);
+    /*construct strings to display in sidepane*/
+    const timeString = this.getEventTimeString(this.state.eventIdx);
+    const locationString = this.props.eventArray[this.state.eventIdx].address;
+    const desc = this.props.eventArray[this.state.eventIdx].desc;
 
     return (
       <StyledPane
         className={this.props.active ? 'Sidepane-active' : 'Sidepane-inactive'}
         onClick={this.props.handleSidepaneClick}
       >
-        <h1>{this.props.eventArray[0].title}</h1>
+        <h1>{this.props.eventArray[this.state.eventIdx].title}</h1>
         <p>{desc}</p>
         <p className="event-details">
           <em>Where and When: </em>
-          {where}
+          {`${locationString} ${timeString}`}
         </p>
-        <img src={this.props.eventArray[0].photo_url} alt="" />
-        {ReactHtmlParser(this.props.eventArray[0].description)}
+        <img src={this.props.eventArray[this.state.eventIdx].photo_url} alt="" />
+        {ReactHtmlParser(this.props.eventArray[this.state.eventIdx].description)}
       </StyledPane>
     );
   }
