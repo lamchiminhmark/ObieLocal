@@ -124,7 +124,7 @@ class App extends Component {
         const markers = arr
           .filter(checkEventTimes)
           .reduce(toMarkerArray, [])
-          .map(toMarkerElement);
+          .map(toMarkerElement, this);
         this.setState({ markers });
       })
       .catch(error => console.error('Loading markers failed! ', error));
