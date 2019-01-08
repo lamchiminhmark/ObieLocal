@@ -61,18 +61,20 @@ class App extends Component {
     super(props);
     this.state = {
       markers: [],
-      activeEventArray: [{
-        ID: 0,
-        title: "",
-        date: "",
-        time: "",
-        location_name: "",
-        price: 0,
-        desc: "",
-        photo_url: "",
-        address: "",
-        filters: ""
-      }],
+      activeEventArray: [
+        {
+          ID: 0,
+          title: '',
+          date: '',
+          time: '',
+          location_name: '',
+          price: 0,
+          desc: '',
+          photo_url: '',
+          address: '',
+          filters: ''
+        }
+      ],
       sidepaneOpen: false,
       createEventContainerOpen: false
     };
