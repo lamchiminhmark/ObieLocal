@@ -8,7 +8,15 @@ import Sidepane from './Sidepane';
 import Marker from './Marker';
 import CreateEventContainer from './CreateEventContainer';
 
-function removeBadEventTimes(rawEvent) {
+/**
+ * Checks if an event object falls within an appropriate time frame relative
+ * to the current time. The function first checks by end_time, but if there
+ * is no end_time field, it bases the return value on the start_time.
+ * @constant HOUR_LIMIT the amount of hours before the current time such that
+ *  markers with no end_time will return false.
+ * @param {JSON} rawEvent the event object to be checked for validity.
+ */
+function checkEventTimes(rawEvent) {
   const now = new Date();
   const [HOUR_LIMIT, HOUR_TO_MILLISECONDS] = [4, 3600000];
   const earlyBound = new Date(
@@ -21,8 +29,16 @@ function removeBadEventTimes(rawEvent) {
   }
 }
 
-function toEventArrays(result, rawEvent) {
-  // TODO: add a forEach to put the events in each array in chronological order.
+/**
+ * Inserts an event object into a marker object that represents a given
+ * location on the map. If no marker object with matching coordinates exists
+ * within the result array, then a new object is added.
+ * @param {Array<JSON>} result an array of marker objects.
+ * @param {JSON} rawEvent the event object to be inserted within the result 
+ *  array.
+ */
+function toMarkerArray(result, rawEvent) {
+  // TODO: add a forEach to put the events in each array in chronological order
   const { latitude, longitude, ...event } = rawEvent;
   const markerIdx = result.findIndex(markerObj => {
     return (
@@ -45,7 +61,12 @@ function toEventArrays(result, rawEvent) {
   return result;
 }
 
-function toMarkerArray(markerObj) {
+/**
+ * Formats a marker object as a Marker element.
+ * @param {JSON} markerObj the marker object to be rendered as a Marker.
+ * @returns {JSX.Element} a Marker element.
+ */
+function toMarkerElement(markerObj) {
   return (
     <Marker
       lat={markerObj.geo.latitude}
@@ -91,20 +112,19 @@ class App extends Component {
     this.fetchData();
   }
 
-  /* Fetch all markers from the database and display markers
-  that are within the given time frame. Note that HOUR_LIMIT
-  is the amount of hours before the current time that markers
-  with no end_time will stop showing. */
+  /** 
+   * Fetch all events from the database, reformat the data, and display
+   * appropriate markers that fall within the given time frame.
+   */
   fetchData() {
-
     fetch('http://obielocal.cs.oberlin.edu:3001/query')
       // fetch("http://localhost:3001/query")
       .then(response => response.json())
       .then(arr => {
         const markers = arr
-          .filter(removeBadEventTimes)
-          .reduce(toEventArrays, [])
-          .map(toMarkerArray);
+          .filter(checkEventTimes)
+          .reduce(toMarkerArray, [])
+          .map(toMarkerElement);
         this.setState({ markers });
       })
       .catch(error => console.error('Loading markers failed! ', error));
