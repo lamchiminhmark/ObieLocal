@@ -7,7 +7,7 @@ import PlusButton from './PlusButton';
 import Sidepane from './Sidepane';
 import Marker from './Marker';
 import CreateEventContainer from './CreateEventContainer';
-import constants from './../constants';
+import constants from './constants';
 
 /**
  * Checks if an event object falls within an appropriate time frame relative
