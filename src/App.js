@@ -7,6 +7,7 @@ import PlusButton from './PlusButton';
 import Sidepane from './Sidepane';
 import Marker from './Marker';
 import CreateEventContainer from './CreateEventContainer';
+import constants from './../constants';
 
 /**
  * Checks if an event object falls within an appropriate time frame relative
@@ -18,9 +19,8 @@ import CreateEventContainer from './CreateEventContainer';
  */
 function checkEventTimes(rawEvent) {
   const now = new Date();
-  const [HOUR_LIMIT, HOUR_TO_MILLISECONDS] = [4, 3600000];
   const earlyBound = new Date(
-    now.getTime() - HOUR_LIMIT * HOUR_TO_MILLISECONDS
+    now.getTime() - constants.HOUR_LIMIT * constants.HOUR_TO_MILLISECONDS
   );
   if (rawEvent.end_time) {
     return rawEvent.end_time > now.toISOString();
@@ -34,7 +34,7 @@ function checkEventTimes(rawEvent) {
  * location on the map. If no marker object with matching coordinates exists
  * within the result array, then a new object is added.
  * @param {Array<JSON>} result an array of marker objects.
- * @param {JSON} rawEvent the event object to be inserted within the result 
+ * @param {JSON} rawEvent the event object to be inserted within the result
  *  array.
  */
 function toMarkerArray(result, rawEvent) {
@@ -112,7 +112,7 @@ class App extends Component {
     this.fetchData();
   }
 
-  /** 
+  /**
    * Fetch all events from the database, reformat the data, and display
    * appropriate markers that fall within the given time frame.
    */

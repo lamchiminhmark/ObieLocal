@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import constants from './../constants';
 
 const Button = styled.button`
   width: 40px;
@@ -46,11 +47,10 @@ class Marker extends React.Component {
    * place. Any events that have already begun will be shown as full.
    */
   getDisplayData() {
-    const HOUR_TO_MILLISECONDS = 3600000;
     const now = new Date();
     const startTime = new Date(this.props.eventArray[0].start_time);
-    const hoursUntilStart = 
-      (startTime.getTime() - now.getTime()) / HOUR_TO_MILLISECONDS;
+    const hoursUntilStart =
+      (startTime.getTime() - now.getTime()) / constants.HOUR_TO_MILLISECONDS;
     const minutesUntilStart = hoursUntilStart * 60;
     const displayData = {
       animationDelay: '0s',
