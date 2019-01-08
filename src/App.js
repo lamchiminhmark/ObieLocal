@@ -8,6 +8,54 @@ import Sidepane from './Sidepane';
 import Marker from './Marker';
 import CreateEventContainer from './CreateEventContainer';
 
+function removeBadEventTimes(rawEvent) {
+  const now = new Date();
+  const [HOUR_LIMIT, HOUR_TO_MILLISECONDS] = [4, 3600000];
+  const earlyBound = new Date(
+    now.getTime() - HOUR_LIMIT * HOUR_TO_MILLISECONDS
+  );
+  if (rawEvent.end_time) {
+    return rawEvent.end_time > now.toISOString();
+  } else {
+    return rawEvent.start_time > earlyBound.toISOString();
+  }
+}
+
+function toEventArrays(result, rawEvent) {
+  // TODO: add a forEach to put the events in each array in chronological order.
+  const { latitude, longitude, ...event } = rawEvent;
+  const markerIdx = result.findIndex(markerObj => {
+    return (
+      markerObj.geo.latitude === latitude &&
+      markerObj.geo.longitude === longitude
+    );
+  });
+  if (markerIdx >= 0) {
+    const markerObj = result[markerIdx];
+    markerObj.events.push(event);
+  } else {
+    result.push({
+      geo: {
+        latitude,
+        longitude
+      },
+      events: [event]
+    });
+  }
+  return result;
+}
+
+function toMarkerArray(markerObj) {
+  return (
+    <Marker
+      lat={markerObj.geo.latitude}
+      lng={markerObj.geo.longitude}
+      handleMarkerClick={this.handleMarkerClick}
+      eventArray={markerObj.events}
+    />
+  );
+}
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -46,60 +94,15 @@ class App extends Component {
   is the amount of hours before the current time that markers
   with no end_time will stop showing. */
   fetchData() {
-    const now = new Date();
-    const [HOUR_LIMIT, HOUR_TO_MILLISECONDS] = [4, 3600000];
-    const earlyBound = new Date(
-      now.getTime() - HOUR_LIMIT * HOUR_TO_MILLISECONDS
-    );
 
     fetch('http://obielocal.cs.oberlin.edu:3001/query')
       // fetch("http://localhost:3001/query")
       .then(response => response.json())
       .then(arr => {
         const markers = arr
-          .filter(rawEvent => {
-            const endTime = rawEvent.end_time;
-            const startTime = rawEvent.start_time;
-            if (endTime) {
-              return endTime > now.toISOString();
-            } else {
-              return startTime > earlyBound.toISOString();
-            }
-          })
-          .reduce((result, rawEvent) => {
-            const markerExists = result.some(markerObj => {
-              if (
-                markerObj.geo.latitude === rawEvent.latitude &&
-                markerObj.geo.longitude === rawEvent.longitude
-              ) {
-                const { latitude, longitude, ...event } = rawEvent;
-                markerObj.events.push(event);
-                return true;
-              } else return false;
-            });
-            if (!markerExists) {
-              const { latitude, longitude, ...event } = rawEvent;
-              result.push({
-                geo: {
-                  latitude: rawEvent.latitude,
-                  longitude: rawEvent.longitude
-                },
-                events: [event]
-              });
-            }
-            return result;
-          }, [])
-          // TODO: add a forEach to put the events in each array in chronological order.
-          .map(markerObj => {
-            return (
-              <Marker
-                lat={markerObj.geo.latitude}
-                lng={markerObj.geo.longitude}
-                handleMarkerClick={this.handleMarkerClick}
-                eventArray={markerObj.events}
-              />
-            );
-          });
+          .filter(removeBadEventTimes)
+          .reduce(toEventArrays, [])
+          .map(toMarkerArray);
         this.setState({ markers });
       })
       .catch(error => console.error('Loading markers failed! ', error));
@@ -116,7 +119,7 @@ class App extends Component {
     //if (close) this.setState({sidepaneOpen: false});
     if (this.state.createEventContainerOpen) return;
     if (obj && obj.close) this.setState({ sidepaneOpen: !obj.close });
-    else if (this.state.activeEventInfo.ID !== 0)
+    else if (this.state.activeEventArray[0].ID !== 0)
       this.setState({ sidepaneOpen: !this.state.sidepaneOpen });
     else alert('You must select an event marker to view event information.');
   }
