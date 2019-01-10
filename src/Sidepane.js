@@ -27,6 +27,7 @@ const PaneBody = styled.div`
   border-radius: 0px;
   border-style: inset;
   box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.27);
+
   h1 {
     background-color: rgba(255, 184, 29, 0.7);
     cursor: default;
@@ -81,6 +82,12 @@ export default class Sidepane extends Component {
     this.getEventSwitchButtons = this.getEventSwitchButtons.bind(this);
   }
 
+  /**
+   * Returns the time string to be displayed in the sidepane for an event in
+   * the active event array.
+   * @param {Number} eventIdx An index of the event array.
+   * @returns {String} The time string.
+   */
   getEventTimeString(eventIdx) {
     let startTime = 'Time unknown.';
     let endTime;
@@ -101,6 +108,11 @@ export default class Sidepane extends Component {
     return `${startTime}${endTime}`;
   }
 
+  /**
+   * Determines whether there are multiple events at the current location and
+   * creates buttons to switch through them if necessary.
+   * @returns {JSX.Element} A div with 0, 1, or 2 buttons.
+   */
   getEventSwitchButtons() {
     let prevButton, nextButton;
     if (this.props.eventIdx < this.props.eventArray.length - 1) {
