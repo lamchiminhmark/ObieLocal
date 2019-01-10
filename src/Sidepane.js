@@ -5,64 +5,72 @@ import ReactHtmlParser from 'react-html-parser';
 const StyledPane = styled.div`
   margin: 0px;
   padding: 0px;
-  overflow: hidden auto;
   top: 60px;
   width: 25%;
   min-width: 150px;
   height: 85%;
+  transition: all 1s;
+`;
+
+const PaneBody = styled.div`
+  height: 95%;
+  width: 95%;
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+  margin: 0px;
+  padding: 5px;
+  overflow: hidden auto;
   background-color: #fb6060e3;
   border: 3px solid white;
   border-right: 12px solid rgb(75, 75, 75);
   border-radius: 0px;
   border-style: inset;
-  transition: all 1s;
-
+  box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.27);
   h1 {
     background-color: rgba(255, 184, 29, 0.7);
     cursor: default;
   }
-
+  
   p {
     overflow: clip;
     cursor: default;
   }
-
+  
   em {
     font-weight: bold;
   }
-
+  
   img {
     max-width: 95%;
     margin: auto;
   }
 `;
 
-const PaneBody = styled.div`
-  height: 100%;
-  width: 100%;
-  position: absolute;
-`;
-
 const Div = styled.div`
   position: absolute;
   width: 50%;
-  min-width: 120px;
+  min-width: 200px;
   top: 0px;
   right: 0px;
 
   button {
     position: absolute;
-    background: lightblue;
+    width: 25%;
+    height: 40px;
+    background: linear-gradient(#a1dafdef, #73c9ffef);
     border: none;
-    border-radius: 10px;
+    border-radius: 25%;
+    box-shadow: 0 2px 5px rgb(0, 0, 0, 0.75);
+    font-weight: bolder;
   }
 
   #button-prev-event {
-    left: 25%;
+    left: 20%;
   }
 
   #button-next-event {
-    right: 25%;
+    right: 20%;
   }
 `;
 
@@ -74,7 +82,7 @@ export default class Sidepane extends Component {
   }
 
   getEventTimeString(eventIdx) {
-    let startTime = 'Time unknown';
+    let startTime = 'Time unknown.';
     let endTime;
     const dateTime = require('node-datetime');
     // TODO: (CP) Do we actually need to check for start time in the event
@@ -120,7 +128,7 @@ export default class Sidepane extends Component {
 
   render() {
     const timeString = this.getEventTimeString(this.props.eventIdx);
-    const locationString = this.props.eventArray[this.props.eventIdx].address;
+    const locationString = this.props.eventArray[this.props.eventIdx].address || 'Location unknown.';
     const desc = this.props.eventArray[this.props.eventIdx].desc;
     const eventSwitchButtons = this.getEventSwitchButtons();
 
