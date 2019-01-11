@@ -59,11 +59,16 @@ const Div = styled.div`
     position: absolute;
     width: 25%;
     height: 40px;
-    background: linear-gradient(#a1dafdef, #73c9ffef);
+    background-color: #73c9ffef;
     border: none;
     border-radius: 25%;
     box-shadow: 0 2px 5px rgb(0, 0, 0, 0.75);
     font-weight: bolder;
+    transition: background-color 0.3s ease;
+  }
+
+  button:hover {
+    background-color: #a1dafdef;
   }
 
   #button-prev-event {
