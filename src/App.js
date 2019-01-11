@@ -32,13 +32,13 @@ function checkEventTimes(rawEvent) {
 /**
  * Inserts an event object into a marker object that represents a given
  * location on the map. If no marker object with matching coordinates exists
- * within the result array, then a new object is added.
+ * within the result array, then a new object is added. The events array within
+ * each object is sorted by start time of the event.
  * @param {Array<JSON>} result an array of marker objects.
  * @param {JSON} rawEvent the event object to be inserted within the result
  *  array.
  */
 function toMarkerArray(result, rawEvent) {
-  // TODO: add a forEach to put the events in each array in chronological order
   const { latitude, longitude, ...event } = rawEvent;
   const markerIdx = result.findIndex(markerObj => {
     return (
@@ -49,6 +49,11 @@ function toMarkerArray(result, rawEvent) {
   if (markerIdx >= 0) {
     const markerObj = result[markerIdx];
     markerObj.events.push(event);
+    markerObj.events.sort((a, b) => {
+      if (a.start_time > b.start_time) return 1;
+      if (a.start_time < b.start_time) return -1;
+      return 0;
+    });
   } else {
     result.push({
       geo: {
