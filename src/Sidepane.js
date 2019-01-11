@@ -7,7 +7,8 @@ const StyledPane = styled.div`
   padding: 0px;
   top: 60px;
   width: 25%;
-  min-width: 150px;
+  --pane-min-width: 200px;
+  min-width: var(--pane-min-width);
   height: 85%;
   transition: all 1s;
 `;
@@ -50,14 +51,13 @@ const PaneBody = styled.div`
 
 const Div = styled.div`
   position: absolute;
-  width: 50%;
-  min-width: 200px;
+  width: var(--pane-min-width);
   top: 0px;
   right: 0px;
 
   button {
     position: absolute;
-    width: 25%;
+    width: 50px;
     height: 40px;
     background-color: #73c9ffef;
     border: none;
@@ -72,11 +72,13 @@ const Div = styled.div`
   }
 
   #button-prev-event {
-    left: 20%;
+    left: 0;
+    margin-left: 16%;
   }
 
   #button-next-event {
-    right: 20%;
+    right: 0;
+    margin-right: 16%;
   }
 `;
 
