@@ -12,27 +12,26 @@ const StyledPopup = styled.div`
     bottom: 0;
     margin: auto;
     color: rgba(255, 255, 255, 0.8);
-    background: rgba(60, 60, 60, 0.8);
+    background: linear-gradient(rgba(85,55,55,0.95),rgba(30,30,30,0.95) 65%);
     border: 5px solid rgba(35, 35, 35, 0.7);
     border-radius: 14px;
   }
 
   h1 {
     background-color: rgba(255, 184, 29, 0.7);
-    color: #cf102d;
+    color: black;
   }
 
   #x {
     position: relative;
     float: right;
     color: #ffffff;
-    width: 10.5%;
-    height: 10%;
-    opacity: 0.8;
+    width: 45px;
+    height: 45px;
     cursor: pointer;
     border: none;
-    border-radius: 25%;
-    background-color: rgba(255, 0, 0, 0.5);
+    border-radius: 20%;
+    background-color: rgb(166, 38, 38);
   }
 `;
 
