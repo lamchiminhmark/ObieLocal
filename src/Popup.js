@@ -12,7 +12,10 @@ const StyledPopup = styled.div`
     bottom: 0;
     margin: auto;
     color: rgba(255, 255, 255, 0.8);
-    background: linear-gradient(rgba(85,55,55,0.95),rgba(30,30,30,0.95) 65%);
+    background: linear-gradient(
+      rgba(85, 55, 55, 0.95),
+      rgba(30, 30, 30, 0.95) 65%
+    );
     border: 5px solid rgba(35, 35, 35, 0.7);
     border-radius: 14px;
   }
