@@ -111,8 +111,11 @@ export default class CreateEventContainer extends Component {
     this.setState({ warningText: str });
   }
 
-  /* returns an object with the start_time and end_time converted to UTC
-  and the created_at field set to the current time (in UTC) */
+  /**
+   * Creates an object based on the current form state with start_time and
+   * end_time converted to UTC and the created_at field set to the current
+   * time in UTC.
+   */
   calculateTime() {
     const newObj = Object.assign({}, this.state.form);
     const uTCStartTime = new Date(newObj.start_time).toISOString().substring(0, 16);
@@ -123,7 +126,9 @@ export default class CreateEventContainer extends Component {
     return newObj;
   }
 
-  /* Sends a POST request to 3001/query with current state */
+  /**
+   * POST the current form state to /query on port 3001.
+   */
   handleSubmit() {
     // Erase any warning text
     this.changeWarningText('');
