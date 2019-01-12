@@ -33,16 +33,16 @@ const PaneBody = styled.div`
     background-color: rgba(255, 184, 29, 0.7);
     cursor: default;
   }
-  
+
   p {
     overflow: clip;
     cursor: default;
   }
-  
+
   em {
     font-weight: bold;
   }
-  
+
   img {
     max-width: 95%;
     margin: auto;
@@ -147,7 +147,8 @@ export default class Sidepane extends Component {
 
   render() {
     const timeString = this.getEventTimeString(this.props.eventIdx);
-    const locationString = this.props.eventArray[this.props.eventIdx].address || 'Location unknown.';
+    const locationString =
+      this.props.eventArray[this.props.eventIdx].address || 'Location unknown.';
     const desc = this.props.eventArray[this.props.eventIdx].desc;
     const eventSwitchButtons = this.getEventSwitchButtons();
 
