@@ -40,11 +40,8 @@ class Marker extends React.Component {
   }
 
   /**
-   * Determines the amount of the marker that should be filled up, based on the
-   * event's start time. Note that since the animation is hardcoded to last for
-   * 6 hours (the max time of each marker), this function returns the correct
-   * number of seconds as CSS to begin and pause the animation in the right
-   * place. Any events that have already begun will be shown as full.
+   * Determines marker display information based on event timing.
+   * @returns An object including display properties.
    */
   getDisplayData() {
     const now = new Date();
