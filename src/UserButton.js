@@ -11,8 +11,6 @@ const Button = styled.button`
   right: 40px;
   border: 2px solid rgba(255, 255, 255, 0.6);
   border-radius: 20%;
-  /* background-color: rgba(255, 0, 0, 0.6); */
-  background: rgba(255, 100, 100, 0.6);
   background: linear-gradient(
     180deg,
     rgba(255, 100, 100, 0.6) 0%,
@@ -25,7 +23,6 @@ const Button = styled.button`
   }
 
   :hover {
-    /* background: rgb(255,100,100); */
     background: linear-gradient(
       180deg,
       rgba(210, 50, 50, 0.6) 0%,
