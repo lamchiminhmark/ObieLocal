@@ -1,14 +1,10 @@
 /* eslint-disable no-loop-func */
 const mariadb = require('mariadb');
+const logins = require('./db_logins');
 const request = require('request');
 
 /* Sets the login information for the mariadb module */
-const pool = mariadb.createPool({
-	host: 'localhost',
-	user: 'editor',
-	password: 'changeThePocket',
-	database: 'obielocal'
-});
+const pool = mariadb.createPool(logins.editorPool);
 
 /* Assuming there are always 2 pages of events on the API */
 const NUM_PAGES = 2;
@@ -243,7 +239,7 @@ function formatEvent(body) {
 		event.longitude = parseFloat(event.longitude);
 	}
 
-	// TODO : We will need to find a way to deal with multiple event instances here
+	// TODO: We will need to find a way to deal with multiple event instances here
 	event.start_time = body.event["event_instances"][0]["event_instance"]["start"];
 	event.start_time = formatDatetime(event.start_time);
 	

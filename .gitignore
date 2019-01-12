@@ -26,4 +26,5 @@ yarn-debug.log*
 yarn-error.log*
 
 OBLdb_logins.txt
+db_logins.js
 src/config.js

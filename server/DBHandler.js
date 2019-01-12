@@ -1,22 +1,12 @@
+const logins = require('./../db_logins');
 const mariadb = require('mariadb');
 
-// TODO - refactor so that validation happens inside of this
+// TODO: refactor so that validation happens inside of this
 // script, not inside of the queries.js route.
 
-// This bit sets the login and database for the 'mariadb' module
-const viewerPool = mariadb.createPool({
-  host: 'localhost',
-  user: 'viewer',
-  password: 'checkoutOBL',
-  database: 'obielocal'
-});
-
-const editorPool = mariadb.createPool({
-  host: 'localhost',
-  user: 'editor',
-  password: 'changeThePocket',
-  database: 'obielocal'
-});
+// Set the login information for 'mariadb'.
+const viewerPool = mariadb.createPool(logins.viewerPool);
+const editorPool = mariadb.createPool(logins.editorPool);
 
 const fieldList = [
   'ID',
