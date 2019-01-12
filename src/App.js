@@ -9,79 +9,6 @@ import Marker from './Marker';
 import CreateEventContainer from './CreateEventContainer';
 import constants from './constants';
 
-/**
- * Checks if an event object falls within an appropriate time frame relative
- * to the current time. The function first checks by end_time, but if there
- * is no end_time field, it bases the return value on the start_time.
- * @constant HOUR_LIMIT the amount of hours before the current time such that
- *  markers with no end_time will return false.
- * @param {JSON} rawEvent the event object to be checked for validity.
- */
-function checkEventTimes(rawEvent) {
-  const now = new Date();
-  const earlyBound = new Date(
-    now.getTime() - constants.HOUR_LIMIT * constants.HOUR_TO_MILLISECONDS
-  );
-  if (rawEvent.end_time) {
-    return rawEvent.end_time > now.toISOString();
-  } else {
-    return rawEvent.start_time > earlyBound.toISOString();
-  }
-}
-
-/**
- * Inserts an event object into a marker object that represents a given
- * location on the map. If no marker object with matching coordinates exists
- * within the result array, then a new object is added. The events array within
- * each object is sorted by start time of the event.
- * @param {Array<JSON>} result an array of marker objects.
- * @param {JSON} rawEvent the event object to be inserted within the result
- *  array.
- */
-function toMarkerArray(result, rawEvent) {
-  const { latitude, longitude, ...event } = rawEvent;
-  const markerIdx = result.findIndex(markerObj => {
-    return (
-      markerObj.geo.latitude === latitude &&
-      markerObj.geo.longitude === longitude
-    );
-  });
-  if (markerIdx >= 0) {
-    const markerObj = result[markerIdx];
-    markerObj.events.push(event);
-    markerObj.events.sort((a, b) => {
-      if (a.start_time > b.start_time) return 1;
-      if (a.start_time < b.start_time) return -1;
-      return 0;
-    });
-  } else {
-    result.push({
-      geo: {
-        latitude,
-        longitude
-      },
-      events: [event]
-    });
-  }
-  return result;
-}
-
-/**
- * Formats a marker object as a Marker element.
- * @param {JSON} markerObj the marker object to be rendered as a Marker.
- * @returns {JSX.Element} a Marker element.
- */
-function toMarkerElement(markerObj) {
-  return (
-    <Marker
-      lat={markerObj.geo.latitude}
-      lng={markerObj.geo.longitude}
-      handleMarkerClick={this.handleMarkerClick}
-      eventArray={markerObj.events}
-    />
-  );
-}
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -200,6 +127,79 @@ class App extends Component {
       </div>
     );
   }
+}
+
+/**
+ * Checks if an event object falls within an appropriate time frame relative
+ * to the current time. The function first checks by end_time, but if there
+ * is no end_time field, it bases the return value on the start_time.
+ * @constant HOUR_LIMIT the amount of hours before the current time such that
+ *  markers with no end_time will return false.
+ * @param {JSON} rawEvent the event object to be checked for validity.
+ */
+function checkEventTimes(rawEvent) {
+  const now = new Date();
+  const earlyBound = new Date(
+    now.getTime() - constants.HOUR_LIMIT * constants.HOUR_TO_MILLISECONDS
+  );
+  if (rawEvent.end_time) {
+    return rawEvent.end_time > now.toISOString();
+  } else {
+    return rawEvent.start_time > earlyBound.toISOString();
+  }
+}
+
+/**
+ * Inserts an event object into a marker object that represents a given
+ * location on the map. If no marker object with matching coordinates exists
+ * within the result array, then a new object is added. The events array within
+ * each object is sorted by start time of the event.
+ * @param {Array<JSON>} result an array of marker objects.
+ * @param {JSON} rawEvent the event object to be inserted within the result
+ *  array.
+ */
+function toMarkerArray(result, rawEvent) {
+  const { latitude, longitude, ...event } = rawEvent;
+  const markerIdx = result.findIndex(markerObj => {
+    return (
+      markerObj.geo.latitude === latitude &&
+      markerObj.geo.longitude === longitude
+    );
+  });
+  if (markerIdx >= 0) {
+    const markerObj = result[markerIdx];
+    markerObj.events.push(event);
+    markerObj.events.sort((a, b) => {
+      if (a.start_time > b.start_time) return 1;
+      if (a.start_time < b.start_time) return -1;
+      return 0;
+    });
+  } else {
+    result.push({
+      geo: {
+        latitude,
+        longitude
+      },
+      events: [event]
+    });
+  }
+  return result;
+}
+
+/**
+ * Formats a marker object as a Marker element.
+ * @param {JSON} markerObj the marker object to be rendered as a Marker.
+ * @returns {JSX.Element} a Marker element.
+ */
+function toMarkerElement(markerObj) {
+  return (
+    <Marker
+      lat={markerObj.geo.latitude}
+      lng={markerObj.geo.longitude}
+      handleMarkerClick={this.handleMarkerClick}
+      eventArray={markerObj.events}
+    />
+  );
 }
 
 export default App;
