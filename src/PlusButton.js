@@ -15,7 +15,6 @@ const Button = styled.button`
   cursor: pointer;
 
   :hover {
-    /* background: rgb(255,100,100); */
     background: linear-gradient(
       180deg,
       rgba(210, 50, 50, 0.6) 0%,
