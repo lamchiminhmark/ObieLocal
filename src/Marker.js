@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import constants from './constants';
 
 const Button = styled.button`
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   padding: 0px;
   border-radius: 50%;
   color: rgb(255, 184, 29);
