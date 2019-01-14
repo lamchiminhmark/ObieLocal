@@ -1,5 +1,15 @@
 import React, { Component } from 'react';
+import ReactTags from 'react-tag-autocomplete';
 import styled from 'styled-components';
+import PlacesAutocomplete from './PlacesAutocomplete.tsx';
+
+/* Coordinates of the 2 points delimiting the box used for biasing Google Places search. 
+NE: Kendal 
+SW: The Arboretum */
+const NE = { lat: 41.3049, lng: -82.2094 };
+const SW = { lat: 41.2799, lng: -82.2302 };
+
+const google = window.google;
 
 const StyledPane = styled.form`
   margin: 0px;
@@ -89,14 +99,56 @@ export default class CreateEventContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      form: {}
+      form: {},
+      location: ''
     };
 
+    this.componentDidMount = this.componentDidMount.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.changeWarningText = this.changeWarningText.bind(this);
   }
 
+  componentDidMount() {
+    // Sets up the autocomplete functionality using Google Places API
+    const input = document.getElementById('input-location_name');
+    const defaultBounds = new google.maps.LatLngBounds(
+      new google.maps.LatLng(SW.lat, SW.lng),
+      new google.maps.LatLng(NE.lat, NE.lng)
+    );
+    const options = {
+      bounds: defaultBounds,
+      types: ['establishment', 'geocode']
+    };
+
+    this.autocomplete = new google.maps.places.Autocomplete(input, options);
+    this.autocomplete.setFields([
+      'formatted_address',
+      'name',
+      'place_id',
+      'types'
+    ]);
+
+    // TODO(ML): Get Places suggestions to recognize places through address
+    google.maps.event.addListener(this.autocomplete, 'place_changed', () => {
+      console.log(this.autocomplete.getPlace());
+      const fullAddress = this.autocomplete.getPlace().formatted_address;
+      // Checks if the first word in the address is the location name. If yes, remove it. If no, then it must be the address number, hence use the whole fullAddress
+      const address = isNaN(fullAddress[0])
+        ? fullAddress
+            .substring(fullAddress.indexOf(',') + 1, fullAddress.length)
+            .trim()
+        : fullAddress;
+      const placeName = this.autocomplete.getPlace().name;
+      // const address = fullAddress.substring(fullAddress.indexOf(',')+1, fullAddress.length).trim();
+
+      this.setState(state => ({
+        form: { ...state.form, location_name: placeName, address: fullAddress }
+      }));
+    });
+  }
+
+  // CONTINUE(ML): Location is not updating like expected.
   handleChange(field) {
     return e => {
       const temp = {};
@@ -104,18 +156,38 @@ export default class CreateEventContainer extends Component {
         case 'select_location':
           this.selectLocation(e);
           break;
+
         case 'location_name':
         case 'address':
           this.changePlace(e);
         // falls through
         default:
           temp[field] = e.target.value;
-          this.setState(state => {
-            return { form: Object.assign(state.form, temp) };
-          });
+          // TODO(ML): Configure Prettier to have obj on separate lines
+          this.setState(state => ({ form: { ...state.form, ...temp } }));
       }
     };
   }
+
+  /**
+   * Suggests autocompletes for user inputted location names
+   */
+  // async locationAutocomplete(e) {
+  //   return;
+  //   const currentLocationString = e.target.value;
+  //   // CONTINUE(ML): change location and radius and try console logging the fetch responses.
+  //   const res = await fetch(
+  //     `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${currentLocationString}&types=establishment&location=${CENTER_COORDINATES}&radius=${RADIUS}&key=${
+  //       config.GOOGLE_MAP_API_KEY
+  //     }`
+  //   );
+
+  //   if (res.status === 'OK') {
+  //     console.log(res.predictions);
+  //   } else {
+  //     console.error('Google Places API responded with an error');
+  //   }
+  // }
 
   selectLocation(e) {
     const index = e.target.selectedIndex;
@@ -137,16 +209,24 @@ export default class CreateEventContainer extends Component {
     }));
   }
 
+  /**
+   * Changes form's location_name and address based on user inputted address
+   */
   changePlace(e) {
+    // TODO(ML): Add this feature back in
+    return;
     // location.selectedIndex = 0;
     const selector = document.getElementById('location-selector');
     const typed = e.target.value;
     let address = this.state.form.address;
     let location_name = this.state.form.location_name;
     for (let i = 1; i < selector.length - 1; i++) {
-      if (typed === selector[i].innerText || typed === selector[i].dataset.address) {
+      if (
+        typed === selector[i].innerText ||
+        typed === selector[i].dataset.address
+      ) {
         selector.selectedIndex = i;
-        address = selector[i].dataset.address + " Oberlin OH";
+        address = selector[i].dataset.address + ' Oberlin OH';
         location_name = selector[i].innerText;
         break;
       }
@@ -168,7 +248,9 @@ export default class CreateEventContainer extends Component {
   and the created_at field set to the current time (in UTC) */
   calculateTime() {
     const newObj = Object.assign({}, this.state.form);
-    const UTCStartTime = new Date(newObj.start_time).toISOString().substring(0, 16);
+    const UTCStartTime = new Date(newObj.start_time)
+      .toISOString()
+      .substring(0, 16);
     const UTCEndTime = new Date(newObj.end_time).toISOString().substring(0, 16);
     newObj.start_time = UTCStartTime;
     newObj.end_time = UTCEndTime;
@@ -291,54 +373,30 @@ export default class CreateEventContainer extends Component {
                 />
               </td>
             </tr>
-            <tr>
+            {/* <tr>
               <td>
-                <label htmlFor="location-selector">Event Place: </label>
+                <label htmlFor="input-location_name">Location:</label>
               </td>
               <td>
-                <select
-                  id="location-selector"
-                  name="select_location"
-                  onChange={this.handleChange('select_location')}
-                  defaultValue="none"
-                >
-                  <option value="none" data-address="">Select a Location</option>
-                  <optgroup label="Residence Halls">
-                    <option value="barrows" data-address="145 Woodland St">Barrows Hall</option>
-                    <option value="dascomb" data-address="140 W College St">Dascomb Hall</option>
-                    <option value="kahn" data-address="169 N Professor St">Kahn Hall</option>
-                    <option value="langston" data-address="95 Union St">Langston Hall</option>
-                    <option value="talcott" data-address="2 S Professor St">Talcott Hall</option>
-                    <option value="burton" data-address="194 N Professor St">Burton Hall</option>
-                    <option value="fairchild" data-address="93 Elm St">Fairchild Hall</option>
-                    <option value="east" data-address="176 N Professor St">East Hall</option>
-                    <option value="noah" data-address="167 Woodland St">Noah Hall</option>
-                    <option value="south" data-address="121 Elm St">South Hall</option>
-                    <option value="zechiel" data-address="207 Woodland St">Zechiel House</option>
-                  </optgroup>
-                  <optgroup label="Academic Buildings">
-                    <option value="king" data-address="10 N Professor St">King Hall</option>
-                  </optgroup>
-                  <option value="other" data-address="">Other Location</option>
-                </select>
-              </td>
-              {/* <td>
                 <input
                   type="text"
                   name="location_name"
+                  id="input-location_name"
                   value={this.state.form.location_name || ''}
                   placeholder="Finney Chapel"
                   autoComplete="off"
                   onChange={this.handleChange('location_name')}
+                  required
                 />
-              </td> */}
-            </tr>
+              </td>
+            </tr> */}
+            {/* TODO(ML): Implement the location_name input with react-tag-autocomplete */}
             <tr>
               <td>
-                <label htmlFor="input-location_name">Location Name</label>
+                <label htmlFor="input-location_name">Location:</label>
               </td>
               <td>
-                <input
+                <ReactTags
                   type="text"
                   name="location_name"
                   id="input-location_name"
@@ -380,7 +438,9 @@ export default class CreateEventContainer extends Component {
             </tr>
           </tbody>
         </table>
-        <label htmlFor="submit" id="warning-text">{this.state.warningText}</label>
+        <label htmlFor="submit" id="warning-text">
+          {this.state.warningText}
+        </label>
       </StyledPane>
     );
   }
