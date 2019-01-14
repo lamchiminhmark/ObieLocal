@@ -26,8 +26,10 @@ const Button = styled.button`
     overflow: hidden;
 
     /* Each marker represents 6 hours, so the animation reflects that. */
-    animation: spin 10800s linear infinite,
-      ${props => props.animationName} 21600s step-end infinite;
+    animation-name: spin, ${props => props.animationName};
+    animation-duration: 10800s, 21600s;
+    animation-timing-function: linear, step-end;
+    animation-iteration-count: infinite;
     animation-play-state: paused;
     animation-delay: inherit;
   }
