@@ -38,14 +38,14 @@ const Button = styled.button`
 class Marker extends React.Component {
   constructor(props) {
     super(props);
-    this.getDisplayData = this.getDisplayData.bind(this);
+    this.displayData = this.getDisplayData();
   }
 
   /**
    * Determines marker display information based on event timing.
    * @returns An object including display properties.
    */
-  getDisplayData() {
+  getDisplayData = () => {
     const now = new Date();
     const startTime = new Date(this.props.eventArray[0].start_time);
     const hoursUntilStart =
@@ -74,14 +74,13 @@ class Marker extends React.Component {
 
   render() {
     const verified = this.props.eventArray[0].verified;
-    const displayData = this.getDisplayData();
     return (
       <Button
         className={verified ? 'Marker-verified' : 'Marker-unverified'}
         onClick={() => this.props.handleMarkerClick(this.props.eventArray)}
-        opacity={displayData.opacity}
-        animationName={displayData.animationName}
-        animationDelay={displayData.animationDelay}
+        opacity={this.displayData.opacity}
+        animationName={this.displayData.animationName}
+        animationDelay={this.displayData.animationDelay}
       />
     );
   }
