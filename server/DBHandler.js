@@ -1,22 +1,12 @@
+const logins = require('./../db_logins');
 const mariadb = require('mariadb');
 
-// TODO - refactor so that validation happens inside of this
+// TODO: refactor so that validation happens inside of this
 // script, not inside of the queries.js route.
 
-// This bit sets the login and database for the 'mariadb' module
-const viewerPool = mariadb.createPool({
-  host: 'localhost',
-  user: 'viewer',
-  password: 'checkoutOBL',
-  database: 'obielocal'
-});
-
-const editorPool = mariadb.createPool({
-  host: 'localhost',
-  user: 'editor',
-  password: 'changeThePocket',
-  database: 'obielocal'
-});
+// Set the login information for 'mariadb'.
+const viewerPool = mariadb.createPool(logins.viewerPool);
+const editorPool = mariadb.createPool(logins.editorPool);
 
 const fieldList = [
   'ID',
@@ -67,7 +57,9 @@ module.exports.selectAllUsers = function() {
   );
 };
 
-// Returns all of the rows in the Events table
+/**
+ * Retrieve all of the rows in the Events table. Logs if there is an error.
+ */
 module.exports.selectAllEvents = function() {
   return (
     viewerPool
@@ -80,8 +72,11 @@ module.exports.selectAllEvents = function() {
   );
 };
 
-// Inserts the JSON object 'event' into the correct fields of the
-// database. Logs if there is an error. Does not do any validation.
+/**
+ * Inserts an event object into the Events table. Logs if there is an error.
+ * Does not do any validation.
+ * @param event The event object.
+ */
 module.exports.insertEvent = function(event) {
   /* Check for any undefined fields, and create them with 'NULL'
   or 'DEFAULT if they are found. */
@@ -101,9 +96,8 @@ module.exports.insertEvent = function(event) {
     }
   }
 
-  return editorPool
-    .query(
-      `INSERT INTO Events (
+  return editorPool.query(
+    `INSERT INTO Events (
         ID, 
         title, 
         created_at, 
@@ -146,5 +140,5 @@ module.exports.insertEvent = function(event) {
         ${event.start_time},
         ${event.end_time}
       )`
-    )
+  );
 };

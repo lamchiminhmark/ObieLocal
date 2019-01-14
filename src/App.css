@@ -2,17 +2,6 @@
   text-align: center;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
 .Sidepane-active {
   position: fixed;
   left: 0px;
@@ -28,6 +17,7 @@
 button {
   cursor: pointer;
 }
+
 .Create-event-container-active {
   position: fixed;
   left: 50px;
@@ -41,9 +31,21 @@ button {
 }
 
 .Marker-verified {
-  background-color: #cf102d;
+  background-image: linear-gradient(to right, #4f0611 50%, #cf102d 0);
 }
 
 .Marker-unverified {
-  background-color: rgb(42, 129, 158);
+  background-image: linear-gradient(to right, #4f0611 50%, #35a2c6 0);
+}
+
+@keyframes bg-verified {
+  50% { background: #cf102d; }
+}
+
+@keyframes bg-unverified {
+  50% { background: #35a2c6; }
+}
+
+@keyframes spin {
+  to { transform: rotate(.5turn); }
 }

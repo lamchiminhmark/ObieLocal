@@ -12,40 +12,44 @@ const StyledPopup = styled.div`
     bottom: 0;
     margin: auto;
     color: rgba(255, 255, 255, 0.8);
-    background: rgba(60, 60, 60, 0.8);
+    background: linear-gradient(
+      rgba(85, 55, 55, 0.95),
+      rgba(30, 30, 30, 0.95) 65%
+    );
     border: 5px solid rgba(35, 35, 35, 0.7);
     border-radius: 14px;
   }
 
   h1 {
     background-color: rgba(255, 184, 29, 0.7);
-    color: #cf102d;
+    color: black;
   }
 
   #x {
     position: relative;
     float: right;
     color: #ffffff;
-    width: 10.5%;
-    height: 10%;
-    opacity: 0.8;
+    width: 45px;
+    height: 45px;
     cursor: pointer;
     border: none;
-    border-radius: 25%;
-    background-color: rgba(255, 0, 0, 0.5);
+    border-radius: 20%;
+    background-color: rgb(166, 38, 38);
   }
 `;
 
 const bodyTexts = {
-  contact: `Comments, questions, or suggestions for how we can make ObieLocal better?
-    Feel free to contact us by emailing Colton.Potter@oberlin.edu`,
-  about: `ObieLocal is a web service made by Oberlin students to help other students 
-    find out what's happening on campus through a visual interface. 
-    ObieLocal was developed by Colton Potter, Minh Lam, Thomas Nemeh, 
-    and Lukas Griffin for their 'Systems Programming' final project.`,
-  use: `Click on a pin and information for an event will be displayed. To add a custom event,
-    click on the plus button in the lower right hand corner of the screen. The user button 
-    will be functional soon enough!`
+  contact: `Comments, questions, or suggestions for how we can make ObieLocal 
+    better? Feel free to contact us by emailing Colton.Potter@oberlin.edu.`,
+  about: `ObieLocal is a web service created by Oberlin students to help other 
+    students find out what's happening on campus through a visual interface.
+    The first version of ObieLocal was developed by Colton Potter, Minh Lam,
+    Thomas Nemeh, and Lukas Griffin for their 'Systems Programming' final
+    project. It continues to be developed by Colton and Minh.`,
+  use: `Click on a pin and information for all events at that location will be
+    displayed. To add a custom event, click on the plus button in the lower
+    right hand corner of the screen. The user button will be functional in a
+    later version (soon!).`
 };
 
 const titles = {

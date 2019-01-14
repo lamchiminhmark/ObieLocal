@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import Popup from './Popup';
 import styled from 'styled-components';
-/*import App from "./App.js"; */
 
 const StyledNav = styled.div`
-  background-color: rgba(255, 0, 0, 0.6);
+  background: linear-gradient(#ff7873, #ef3b43);
   position: fixed;
   top: 0px;
 

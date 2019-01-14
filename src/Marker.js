@@ -1,27 +1,89 @@
 import React from 'react';
 import styled from 'styled-components';
+import constants from './constants';
 
 const Button = styled.button`
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    color: rgb(255, 184, 29);
-    opacity: 0.8;
-    padding: 14px;
-    //* / fontWeight: bolder;
-    // fontFamily: Arial;
-    // fontSize: 10pt;
-    // textAlign: center; */
-    border:2pt solid #ffb81d;
-    cursor: pointer;
+  width: 35px;
+  height: 35px;
+  padding: 0px;
+  border-radius: 50%;
+  color: rgb(255, 184, 29);
+  animation-delay: ${props => props.animationDelay};
+  opacity: ${props => props.opacity};
+  border: 3px solid #ffb81d;
 
-`
+  /* The rotating semicircle in the animation. */
+  ::before {
+    content: ' ';
+    display: block;
+    padding: 0px;
+    margin-left: 50%;
+    height: 99%;
+    border-radius: 0 100% 100% 0 / 50%;
+    background-color: #4f0611;
+    transform-origin: left;
+    transform: rotate(0);
+    overflow: hidden;
 
-const Marker = props => {
+    /* Each marker represents 6 hours, so the animation reflects that. */
+    animation-name: spin, ${props => props.animationName};
+    animation-duration: 10800s, 21600s;
+    animation-timing-function: linear, step-end;
+    animation-iteration-count: infinite;
+    animation-play-state: paused;
+    animation-delay: inherit;
+  }
+`;
+
+class Marker extends React.Component {
+  constructor(props) {
+    super(props);
+    this.displayData = this.getDisplayData();
+  }
+
+  /**
+   * Determines marker display information based on event timing.
+   * @returns An object including display properties.
+   */
+  getDisplayData = () => {
+    const now = new Date();
+    const startTime = new Date(this.props.eventArray[0].start_time);
+    const hoursUntilStart =
+      (startTime.getTime() - now.getTime()) / constants.HOUR_TO_MILLISECONDS;
+    const minutesUntilStart = hoursUntilStart * 60;
+    const displayData = {
+      animationDelay: '0s',
+      opacity: 1.0,
+      animationName: this.props.eventArray[0].verified
+        ? 'bg-verified'
+        : 'bg-unverified'
+    };
+    if (minutesUntilStart > 360) {
+      displayData.animationDelay = '0s';
+      displayData.opacity = 0.7;
+    } else if (minutesUntilStart < 0) {
+      displayData.animationDelay = '-21599s';
+      displayData.opacity = 0.1;
+    } else {
+      const deg = 360 - minutesUntilStart;
+      const sec = deg * 60;
+      displayData.animationDelay = `-${sec}s`;
+    }
+    return displayData;
+  }
+
+  render() {
+    const verified = this.props.eventArray[0].verified;
     return (
-        <Button className={props.eventInfo.verified === 1 ? 'Marker-verified' : 'Marker-unverified'} onClick={() => props.handleMarkerClick(props.eventInfo)}></Button>
-        // <Wrapper/>
-    )
+      <Button
+        className={verified ? 'Marker-verified' : 'Marker-unverified'}
+        onClick={() => this.props.handleMarkerClick(this.props.eventArray)}
+        opacity={this.displayData.opacity}
+        animationName={this.displayData.animationName}
+        animationDelay={this.displayData.animationDelay}
+      />
+    );
+  }
 }
 
 export default Marker;

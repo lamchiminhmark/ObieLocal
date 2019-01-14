@@ -5,17 +5,29 @@ import ReactHtmlParser from 'react-html-parser';
 const StyledPane = styled.div`
   margin: 0px;
   padding: 0px;
-  overflow: auto;
   top: 60px;
   width: 25%;
-  min-width: 150px;
+  --pane-min-width: 200px;
+  min-width: var(--pane-min-width);
   height: 85%;
-  background-color: rgba(255, 0, 0, 0.6);
+  transition: all 1s;
+`;
+
+const PaneBody = styled.div`
+  height: 95%;
+  width: 95%;
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+  margin: 0px;
+  padding: 5px;
+  overflow: hidden auto;
+  background-color: #fb6060e3;
   border: 3px solid white;
   border-right: 12px solid rgb(75, 75, 75);
   border-radius: 0px;
   border-style: inset;
-  transition: all 1s;
+  box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.27);
 
   h1 {
     background-color: rgba(255, 184, 29, 0.7);
@@ -30,40 +42,136 @@ const StyledPane = styled.div`
   em {
     font-weight: bold;
   }
+
+  img {
+    max-width: 95%;
+    margin: auto;
+  }
+`;
+
+const Div = styled.div`
+  position: absolute;
+  width: var(--pane-min-width);
+  top: 0px;
+  right: 0px;
+
+  button {
+    position: absolute;
+    width: 50px;
+    height: 40px;
+    background-color: #73c9ffef;
+    border: none;
+    border-radius: 25%;
+    box-shadow: 0 2px 5px rgb(0, 0, 0, 0.75);
+    font-weight: bolder;
+    transition: background-color 0.3s ease;
+  }
+
+  button:hover {
+    background-color: #a1dafdef;
+  }
+
+  #button-prev-event {
+    left: 0;
+    margin-left: 16%;
+  }
+
+  #button-next-event {
+    right: 0;
+    margin-right: 16%;
+  }
 `;
 
 export default class Sidepane extends Component {
-  render() {
-    /*If there is no start time, display 'Time unknown.'*/
-    var startTime = "Time unknown."
+  constructor(props) {
+    super(props);
+    this.getEventTimeString = this.getEventTimeString.bind(this);
+    this.getEventSwitchButtons = this.getEventSwitchButtons.bind(this);
+  }
 
-    if (this.props.eventInfo.start_time) {
+  /**
+   * Returns the time string to be displayed in the sidepane for an event in
+   * the active event array.
+   * @param {Number} eventIdx An index of the event array.
+   * @returns {String} The time string.
+   */
+  getEventTimeString(eventIdx) {
+    let startTime = 'Time unknown.';
+    let endTime;
+    const dateTime = require('node-datetime');
+    // TODO: (CP) Do we actually need to check for start time in the event
+    // object here?
+    if (this.props.eventArray[eventIdx].start_time) {
       /* Note that the Date constructor automatically adjusts for timezone */
-      const startTimeUTC = new Date(this.props.eventInfo.start_time);
-      const endTimeUTC = new Date(this.props.eventInfo.end_time);
-
-      var dateTime = require('node-datetime');
+      const startTimeUTC = new Date(this.props.eventArray[eventIdx].start_time);
       /*format times to display hour, minute, and period in 12 hour time*/
       startTime = dateTime.create(startTimeUTC, 'I:M p').format();
-      var endTime = dateTime.create(endTimeUTC, 'I:M p').format();
     }
+    if (this.props.eventArray[eventIdx].end_time) {
+      const endTimeUTC = new Date(this.props.eventArray[eventIdx].end_time);
+      endTime = dateTime.create(endTimeUTC, 'I:M p').format();
+    }
+    endTime = endTime ? ` - ${endTime}` : ``;
+    return `${startTime}${endTime}`;
+  }
 
-    /*construct strings to display in sidepan*/
-    const where = `${this.props.eventInfo.address}. ${startTime} ${endTime ? '- ' + endTime : ''}`;
-    const desc = this.props.eventInfo.desc;
+  /**
+   * Determines whether there are multiple events at the current location and
+   * creates buttons to switch through them if necessary.
+   * @returns {JSX.Element} A div with 0, 1, or 2 buttons.
+   */
+  getEventSwitchButtons() {
+    let prevButton, nextButton;
+    if (this.props.eventIdx < this.props.eventArray.length - 1) {
+      nextButton = (
+        <button id="button-next-event" onClick={this.props.handleEventSwitch}>
+          >>
+        </button>
+      );
+    }
+    if (this.props.eventIdx > 0) {
+      prevButton = (
+        <button
+          id="button-prev-event"
+          onClick={this.props.handleEventSwitch}
+        >{`<<`}</button>
+      );
+    }
+    return (
+      <Div id="multi-event-buttons">
+        {prevButton}
+        {nextButton}
+      </Div>
+    );
+  }
+
+  render() {
+    const timeString = this.getEventTimeString(this.props.eventIdx);
+    const locationString =
+      this.props.eventArray[this.props.eventIdx].address || 'Location unknown.';
+    const desc = this.props.eventArray[this.props.eventIdx].desc;
+    const eventSwitchButtons = this.getEventSwitchButtons();
 
     return (
       <StyledPane
         className={this.props.active ? 'Sidepane-active' : 'Sidepane-inactive'}
-        onClick={this.props.handleSidepaneClick}
       >
-        <h1>{this.props.eventInfo.title}</h1>
-        <p>{desc}</p>
-        <p className="event-details">
-          <em>Where and When: </em>
-          {where}
+        <PaneBody onClick={this.props.handleSidepaneClick}>
+          <h1>{this.props.eventArray[this.props.eventIdx].title}</h1>
+          <p>{desc}</p>
+          <p className="event-details">
+            <em>Where and When: </em>
+            {`${locationString} ${timeString}`}
           </p>
-          {ReactHtmlParser(this.props.eventInfo.description)}
+          <img
+            src={this.props.eventArray[this.props.eventIdx].photo_url}
+            alt=""
+          />
+          {ReactHtmlParser(
+            this.props.eventArray[this.props.eventIdx].description
+          )}
+        </PaneBody>
+        {eventSwitchButtons}
       </StyledPane>
     );
   }
