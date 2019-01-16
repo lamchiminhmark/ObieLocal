@@ -1,27 +1,18 @@
 import React from 'react';
-import ReactTag from 'react-tag-autocomplete';
-
-declare global {
-  interface Window {
-    google: any;
-  }
-}
-
+import ReactTag, { Tag } from 'react-tag-autocomplete';
 /* Coordinates of the 2 points delimiting the box used for biasing Google Places search. 
 NE: Kendal 
 SW: The Arboretum */
 const NE = { lat: 41.3049, lng: -82.2094 };
 const SW = { lat: 41.2799, lng: -82.2302 };
 
-const google = window.google;
-
 interface IProps {
-  handleAddition: Function;
-  handleDelete: Function;
+  handleAddition: (tag: Tag) => void;
+  handleDelete: (index: number) => void;
 }; 
 
 interface IState {
-  suggestions: string[],
+  suggestions: Tag[],
 }
 
 export default class PlacesAutocomplete extends React.Component<IProps> {
@@ -31,15 +22,11 @@ export default class PlacesAutocomplete extends React.Component<IProps> {
     suggestions: [],
   };
 
-  constructor(props) {
+  constructor(props: IProps) {
     super(props);
-    // CONTINUE(ML): continue here
-    this.state: any = {
-      suggestions: []
-    };
     this.autocomplete = new google.maps.places.AutocompleteService();
 
-    this.handleInputChange = this.handleInputChange.bind(this);
+    this.updateSuggestions = this.updateSuggestions.bind(this);
   }
 
   private handleInputChange(input: string) {
@@ -56,9 +43,9 @@ export default class PlacesAutocomplete extends React.Component<IProps> {
 
     this.autocomplete.getPlacePredictions(
       requestOptions,
-      (predictionsArr, status) => {
+      (predictionsArr: google.maps.places.AutocompletePrediction[], status: google.maps.places.PlacesServiceStatus) => {
         // If query responds cleanly
-        if (status.OK) {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
           this.updateSuggestions(predictionsArr);
         } else {
           // TODO(ML): Add error handling
@@ -68,7 +55,7 @@ export default class PlacesAutocomplete extends React.Component<IProps> {
     );
   }
 
-  private updateSuggestions(predictionsArr) {
+  private updateSuggestions(predictionsArr: google.maps.places.AutocompletePrediction[]) {
     const suggestions = predictionsArr.map((prediction, index) => ({
       id: index,
       name: prediction.description

@@ -396,16 +396,7 @@ export default class CreateEventContainer extends Component {
                 <label htmlFor="input-location_name">Location:</label>
               </td>
               <td>
-                <ReactTags
-                  type="text"
-                  name="location_name"
-                  id="input-location_name"
-                  value={this.state.form.location_name || ''}
-                  placeholder="Finney Chapel"
-                  autoComplete="off"
-                  onChange={this.handleChange('location_name')}
-                  required
-                />
+                <PlacesAutocomplete />
               </td>
             </tr>
             <tr>
