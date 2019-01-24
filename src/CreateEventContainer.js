@@ -6,8 +6,10 @@ import PlacesAutocomplete from './PlacesAutocomplete.tsx';
 /* Coordinates of the 2 points delimiting the box used for biasing Google Places search. 
 NE: Kendal 
 SW: The Arboretum */
-const NE = { lat: 41.3049, lng: -82.2094 };
-const SW = { lat: 41.2799, lng: -82.2302 };
+const NE = { lat: 41.3049,
+lng: -82.2094 };
+const SW = { lat: 41.2799,
+lng: -82.2302 };
 
 const google = window.google;
 
@@ -103,10 +105,10 @@ export default class CreateEventContainer extends Component {
       location: ''
     };
 
-    this.componentDidMount = this.componentDidMount.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.changeWarningText = this.changeWarningText.bind(this);
+    // this.handleChange = this.handleChange.bind(this);
+    // this.handleAdditionLocation = this.handleAdditionLocation.bind(this);
+    // this.handleSubmit = this.handleSubmit.bind(this);
+    // this.changeWarningText = this.changeWarningText.bind(this);
   }
 
   componentDidMount() {
@@ -143,13 +145,16 @@ export default class CreateEventContainer extends Component {
       // const address = fullAddress.substring(fullAddress.indexOf(',')+1, fullAddress.length).trim();
 
       this.setState(state => ({
-        form: { ...state.form, location_name: placeName, address: fullAddress }
+        form: {
+          ...state.form,
+          location_name: placeName,
+          address: fullAddress
+        }
       }));
     });
   }
 
-  // CONTINUE(ML): Location is not updating like expected.
-  handleChange(field) {
+  handleChange = (field) => {
     return e => {
       const temp = {};
       switch (field) {
@@ -157,37 +162,34 @@ export default class CreateEventContainer extends Component {
           this.selectLocation(e);
           break;
 
-        case 'location_name':
         case 'address':
           this.changePlace(e);
         // falls through
         default:
           temp[field] = e.target.value;
           // TODO(ML): Configure Prettier to have obj on separate lines
-          this.setState(state => ({ form: { ...state.form, ...temp } }));
+          this.setState(state => ({
+            form: {
+              ...state.form,
+              ...temp
+            }
+          }));
       }
     };
   }
 
-  /**
-   * Suggests autocompletes for user inputted location names
-   */
-  // async locationAutocomplete(e) {
-  //   return;
-  //   const currentLocationString = e.target.value;
-  //   // CONTINUE(ML): change location and radius and try console logging the fetch responses.
-  //   const res = await fetch(
-  //     `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${currentLocationString}&types=establishment&location=${CENTER_COORDINATES}&radius=${RADIUS}&key=${
-  //       config.GOOGLE_MAP_API_KEY
-  //     }`
-  //   );
+  handleAdditionLocation = (tag) => {
+    this.setState(({ form }) => ({
+      form: {
+        ...form,
+        location_name: tag.name
+      }
+    }));
+  }
 
-  //   if (res.status === 'OK') {
-  //     console.log(res.predictions);
-  //   } else {
-  //     console.error('Google Places API responded with an error');
-  //   }
-  // }
+  handleDeleteLocation = () => {
+    this.handleAdditionLocation({ name: '' });
+  }
 
   selectLocation(e) {
     const index = e.target.selectedIndex;
@@ -240,7 +242,7 @@ export default class CreateEventContainer extends Component {
     }));
   }
 
-  changeWarningText(str) {
+  changeWarningText = (str) => {
     this.setState({ warningText: str });
   }
 
@@ -390,13 +392,17 @@ export default class CreateEventContainer extends Component {
                 />
               </td>
             </tr> */}
-            {/* TODO(ML): Implement the location_name input with react-tag-autocomplete */}
             <tr>
               <td>
                 <label htmlFor="input-location_name">Location:</label>
               </td>
               <td>
-                <PlacesAutocomplete />
+                {/* CONTINUE(ML): Style the Autocomplete element */}
+                <PlacesAutocomplete
+                  locationName={this.state.form.location_name}
+                  handleAddition={this.handleAdditionLocation}
+                  handleDelete={this.handleDeleteLocation}
+                />
               </td>
             </tr>
             <tr>

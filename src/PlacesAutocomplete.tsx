@@ -7,6 +7,7 @@ const NE = { lat: 41.3049, lng: -82.2094 };
 const SW = { lat: 41.2799, lng: -82.2302 };
 
 interface IProps {
+  locationName: string;
   handleAddition: (tag: Tag) => void;
   handleDelete: (index: number) => void;
 }; 
@@ -17,19 +18,21 @@ interface IState {
 
 export default class PlacesAutocomplete extends React.Component<IProps> {
   // TODO(ML): Implement better typing for props, google, etc
-  private autocomplete: any;
+  autocomplete = new google.maps.places.AutocompleteService();
   state: IState = {
     suggestions: [],
   };
 
   constructor(props: IProps) {
     super(props);
-    this.autocomplete = new google.maps.places.AutocompleteService();
-
     this.updateSuggestions = this.updateSuggestions.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
   }
 
   private handleInputChange(input: string) {
+    // If there is no input, return
+    if (!input) return;
+
     const defaultBounds = new google.maps.LatLngBounds(
       new google.maps.LatLng(SW.lat, SW.lng),
       new google.maps.LatLng(NE.lat, NE.lng)
@@ -41,14 +44,17 @@ export default class PlacesAutocomplete extends React.Component<IProps> {
       types: ['establishment', 'geocode']
     };
 
+
     this.autocomplete.getPlacePredictions(
       requestOptions,
       (predictionsArr: google.maps.places.AutocompletePrediction[], status: google.maps.places.PlacesServiceStatus) => {
         // If query responds cleanly
+        console.log(status, google);
         if (status === google.maps.places.PlacesServiceStatus.OK) {
           this.updateSuggestions(predictionsArr);
         } else {
           // TODO(ML): Add error handling
+          // CONTINUE(ML): Something is broken here, no suggestions currently
           console.error('Something is broken in PlacesAutocomplete');
         }
       }
@@ -67,6 +73,7 @@ export default class PlacesAutocomplete extends React.Component<IProps> {
   render() {
     return (
       <ReactTag
+        tags={[{id: 1, name: this.props.locationName}]}
         suggestions={this.state.suggestions}
         handleAddition={this.props.handleAddition}
         handleDelete={this.props.handleDelete}
