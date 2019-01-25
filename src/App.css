@@ -49,3 +49,12 @@ button {
 @keyframes spin {
   to { transform: rotate(.5turn); }
 }
+
+@keyframes marker-blink {
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
