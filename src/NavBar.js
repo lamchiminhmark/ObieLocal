@@ -6,6 +6,7 @@ const StyledNav = styled.div`
   background: linear-gradient(#ff7873, #ef3b43);
   position: fixed;
   top: 0px;
+  z-index: 1;
 
   ul {
     display: flex;

@@ -4,13 +4,13 @@
 
 .Sidepane-active {
   position: fixed;
-  left: 0px;
+  left: -3px;
   cursor: pointer;
 }
 
 .Sidepane-inactive {
   position: fixed;
-  transform: translate(-90%, 0%);
+  transform: translate(-110%, 0%);
   cursor: pointer;
 }
 
