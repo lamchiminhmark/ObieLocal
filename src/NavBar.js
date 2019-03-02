@@ -3,35 +3,43 @@ import Popup from './Popup';
 import styled from 'styled-components';
 
 const StyledNav = styled.div`
-  background: linear-gradient(#ff7873, #ef3b43);
+  background: #222222;
   position: fixed;
   top: 0px;
+  z-index: 1;
+  width: 100%;
 
   ul {
+    font-family: 'Varela Round', sans-serif;
     display: flex;
     flex-direction: row;
+    justify-content: right;
     flex-wrap: wrap;
     list-style-type: none;
     padding: 0px;
-    margin: 0px;
-    border-right: 2px solid rgb(75, 75, 75);
-    border-bottom: 2px solid rgb(75, 75, 75);
+    margin: auto;
   }
 
   li {
-    padding: 7px 3px;
+    padding: 0;
   }
 
   button {
-    padding: 10px;
-    border: 2px solid rgb(25, 25, 25);
-    background-color: rgba(255, 255, 255, 0.9);
+    color: white;
+    padding: 1vh;
+    border-top: none;
+    border-bottom: none;
+    border-right: 1px solid whitesmoke;
+    border-left: 1px solid whitesmoke;
+    background-color: rgba(255, 255, 255, 0);
     text-decoration: none;
-    color: black;
+    box-shadow: none;
+    font-size: 20px;
   }
 
   button:hover {
-    background-color: rgba(200, 200, 200, 0.9);
+    /* background-color: rgba(255, 255, 255, 0.2); */
+    color: var(--oberlin-red);
   }
 `;
 
