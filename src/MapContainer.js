@@ -14,7 +14,7 @@ export default props => {
         }}
         center={{ lat: 41.2926, lng: -82.2183 }}
         zoom={props.zoom}
-        options={{ styles: mapStyle }}
+        options={{ styles: mapStyle, fullscreenControl: false }}
       >
         {props.children}
       </GoogleMapReact>

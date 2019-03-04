@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  --oberlin-red: #cf102d;
 }
 
 .Sidepane-active {
@@ -39,15 +40,21 @@ button {
 }
 
 @keyframes bg-verified {
-  50% { background: #cf102d; }
+  50% {
+    background: #cf102d;
+  }
 }
 
 @keyframes bg-unverified {
-  50% { background: #35a2c6; }
+  50% {
+    background: #35a2c6;
+  }
 }
 
 @keyframes spin {
-  to { transform: rotate(.5turn); }
+  to {
+    transform: rotate(0.5turn);
+  }
 }
 
 @keyframes marker-blink {
