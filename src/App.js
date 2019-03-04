@@ -8,6 +8,7 @@ import Sidepane from './Sidepane';
 import Marker from './Marker';
 import CreateEventContainer from './CreateEventContainer';
 import constants from './constants';
+import MenuButton from './MenuButton';
 
 class App extends Component {
   constructor(props) {
@@ -103,7 +104,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <NavBar />
+        <NavBar handleMenuClick={this.toggleSidepane} />
         <MapContainer zoom={18}>
           {Children.toArray(this.state.markers)}
         </MapContainer>
