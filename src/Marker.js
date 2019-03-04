@@ -11,7 +11,7 @@ const Button = styled.button`
   animation-delay: ${props => props.animationDelay};
   /* opacity: ${props => props.opacity}; */
   border: 3px solid #ffb81d;
-  
+
   /* The rotating semicircle in the animation. */
   ::before {
     content: ' ';
@@ -20,7 +20,7 @@ const Button = styled.button`
     margin-left: 50%;
     height: 99%;
     border-radius: 0 100% 100% 0 / 50%;
-    background-color: #4f0611;
+    background-color: #f7f7f7;
     transform-origin: left;
     transform: rotate(0);
     overflow: hidden;
