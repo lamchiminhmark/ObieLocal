@@ -161,7 +161,10 @@ export default class Sidepane extends Component {
           <p>{desc}</p>
           <p className="event-details">
             <em>Where and When: </em>
-            {`${locationString} ${timeString}`}
+            <br />
+            {`${locationString}`}
+            <br />
+            {`Today! ${timeString}`}
           </p>
           <img
             src={this.props.eventArray[this.props.eventIdx].photo_url}
