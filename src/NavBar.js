@@ -91,11 +91,6 @@ class NavBar extends Component {
               Contact
             </button>
           </li>
-          <li key="3">
-            <button id="useBtn" onClick={this.togglePopup}>
-              How to Use
-            </button>
-          </li>
         </ul>
         {popupElement}
       </StyledNav>
