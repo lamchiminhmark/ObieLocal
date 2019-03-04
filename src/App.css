@@ -32,11 +32,11 @@ button {
 }
 
 .Marker-verified {
-  background-image: linear-gradient(to right, #4f0611 50%, #cf102d 0);
+  background-image: linear-gradient(to right, #f7f7f7 50%, #cf102d 0);
 }
 
 .Marker-unverified {
-  background-image: linear-gradient(to right, #4f0611 50%, #35a2c6 0);
+  background-image: linear-gradient(to right, #f7f7f7 50%, #35a2c6 0);
 }
 
 @keyframes bg-verified {
