@@ -118,7 +118,7 @@ class App extends Component {
           toggleCreateEventContainer={this.toggleCreateEventContainer}
           toggleSidepane={this.toggleSidepane}
         />
-        <UserButton />
+        {/* <UserButton /> */}
         <CreateEventContainer
           active={this.state.createEventContainerOpen}
           toggleCreateEventContainer={this.toggleCreateEventContainer}
