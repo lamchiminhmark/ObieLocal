@@ -1,16 +1,17 @@
 .App {
   text-align: center;
+  --oberlin-red: #cf102d;
 }
 
 .Sidepane-active {
   position: fixed;
-  left: 0px;
+  left: -3px;
   cursor: pointer;
 }
 
 .Sidepane-inactive {
   position: fixed;
-  transform: translate(-90%, 0%);
+  transform: translate(-110%, 0%);
   cursor: pointer;
 }
 
@@ -31,21 +32,36 @@ button {
 }
 
 .Marker-verified {
-  background-image: linear-gradient(to right, #4f0611 50%, #cf102d 0);
+  background-image: linear-gradient(to right, #f7f7f7 50%, #cf102d 0);
 }
 
 .Marker-unverified {
-  background-image: linear-gradient(to right, #4f0611 50%, #35a2c6 0);
+  background-image: linear-gradient(to right, #f7f7f7 50%, #35a2c6 0);
 }
 
 @keyframes bg-verified {
-  50% { background: #cf102d; }
+  50% {
+    background: #cf102d;
+  }
 }
 
 @keyframes bg-unverified {
-  50% { background: #35a2c6; }
+  50% {
+    background: #35a2c6;
+  }
 }
 
 @keyframes spin {
-  to { transform: rotate(.5turn); }
+  to {
+    transform: rotate(0.5turn);
+  }
+}
+
+@keyframes marker-blink {
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
 }

@@ -8,16 +8,18 @@ import './tabs.css'
 const StyledPane = styled.div`
   margin: 0px;
   padding: 0px;
-  top: 60px;
-  width: 25%;
-  --pane-min-width: 200px;
-  min-width: var(--pane-min-width);
-  height: 85%;
+  top: 0px;
+  width: 75%;
+  --pane-max-width: 450px;
+  max-width: var(--pane-max-width);
+  height: 100%;
+  position: fixed;
   transition: all 1s;
+  z-index: 2;
 `;
 
 const PaneBody = styled.div`
-  height: 95%;
+  height: 100%;
   width: 95%;
   position: absolute;
   top: 50%;
@@ -25,15 +27,13 @@ const PaneBody = styled.div`
   margin: 0px;
   padding: 5px;
   overflow: hidden auto;
-  background-color: #fb6060e3;
-  border: 3px solid white;
-  border-right: 12px solid rgb(75, 75, 75);
+  background-color: hsla(0, 0%, 94%, 1);
   border-radius: 0px;
-  border-style: inset;
-  box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.27);
+  box-shadow: 10px 10px 7px rgba(0, 0, 0, 0.27);
 
   h1 {
-    background-color: rgba(255, 184, 29, 0.7);
+    background-color: #cedd0e;
+    margin: 0px;
     cursor: default;
   }
 
@@ -167,7 +167,10 @@ export default class Sidepane extends Component {
           <p>{desc}</p>
           <p className="event-details">
             <em>Where and When: </em>
-            {`${locationString} ${timeString}`}
+            <br />
+            {`${locationString}`}
+            <br />
+            {`Today! ${timeString}`}
           </p>
           <img
             src={this.props.eventArray[this.props.eventIdx].photo_url}
