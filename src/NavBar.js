@@ -24,6 +24,10 @@ const StyledNav = styled.div`
     padding: 0;
   }
 
+  .right-button {
+    float: right;
+  }
+
   button {
     color: white;
     padding: 1vh;
@@ -90,6 +94,14 @@ class NavBar extends Component {
             <button id="contactBtn" onClick={this.togglePopup}>
               Contact
             </button>
+          </li>
+          {/* ASK(ML, CP): What does the key attribute in these li elements do? */}
+          {/* ASK(ML, CP): How do I allign these buttons to the right? */}
+          <li key="3" className="right-button">
+            <button onClick={this.togglePopup}>Sign In</button>
+          </li>
+          <li key="4" className="right-button">
+            <button onClick={this.togglePopup}>Sign Up</button>
           </li>
         </ul>
         {popupElement}
