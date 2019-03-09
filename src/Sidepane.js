@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import ReactHtmlParser from 'react-html-parser';
 
+import Tabs from './Tabs'
+import './tabs.css'
+
 const StyledPane = styled.div`
   margin: 0px;
   padding: 0px;
@@ -157,6 +160,9 @@ export default class Sidepane extends Component {
         className={this.props.active ? 'Sidepane-active' : 'Sidepane-inactive'}
       >
         <PaneBody onClick={this.props.handleSidepaneClick}>
+        <Tabs>
+          {/* Event Tab */}
+          <div label="Event">
           <h1>{this.props.eventArray[this.props.eventIdx].title}</h1>
           <p>{desc}</p>
           <p className="event-details">
@@ -170,6 +176,14 @@ export default class Sidepane extends Component {
           {ReactHtmlParser(
             this.props.eventArray[this.props.eventIdx].description
           )}
+          </div>
+          {/* Agenda Tab */}
+          <div label="Agenda">
+          This is the agenda for All Road.
+          </div>
+        </Tabs>
+
+          
         </PaneBody>
         {eventSwitchButtons}
       </StyledPane>
