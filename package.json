@@ -8,6 +8,7 @@
     "@fortawesome/react-fontawesome": "^0.1.3",
     "ajv": "^6.6.2",
     "express": "^4.16.4",
+    "firebase": "^5.8.6",
     "google-map-react": "^1.1.1",
     "mariadb": "2.0.0-alpha",
     "node-datetime": "^2.1.2",
