@@ -8,6 +8,7 @@ import Sidepane from './Sidepane';
 import Marker from './Marker';
 import CreateEventContainer from './CreateEventContainer';
 import constants from './constants';
+import SignIn from './components/auth/SignIn';
 
 class App extends Component {
   constructor(props) {
@@ -104,9 +105,11 @@ class App extends Component {
     return (
       <div className="App">
         <NavBar />
+        <SignIn />
         <MapContainer zoom={18}>
           {Children.toArray(this.state.markers)}
         </MapContainer>
+        <SignIn />
         <Sidepane
           eventArray={this.state.activeEventArray}
           active={this.state.sidepaneOpen}

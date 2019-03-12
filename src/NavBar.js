@@ -85,22 +85,22 @@ class NavBar extends Component {
     return (
       <StyledNav id="navbar">
         <ul>
-          <li key="1">
+          <li key='1'>
             <button id="aboutBtn" onClick={this.togglePopup}>
               About
             </button>
           </li>
-          <li key="2">
+          <li key='2'>
             <button id="contactBtn" onClick={this.togglePopup}>
               Contact
             </button>
           </li>
-          {/* ASK(ML, CP): What does the key attribute in these li elements do? */}
+          {/* NOTE: the key component is only needed when components are created using the map method */}
           {/* ASK(ML, CP): How do I allign these buttons to the right? */}
-          <li key="3" className="right-button">
+          <li className="right-button">
             <button onClick={this.togglePopup}>Sign In</button>
           </li>
-          <li key="4" className="right-button">
+          <li className="right-button">
             <button onClick={this.togglePopup}>Sign Up</button>
           </li>
         </ul>
