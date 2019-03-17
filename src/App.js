@@ -51,7 +51,7 @@ class App extends Component {
    * appropriate markers that fall within the given time frame.
    */
   fetchData() {
-    fetch('http://obielocal.cs.oberlin.edu:3001/query')
+    fetch('obielocal-1541269219020.appspot.com/query')
       // fetch("http://localhost:3001/query")
       .then(response => response.json())
       .then(arr => {

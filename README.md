@@ -1,6 +1,6 @@
 # ObieLocal
 
-[**ObieLocal**](http://obielocal.cs.oberlin.edu) is a map interface for Oberlin
+[**ObieLocal**](http://obielocal.com) is a map interface for Oberlin
 College that was designed to allow people to quickly find out what's happening
 around campus, when it's happening, and any details that they need so that they
 can go experience it.
