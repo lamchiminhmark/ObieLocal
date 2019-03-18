@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
 import Tab from './Tab';
+import './tabs.css'
 
 class Tabs extends Component {
     static propTypes = {
@@ -53,7 +54,6 @@ class Tabs extends Component {
                     if (child.props.label !== activeTab) return undefined
                     return child.props.children;
                     })}
-                })}
                 </div>
             </div>
         );

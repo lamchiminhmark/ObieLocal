@@ -25,9 +25,9 @@ const PaneBody = styled.div`
   top: 50%;
   transform: translate(0, -50%);
   margin: 0px;
-  padding: 5px;
+  padding: 0px;
   overflow: hidden auto;
-  background-color: hsla(0, 0%, 94%, 1);
+  background-color: hsla(0, 0%, 96%, 1);
   border-radius: 0px;
   box-shadow: 10px 10px 7px rgba(0, 0, 0, 0.27);
 
@@ -39,6 +39,7 @@ const PaneBody = styled.div`
 
   p {
     overflow: clip;
+    padding: 15px;
     cursor: default;
   }
 
@@ -154,8 +155,28 @@ export default class Sidepane extends Component {
       this.props.eventArray[this.props.eventIdx].address || 'Location unknown.';
     const desc = this.props.eventArray[this.props.eventIdx].desc;
     const eventSwitchButtons = this.getEventSwitchButtons();
-
-    return (
+    /* If no event is selected */
+    if (this.props.eventArray[0].ID == 0)
+      return (
+        <StyledPane
+        className={this.props.active ? 'Sidepane-active' : 'Sidepane-inactive'}
+      >
+        <PaneBody onClick={this.props.handleSidepaneClick}>
+        <Tabs>
+          {/* Event Tab */}
+          <div label="Event">
+          <p>Please select an event to view details</p>
+          </div>
+          {/* Agenda Tab */}
+          <div label="Agenda">
+          This is the agenda for All Road.
+          </div>
+        </Tabs>
+        </PaneBody>
+        {eventSwitchButtons}
+      </StyledPane>
+      )
+    else return (
       <StyledPane
         className={this.props.active ? 'Sidepane-active' : 'Sidepane-inactive'}
       >
