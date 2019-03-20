@@ -13,9 +13,10 @@
 # production
 /build
 
-# API keys
+# API keys, passwords
 /src/config.js
 /src/config
+/server/mysqlConfig.js
 
 # misc
 .DS_Store

@@ -1,1 +1,3 @@
 runtime: nodejs8
+beta_settings:
+  cloud-sql-instances: obielocal-1541269219020:us-central1:mysql-instance-1
