@@ -1,12 +1,17 @@
 const logins = require('./../db_logins');
-const mariadb = require('mariadb');
+const mysql = require('mysql');
+var util = require('util');
 
 // TODO: refactor so that validation happens inside of this
 // script, not inside of the queries.js route.
 
 // Set the login information for 'mariadb'.
-const viewerPool = mariadb.createPool(logins.viewerPool);
-const editorPool = mariadb.createPool(logins.editorPool);
+const viewerPool = mysql.createPool(logins.viewerPool);
+const editorPool = mysql.createPool(logins.editorPool);
+
+viewerPool.query = util.promisify(pool.query);
+editorPool.query = util.promisify(pool.query);
+
 
 const fieldList = [
   'ID',
@@ -33,43 +38,44 @@ const fieldList = [
 
 // Establishes the connection and prints out a success/failure message
 module.exports.tryConnection = function() {
-  viewerPool
-    .getConnection()
-    .then(conn => {
-      console.log('connected! connection id is ' + conn.threadId);
-      conn.end(); // release to pool
-    })
-    .catch(err => {
-      console.log('not connected due to error: ' + err);
-    });
+  viewerPool.getConnection((err, connection) => {
+    if (err) {
+        if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+            console.error('Database connection was closed.')
+        }
+        if (err.code === 'ER_CON_COUNT_ERROR') {
+            console.error('Database has too many connections.')
+        }
+        if (err.code === 'ECONNREFUSED') {
+            console.error('Database connection was refused.')
+        }
+    }
+    if (connection) connection.release();
+    return
+  })
 };
 
 // ML: Returns a promise with a resolved
 // Returns all of the rows in the Users table
 module.exports.selectAllUsers = function() {
-  return (
-    viewerPool
-      .query('SELECT * FROM Users')
-      // .then(res => JSON.stringify(res))
-      .catch(err => {
-        console.log(err);
-      })
-  );
+  try {
+      var result = await viewerPool.query('SELECT * FROM users')
+  } catch(err) {
+    throw new Error(err)
+  }
+  return result;
 };
 
 /**
  * Retrieve all of the rows in the Events table. Logs if there is an error.
  */
 module.exports.selectAllEvents = function() {
-  return (
-    viewerPool
-      .query('SELECT * FROM Events')
-      // .then(rows => rows.map(item => item.username))
-      // .then(res => JSON.stringify(res))
-      .catch(err => {
-        console.log(err);
-      })
-  );
+  try {
+    var result = await viewerPool.query('SELECT * FROM Events')
+} catch(err) {
+  throw new Error(err)
+}
+return result;
 };
 
 /**
@@ -95,8 +101,8 @@ module.exports.insertEvent = function(event) {
       }
     }
   }
-
-  return editorPool.query(
+  try {
+    var result = await editorPool.query(
     `INSERT INTO Events (
         ID, 
         title, 
@@ -139,6 +145,9 @@ module.exports.insertEvent = function(event) {
         ${event.longitude},
         ${event.start_time},
         ${event.end_time}
-      )`
-  );
+      )`)
+    } catch(err) {
+      throw new Error(err)
+    }
+    return result;
 };
