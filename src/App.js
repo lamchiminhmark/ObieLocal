@@ -114,6 +114,7 @@ class App extends Component {
           handleSidepaneClick={this.toggleSidepane}
           handleEventSwitch={this.handleEventSwitch}
           eventIdx={this.state.activeEventIdx}
+          checkEventTimes={this.checkEventTimes}
         />
         <PlusButton
           toggleCreateEventContainer={this.toggleCreateEventContainer}
