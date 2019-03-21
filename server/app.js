@@ -22,7 +22,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(function(req, res, next) {
   const origin = req.get('origin');
   if (
-    ['http://localhost:3000', 'http://obielocal.cs.oberlin.edu']
+    ['http://localhost:3000', 'obielocal.com']
       .includes(origin)
   ) {
     res.header('Access-Control-Allow-Origin', origin);
