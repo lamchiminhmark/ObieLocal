@@ -51,15 +51,16 @@ class App extends Component {
    * appropriate markers that fall within the given time frame.
    */
   fetchData() {
-    fetch('obielocal-1541269219020.appspot.com/query')
+    fetch('https://obielocal-1541269219020.appspot.com/query')
       // fetch("http://localhost:3001/query")
       .then(response => response.json())
       .then(arr => {
-        const markers = arr
-          .filter(checkEventTimes)
-          .reduce(toMarkerArray, [])
-          .map(toMarkerElement, this);
-        this.setState({ markers });
+        // const markers = arr
+        //   .filter(checkEventTimes)
+        //   .reduce(toMarkerArray, [])
+        //   .map(toMarkerElement, this);
+        // this.setState({ markers });
+        console.log(arr[0]);
       })
       .catch(error => console.error('Loading markers failed! ', error));
   }
