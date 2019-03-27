@@ -3,7 +3,7 @@ var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
 const rp = require('request-promise');
-var config = require('../../src/config');
+var config = require('../googleMapConfig');
 
 router.use(bodyParser.json()); // to support JSON-encoded bodies
 router.use(

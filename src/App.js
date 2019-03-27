@@ -43,27 +43,27 @@ class App extends Component {
     );
   }
 
-  componentDidMount() {
-    this.fetchData();
-  }
+  // componentDidMount() {
+  //   this.fetchData();
+  // }
 
   /**
    * Fetch all events from the database, reformat the data, and display
    * appropriate markers that fall within the given time frame.
    */
-  fetchData() {
-    fetch('obielocal-1541269219020.appspot.com/query')
-      // fetch("http://localhost:3001/query")
-      .then(response => response.json())
-      .then(arr => {
-        const markers = arr
-          .filter(checkEventTimes)
-          .reduce(toMarkerArray, [])
-          .map(toMarkerElement, this);
-        this.setState({ markers });
-      })
-      .catch(error => console.error('Loading markers failed! ', error));
-  }
+  // fetchData() {
+  //   fetch('https://obielocal-1541269219020.appspot.com/query')
+  //     // fetch("http://localhost:3001/query")
+  //     .then(response => response.json())
+  //     .then(arr => {
+  //       const markers = arr
+  //         .filter(checkEventTimes)
+  //         .reduce(toMarkerArray, [])
+  //         .map(toMarkerElement, this);
+  //       this.setState({ markers });
+  //     })
+  //     .catch(error => console.error('Loading markers failed! ', error));
+  // }
 
   handleMarkerClick(eventArray) {
     // If the CreateEvent panel is open, Sidepane can't be opened
@@ -106,7 +106,7 @@ class App extends Component {
       <div className="App">
         <NavBar handleMenuClick={this.toggleSidepane} />
         <MapContainer zoom={18}>
-          {Children.toArray(this.state.markers)}
+          {/* {Children.toArray(this.state.markers)} */}
         </MapContainer>
         <Sidepane
           eventArray={this.state.activeEventArray}
