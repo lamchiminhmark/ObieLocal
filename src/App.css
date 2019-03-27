@@ -6,13 +6,11 @@
 .Sidepane-active {
   position: fixed;
   left: -3px;
-  cursor: pointer;
 }
 
 .Sidepane-inactive {
   position: fixed;
   transform: translate(-110%, 0%);
-  cursor: pointer;
 }
 
 button {

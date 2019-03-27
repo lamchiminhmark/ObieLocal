@@ -16,6 +16,7 @@ const Button = styled.button`
   padding: 40px;
   position: absolute;
   left: 0px;
+  margin: 0px 5px;
 
   :active {
     background-color: #ffffff22;

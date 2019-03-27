@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import ReactHtmlParser from 'react-html-parser';
 
-import Tabs from './Tabs'
-import './tabs.css'
+import Tabs from './Tabs';
+import './tabs.css';
+import SidepaneCloseButton from './SidepaneCloseButton';
 
 const StyledPane = styled.div`
   margin: 0px;
@@ -20,7 +21,7 @@ const StyledPane = styled.div`
 
 const PaneBody = styled.div`
   height: 100%;
-  width: 95%;
+  width: 100%;
   position: absolute;
   top: 50%;
   transform: translate(0, -50%);
@@ -34,7 +35,6 @@ const PaneBody = styled.div`
   h1 {
     background-color: #cedd0e;
     margin: 0px;
-    cursor: default;
   }
 
   p {
@@ -159,58 +159,66 @@ export default class Sidepane extends Component {
     if (this.props.eventArray[0].ID == 0)
       return (
         <StyledPane
-        className={this.props.active ? 'Sidepane-active' : 'Sidepane-inactive'}
-      >
-        <PaneBody onClick={this.props.handleSidepaneClick}>
-        <Tabs>
-          {/* Event Tab */}
-          <div label="Event">
-          <p>Please select an event to view details</p>
-          </div>
-          {/* Agenda Tab */}
-          <div label="Agenda">
-          This is the agenda for All Road.
-          </div>
-        </Tabs>
-        </PaneBody>
-        {eventSwitchButtons}
-      </StyledPane>
-      )
-    else return (
-      <StyledPane
-        className={this.props.active ? 'Sidepane-active' : 'Sidepane-inactive'}
-      >
-        <PaneBody onClick={this.props.handleSidepaneClick}>
-        <Tabs>
-          {/* Event Tab */}
-          <div label="Event">
-          <h1>{this.props.eventArray[this.props.eventIdx].title}</h1>
-          <p>{desc}</p>
-          <p className="event-details">
-            <em>Where and When: </em>
-            <br />
-            {`${locationString}`}
-            <br />
-            {`Today! ${timeString}`}
-          </p>
-          <img
-            src={this.props.eventArray[this.props.eventIdx].photo_url}
-            alt=""
+          className={
+            this.props.active ? 'Sidepane-active' : 'Sidepane-inactive'
+          }
+          id="sidepane"
+        >
+          <PaneBody>
+            <Tabs>
+              {/* Event Tab */}
+              <div label="Event">
+                <p>Please select an event to view details</p>
+              </div>
+              {/* Agenda Tab */}
+              <div label="Agenda">This is the agenda for All Road.</div>
+            </Tabs>
+          </PaneBody>
+          <SidepaneCloseButton
+            id="sidepane-close"
+            handleSidepaneClick={this.props.handleSidepaneClick}
           />
-          {ReactHtmlParser(
-            this.props.eventArray[this.props.eventIdx].description
-          )}
-          </div>
-          {/* Agenda Tab */}
-          <div label="Agenda">
-          This is the agenda for All Road.
-          </div>
-        </Tabs>
-
-          
-        </PaneBody>
-        {eventSwitchButtons}
-      </StyledPane>
-    );
+          {eventSwitchButtons}
+        </StyledPane>
+      );
+    else
+      return (
+        <StyledPane
+          className={
+            this.props.active ? 'Sidepane-active' : 'Sidepane-inactive'
+          }
+        >
+          <PaneBody>
+            <Tabs>
+              {/* Event Tab */}
+              <div label="Event">
+                <h1>{this.props.eventArray[this.props.eventIdx].title}</h1>
+                <p>{desc}</p>
+                <p className="event-details">
+                  <em>Where and When: </em>
+                  <br />
+                  {`${locationString}`}
+                  <br />
+                  {`Today! ${timeString}`}
+                </p>
+                <img
+                  src={this.props.eventArray[this.props.eventIdx].photo_url}
+                  alt=""
+                />
+                {ReactHtmlParser(
+                  this.props.eventArray[this.props.eventIdx].description
+                )}
+              </div>
+              {/* Agenda Tab */}
+              <div label="Agenda">This is the agenda for All Road.</div>
+            </Tabs>
+          </PaneBody>
+          {eventSwitchButtons}
+          <SidepaneCloseButton
+            id="sidepane-close"
+            handleSidepaneClick={this.props.handleSidepaneClick}
+          />
+        </StyledPane>
+      );
   }
 }
