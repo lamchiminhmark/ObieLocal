@@ -2,52 +2,49 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import ReactHtmlParser from 'react-html-parser';
 
-//import Tabs from './Tabs'
-//import './tabs.css'
+import Tabs from './Tabs'
+import './tabs.css'
 
 import AgendaEventList from './AgendaEventList'
 
 const StyledPane = styled.div`
   margin: 0px;
   padding: 0px;
-  top: 60px;
-  width: 25%;
-  --pane-min-width: 200px;
-  min-width: var(--pane-min-width);
-  height: 85%;
+  top: 0px;
+  width: 75%;
+  --pane-max-width: 450px;
+  max-width: var(--pane-max-width);
+  height: 100%;
+  position: fixed;
   transition: all 1s;
+  z-index: 2;
 `;
 
 const PaneBody = styled.div`
-  height: 95%;
+  height: 100%;
   width: 95%;
   position: absolute;
   top: 50%;
   transform: translate(0, -50%);
   margin: 0px;
-  padding: 5px;
+  padding: 0px;
   overflow: hidden auto;
-  background-color: #fb6060e3;
-  border: 3px solid white;
-  border-right: 12px solid rgb(75, 75, 75);
+  background-color: hsla(0, 0%, 96%, 1);
   border-radius: 0px;
-  border-style: inset;
-  box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.27);
-
+  box-shadow: 10px 10px 7px rgba(0, 0, 0, 0.27);
   h1 {
-    background-color: rgba(255, 184, 29, 0.7);
+    background-color: #cedd0e;
+    margin: 0px;
     cursor: default;
   }
-
   p {
     overflow: clip;
+    padding: 15px;
     cursor: default;
   }
-
   em {
     font-weight: bold;
   }
-
   img {
     max-width: 95%;
     margin: auto;
@@ -59,7 +56,6 @@ const Div = styled.div`
   width: var(--pane-min-width);
   top: 0px;
   right: 0px;
-
   button {
     position: absolute;
     width: 50px;
@@ -71,22 +67,18 @@ const Div = styled.div`
     font-weight: bolder;
     transition: background-color 0.3s ease;
   }
-
   button:hover {
     background-color: #a1dafdef;
   }
-
   #button-prev-event {
     left: 0;
     margin-left: 16%;
   }
-
   #button-next-event {
     right: 0;
     margin-right: 16%;
   }
 `;
-
 export default class Sidepane extends Component {
   constructor(props) {
     super(props);
