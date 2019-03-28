@@ -2,44 +2,45 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import ReactHtmlParser from 'react-html-parser';
 
-import Tabs from './Tabs'
-import './tabs.css'
+//import Tabs from './Tabs'
+//import './tabs.css'
+
+import AgendaEventList from './AgendaEventList'
 
 const StyledPane = styled.div`
   margin: 0px;
   padding: 0px;
-  top: 0px;
-  width: 75%;
-  --pane-max-width: 450px;
-  max-width: var(--pane-max-width);
-  height: 100%;
-  position: fixed;
+  top: 60px;
+  width: 25%;
+  --pane-min-width: 200px;
+  min-width: var(--pane-min-width);
+  height: 85%;
   transition: all 1s;
-  z-index: 2;
 `;
 
 const PaneBody = styled.div`
-  height: 100%;
+  height: 95%;
   width: 95%;
   position: absolute;
   top: 50%;
   transform: translate(0, -50%);
   margin: 0px;
-  padding: 0px;
+  padding: 5px;
   overflow: hidden auto;
-  background-color: hsla(0, 0%, 96%, 1);
+  background-color: #fb6060e3;
+  border: 3px solid white;
+  border-right: 12px solid rgb(75, 75, 75);
   border-radius: 0px;
-  box-shadow: 10px 10px 7px rgba(0, 0, 0, 0.27);
+  border-style: inset;
+  box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.27);
 
   h1 {
-    background-color: #cedd0e;
-    margin: 0px;
+    background-color: rgba(255, 184, 29, 0.7);
     cursor: default;
   }
 
   p {
     overflow: clip;
-    padding: 15px;
     cursor: default;
   }
 
@@ -169,7 +170,7 @@ export default class Sidepane extends Component {
           </div>
           {/* Agenda Tab */}
           <div label="Agenda">
-          This is the agenda for All Road.
+            <AgendaEventList checkEventTimes={this.props.checkEventTimes} />
           </div>
         </Tabs>
         </PaneBody>
@@ -188,10 +189,7 @@ export default class Sidepane extends Component {
           <p>{desc}</p>
           <p className="event-details">
             <em>Where and When: </em>
-            <br />
-            {`${locationString}`}
-            <br />
-            {`Today! ${timeString}`}
+            {`${locationString} ${timeString}`}
           </p>
           <img
             src={this.props.eventArray[this.props.eventIdx].photo_url}
@@ -203,7 +201,7 @@ export default class Sidepane extends Component {
           </div>
           {/* Agenda Tab */}
           <div label="Agenda">
-          This is the agenda for All Road.
+          <AgendaEventList checkEventTimes={this.props.checkEventTimes} />
           </div>
         </Tabs>
 

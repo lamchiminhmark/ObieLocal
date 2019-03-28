@@ -52,7 +52,7 @@ class App extends Component {
    * appropriate markers that fall within the given time frame.
    */
   fetchData() {
-    fetch('obielocal-1541269219020.appspot.com/query')
+    fetch('https://obielocal-1541269219020.appspot.com/query')
       // fetch("http://localhost:3001/query")
       .then(response => response.json())
       .then(arr => {
@@ -60,6 +60,7 @@ class App extends Component {
           .filter(checkEventTimes)
           .reduce(toMarkerArray, [])
           .map(toMarkerElement, this);
+          
         this.setState({ markers });
       })
       .catch(error => console.error('Loading markers failed! ', error));

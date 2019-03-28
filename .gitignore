@@ -17,6 +17,7 @@
 /src/config.js
 /src/config
 /server/mysqlConfig.js
+/server/googleMapConfig.js
 
 # misc
 .DS_Store

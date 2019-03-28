@@ -1,5 +1,6 @@
 /* eslint-disable no-loop-func */
-const mariadb = require('mariadb');
+const mysql = require('mysql');
+// TODO(CP): Change where you source for ./db_logins
 const logins = require('./db_logins');
 const request = require('request');
 var util = require('util');
@@ -7,7 +8,8 @@ var util = require('util');
 /* Sets the login information for the mariadb module */
 //const pool = mariadb.createPool(logins.editorPool);
 
-const pool = mysql.createPool(logins.editorPool);
+const editorPool = mysql.createPool(logins.editorPool);
+const viewerPool = mysql.createPool(logins.viewerPool);
 
 
 /* Assuming there are always 2 pages of events on the API */
@@ -17,7 +19,7 @@ const NUM_PAGES = 2;
 prints out a message on success or failure. If it succeeds, it
 calls the getEvents() function to pull from the API and
 populate the database. */
-pool
+editorPool
 .getConnection((err, connection) => {
   if (err) {
       if (err.code === 'PROTOCOL_CONNECTION_LOST') {
@@ -32,9 +34,9 @@ pool
   }
   if (connection) {
     clearDatabase();
-    getEvents(NUMPAGES)
+    getEvents(NUM_PAGES)
     .then(() => {
-      pool.end();
+      editorPool.end();
     })
   }
   return
@@ -59,7 +61,7 @@ pool
 /**
  * Delete events from the database that are from the API or have already passed.
  */
-function clearDatabase() {
+async function clearDatabase() {
   try {
     var result = await viewerPool.query(`DELETE FROM Events WHERE verified=1 OR end_time < NOW()`)
 } catch(err) {
@@ -80,7 +82,7 @@ function getEvents(maxPages) {
       request(
         `https://calendar.oberlin.edu/api/2/events?page=${page}`,
         { json: true, timeout: 1500 },
-        (err, res, body) => {
+        async (err, res, body) => {
           /* Upon request error, log the error and kill the process immediately.
 					This should be reworked at some point. Calling process.exit() is
 					kind of bad practice. */
@@ -114,7 +116,7 @@ function getEvents(maxPages) {
 						an error, the script will log it and continue on to the next event. At
             the end of all events, it will close the connection. */
             try {
-            var rows = await pool
+            var rows = await editorPool
               .query(
                 `INSERT INTO Events (
 							ID,
