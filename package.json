@@ -10,6 +10,7 @@
     "express": "^4.16.4",
     "google-map-react": "^1.1.1",
     "mariadb": "2.0.0-alpha",
+    "mysql-client": "^0.3.0",
     "node-datetime": "^2.1.2",
     "prop-types": "^15.7.2",
     "react": "^16.6.3",
