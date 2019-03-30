@@ -2,10 +2,10 @@
 const mysql = require('mysql');
 const logins = require('./mysqlConfig');
 const request = require('request');
+const util = require('util');
 
 /* Sets the login information for the mysql module */
 const editorPool = mysql.createPool(logins.editorPool);
-const viewerPool = mysql.createPool(logins.viewerPool);
 
 /* Assuming there are always 2 pages of events on the API */
 const NUM_PAGES = 2;
@@ -14,7 +14,7 @@ const NUM_PAGES = 2;
 prints out a message on success or failure. If it succeeds, it
 calls the getEvents() function to pull from the API and
 populate the database. */
-editorPool.getConnection((err, connection) => {
+editorPool.getConnection(async (err, connection) => {
   if (err) {
     if (err.code === 'PROTOCOL_CONNECTION_LOST') {
       console.error('Database connection was closed.');
@@ -26,37 +26,21 @@ editorPool.getConnection((err, connection) => {
       console.error('Database connection was refused.');
     }
   }
+  connection.query = util.promisify(connection.query);
   if (connection) {
-    clearDatabase();
-    getEvents(NUM_PAGES).then(() => {
-      editorPool.end();
-    });
+    await clearDatabase(connection);
+    await getEvents(NUM_PAGES, connection);
   }
+  editorPool.end();
   return;
 });
-
-/*pool
-  .getConnection()
-  .then(conn => {
-    console.log('Successfully connected!');
-    return conn.end();
-  })
-  .then(() => {
-    return clearDatabase();
-  })
-  .then(() => {
-    return getEvents(NUM_PAGES);
-  })
-  .then(() => {
-    pool.end();
-  });*/
 
 /**
  * Delete events from the database that are from the API or have already passed.
  */
-async function clearDatabase() {
+async function clearDatabase(connection) {
   try {
-    var result = await viewerPool.query(
+    var result = await connection.query(
       `DELETE FROM Events WHERE verified=1 OR end_time < NOW()`
     );
   } catch (err) {
@@ -70,7 +54,7 @@ objects that are stored on each page. Then, it inserts the events into the datab
 This should eventually be refactored into smaller, more manageable functions.
 TODO: Find a way to implement *future* events using the following API: 
 'https://calendar.oberlin.edu/api/2/events?start=2018-12-15&end=2018-12-19&page=1' */
-function getEvents(maxPages) {
+async function getEvents(maxPages, connection) {
   return new Promise(function(resolve, reject) {
     let pagesRemaining = maxPages;
     for (let page = 1; page <= maxPages; page++) {
@@ -111,7 +95,7 @@ function getEvents(maxPages) {
 						an error, the script will log it and continue on to the next event. At
             the end of all events, it will close the connection. */
             try {
-              var rows = await editorPool.query(
+              var rows = await connection.query(
                 `INSERT INTO Events (
 							ID,
 							title,
@@ -169,7 +153,7 @@ function getEvents(maxPages) {
               }
             }
             /* Log the rows as they are inserted into the database.
-							Upon reaching the final event, resolve the promise. */
+            Upon reaching the final event, resolve the promise. */
             console.log(rows);
             if (i === body.events.length - 1) pagesRemaining--;
             if (pagesRemaining === 0) {
@@ -179,6 +163,7 @@ function getEvents(maxPages) {
         }
       );
     }
+    connection.release();
   });
 }
 
