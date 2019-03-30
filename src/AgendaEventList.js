@@ -1,5 +1,3 @@
-// Movies.js
-
 import React from "react";
 import AgendaEventItem from "./AgendaEventItem"
 
@@ -32,8 +30,8 @@ class AgendaEventList extends React.Component {
 
     storeEvents = data => {
         const events = data.map(result => {
-          const  { title, photo_url, location_name, date, time, desc } = result;
-          return { title, photo_url, location_name, date, time, desc };
+          const  { title, photo_url, location_name, start_time, description } = result;
+          return { title, photo_url, location_name, start_time, description };
         });
         this.setState({ events })
       }

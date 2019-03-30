@@ -16,6 +16,7 @@ ul {
     display: inline-block;
     max-height: 170px;
     overflow: hidden;
+    width:100%;
 }
 
 .agenda-event-item {
@@ -36,28 +37,30 @@ ul {
 .event-text h2 {
 	color: #555;
 	font-weight: bold;
-    margin-bottom: 5px;  
-    text-overflow: ellipsis;  
+    text-overflow: ellipsis;
 }
 
 .event-title {
-    height: 170px;
+    max-height: 170px;
     overflow: hidden;
     text-overflow: ellipsis; 
+    padding: 5px;
 }
 
-.event-text p {
+.agenda-event-desc {
     max-height: 120px;
     overflow: hidden;
+    text-align: left;
+    padding: 0px 0px 10px 10px;
 }
 
-.event-details {
+.agenda-event-details {
 	display: flex;
     justify-content: space-between;
     padding: 0 10px 10px;
 }
 
-.event-details span {
+.agenda-event-details span {
 	color: #555;
 	font-size: 0.8rem;
 	font-weight: bold;
@@ -67,14 +70,3 @@ ul {
 	display: flex;
 	flex-direction: column;
 }
-
-.movie-year .title, .movie-rating .title {
-	color: #aaa;
-	margin-bottom: 5px;
-	font-size: 0.65rem;
-	font-weight: normal;
-}
-
-/*.date_time{
-	align-items: flex-end;
-}*/
