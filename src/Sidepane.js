@@ -6,6 +6,8 @@ import Tabs from './Tabs';
 import './tabs.css';
 import SidepaneCloseButton from './SidepaneCloseButton';
 
+import AgendaEventList from './AgendaEventList'
+
 const StyledPane = styled.div`
   margin: 0px;
   padding: 0px;
@@ -31,22 +33,18 @@ const PaneBody = styled.div`
   background-color: hsla(0, 0%, 96%, 1);
   border-radius: 0px;
   box-shadow: 10px 10px 7px rgba(0, 0, 0, 0.27);
-
   h1 {
     background-color: #cedd0e;
     margin: 0px;
   }
-
   p {
     overflow: clip;
     padding: 15px;
     cursor: default;
   }
-
   em {
     font-weight: bold;
   }
-
   img {
     max-width: 95%;
     margin: auto;
@@ -58,7 +56,6 @@ const Div = styled.div`
   width: var(--pane-min-width);
   top: 0px;
   right: 0px;
-
   button {
     position: absolute;
     width: 50px;
@@ -70,22 +67,18 @@ const Div = styled.div`
     font-weight: bolder;
     transition: background-color 0.3s ease;
   }
-
   button:hover {
     background-color: #a1dafdef;
   }
-
   #button-prev-event {
     left: 0;
     margin-left: 16%;
   }
-
   #button-next-event {
     right: 0;
     margin-right: 16%;
   }
 `;
-
 export default class Sidepane extends Component {
   constructor(props) {
     super(props);
@@ -171,7 +164,9 @@ export default class Sidepane extends Component {
                 <p>Please select an event to view details</p>
               </div>
               {/* Agenda Tab */}
-              <div label="Agenda">This is the agenda for All Road.</div>
+          <div label="Agenda">
+            <AgendaEventList checkEventTimes={this.props.checkEventTimes} />
+          </div>
             </Tabs>
           </PaneBody>
           <SidepaneCloseButton
@@ -210,13 +205,15 @@ export default class Sidepane extends Component {
                 )}
               </div>
               {/* Agenda Tab */}
-              <div label="Agenda">This is the agenda for All Road.</div>
+          <div label="Agenda">
+          <AgendaEventList checkEventTimes={this.props.checkEventTimes} />
+          </div>
             </Tabs>
           </PaneBody>
           {eventSwitchButtons}
           <SidepaneCloseButton
-            id="sidepane-close"
             handleSidepaneClick={this.props.handleSidepaneClick}
+            id="sidepane-close"
           />
         </StyledPane>
       );
