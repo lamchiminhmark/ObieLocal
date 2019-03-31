@@ -7,7 +7,7 @@ class AgendaEventList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            events: [{title: "dfsfsdfsdfsdfsfs", location_name: "awasasdads", start_time: "19:00 PM", description: "asdasdsjdfbajfbhaegfujsgfliagiefipuegirlgesgijlfggesklfealjfegaiw;fgiuwagfiluaegfi;awgfilagfil"}]
+            events: []
         }
         this.fetchData = this.fetchData.bind(this);
     }
@@ -28,12 +28,14 @@ class AgendaEventList extends React.Component {
           .catch(error => console.error('Loading agenda failed ', error));
       }
 
+      //Push fetched data into events, verified events come first.
     storeEvents = data => {
         const events = data.map(result => {
-          const  { title, photo_url, location_name, start_time, description } = result;
-          return { title, photo_url, location_name, start_time, description };
+          const  { id, title, photo_url, location_name, start_time, end_time, description, address, verified } = result;
+          return { id, title, photo_url, location_name, start_time, end_time, description, address, verified };
         });
-        this.setState({ events })
+        events.sort(function(a,b) {return a.verified-b.verified});
+        this.setState({ events });
       }
     
         

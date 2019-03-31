@@ -22,19 +22,61 @@ const SeeMoreButton = styled.button`
 class AgendaEventItem extends React.Component {
   constructor(props) {
       super(props);
+      this.timeFormatter = this.timeFormatter.bind(this);
   }
 
+timeFormatter(start, end) {
+  let startTime = 'Time unknown.';
+  let endTime;
+  var startDate;
+  const dateTime = require('node-datetime');
+    // TODO: (CP) Do we actually need to check for start time in the event
+    // object here?
+  if (start) {
+      /* Note that the Date constructor automatically adjusts for timezone */
+      const startTimeUTC = new Date(start);
+      /*format times to display hour, minute, and period in 12 hour time*/
+      startTime = dateTime.create(startTimeUTC, 'I:M p').format();
+      startDate = dateTime.create(startTimeUTC, 'n d').format();
+    }
+    if (end) {
+      const endTimeUTC = new Date(end);
+      endTime = dateTime.create(endTimeUTC, 'I:M p').format();
+    }
+    endTime = endTime ? ` - ${endTime}` : ``;
+    
+    return `${startDate}, ${startTime}${endTime}`;
+}
+
 render() {
-    const { title, photo_url, location_name, start_time, description } = this.props.event;
-    const handleAgendaClick = this.props.handleAgendaClick;
+    const { title, photo_url, location_name, start_time, end_time, description, verified} = this.props.event;
     var events = [];
     events.push(this.props.event);
     console.log(events);
+    /*All roads specific function */
+    const titleAllRoad = () => (
+      <div className="event-title-allroad">
+          <h2>{title}</h2>
+          <img 
+            src="https://www.oberlin.edu/sites/default/files/styles/width_760/public/content/basic-page/header-image/all-roads-graphic-760.png?itok=oi9qcVb-" alt="All Roads Lead to Oberlin" />
+          
+      </div>
+    )
+    const titleNormal = () => (
+      <div className="event-title">
+      <h2>{title}</h2>
+    </div>
+    )
+
+    const whichTitle = () => {
+      if (!verified) {return titleAllRoad()} else {return titleNormal()}
+    }
+
     return (
       <li className="agenda-event-item">
         <div className="event-img-title">
           <img src={photo_url} alt={title} />
-          <div className="event-title"><h2>{title}</h2></div>
+         {whichTitle()}
         </div>
         <div className="event-text">
           <div className="agenda-event-desc">
@@ -42,12 +84,12 @@ render() {
           </div>
           <section className="agenda-event-details">
             <div className="location">
-              <span className="location-title">Location: </span>
+              <span className="location-title">Where? - </span>
               <span>{location_name}</span>
             </div>
             <div className="date_time">
-              <span className="date_time_title">Time and Date</span>
-              <span>{start_time}</span>
+              <span className="date_time_title">When? - </span>
+              <span>{this.timeFormatter(start_time,end_time)}</span>
             </div>
             <SeeMoreButton onClick={() => this.props.handleAgendaClick(events)}>
               See details >>

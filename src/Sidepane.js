@@ -12,7 +12,7 @@ const StyledPane = styled.div`
   margin: 0px;
   padding: 0px;
   top: 0px;
-  width: 75%;
+  width: 90%;
   --pane-max-width: 450px;
   max-width: var(--pane-max-width);
   height: 100%;
@@ -33,6 +33,10 @@ const PaneBody = styled.div`
   background-color: hsla(0, 0%, 96%, 1);
   border-radius: 0px;
   box-shadow: 10px 10px 7px rgba(0, 0, 0, 0.27);
+
+  .event-details {
+    margin: 0px;
+  }
   h1 {
     background-color: #cedd0e;
     margin: 0px;
@@ -167,7 +171,10 @@ export default class Sidepane extends Component {
               </div>
               {/* Agenda Tab */}
           <div label="Agenda">
-            <AgendaEventList checkEventTimes={this.props.checkEventTimes} handleAgendaClick={this.props.handleAgendaClick} />
+            <AgendaEventList 
+              checkEventTimes={this.props.checkEventTimes} 
+              handleAgendaClick={this.props.handleAgendaClick} 
+              timeFormatter={this.getEventTimeString}/>
           </div>
             </Tabs>
           </PaneBody>
@@ -190,7 +197,6 @@ export default class Sidepane extends Component {
               {/* Event Tab */}
               <div label="Event">
                 <h1>{this.props.eventArray[this.props.eventIdx].title}</h1>
-                <p>{desc}</p>
                 <p className="event-details">
                   <em>Where and When: </em>
                   <br />
@@ -208,7 +214,11 @@ export default class Sidepane extends Component {
               </div>
               {/* Agenda Tab */}
           <div label="Agenda">
-          <AgendaEventList checkEventTimes={this.props.checkEventTimes} handleAgendaClick={this.props.handleAgendaClick}/>
+          <AgendaEventList 
+            checkEventTimes={this.props.checkEventTimes} 
+            handleAgendaClick={this.props.handleAgendaClick}
+            timeFormatter={this.getEventTimeString}
+          />
           </div>
             </Tabs>
           </PaneBody>
