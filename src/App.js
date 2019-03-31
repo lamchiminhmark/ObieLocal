@@ -59,7 +59,6 @@ class App extends Component {
           .filter(checkEventTimes)
           .reduce(toMarkerArray, [])
           .map(toMarkerElement, this);
-          
         this.setState({ markers });
       })
       .catch(error => console.error('Loading markers failed! ', error));
@@ -133,7 +132,8 @@ class App extends Component {
 /**
  * Checks if an event object falls within an appropriate time frame relative
  * to the current time. The function first checks by end_time, but if there
- * is no end_time field, it bases the return value on the start_time.
+ * is no end_time field, it bases the return value on the start_time. Only
+ * events that start on the current day are shown.
  * @constant HOUR_LIMIT the amount of hours before the current time such that
  *  markers with no end_time will return false.
  * @param {JSON} rawEvent the event object to be checked for validity.
@@ -143,10 +143,16 @@ function checkEventTimes(rawEvent) {
   const earlyBound = new Date(
     now.getTime() - constants.HOUR_LIMIT * constants.HOUR_TO_MILLISECONDS
   );
+  const rawEventDate = new Date(rawEvent.start_time).getDate();
   if (rawEvent.end_time) {
-    return rawEvent.end_time > now.toISOString();
+    return (
+      rawEvent.end_time > now.toISOString() && now.getDate() === rawEventDate
+    );
   } else {
-    return rawEvent.start_time > earlyBound.toISOString();
+    return (
+      rawEvent.start_time > earlyBound.toISOString() &&
+      now.getDate() === rawEventDate
+    );
   }
 }
 
