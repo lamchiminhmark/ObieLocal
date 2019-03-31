@@ -14,26 +14,28 @@ const NUM_PAGES = 2;
 prints out a message on success or failure. If it succeeds, it
 calls the getEvents() function to pull from the API and
 populate the database. */
-editorPool.getConnection(async (err, connection) => {
-  if (err) {
-    if (err.code === 'PROTOCOL_CONNECTION_LOST') {
-      console.error('Database connection was closed.');
+module.exports.updateDatabase = editorPool.getConnection(
+  async (err, connection) => {
+    if (err) {
+      if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+        console.error('Database connection was closed.');
+      }
+      if (err.code === 'ER_CON_COUNT_ERROR') {
+        console.error('Database has too many connections.');
+      }
+      if (err.code === 'ECONNREFUSED') {
+        console.error('Database connection was refused.');
+      }
     }
-    if (err.code === 'ER_CON_COUNT_ERROR') {
-      console.error('Database has too many connections.');
+    connection.query = util.promisify(connection.query);
+    if (connection) {
+      await clearDatabase(connection);
+      await getEvents(NUM_PAGES, connection);
     }
-    if (err.code === 'ECONNREFUSED') {
-      console.error('Database connection was refused.');
-    }
+    editorPool.end();
+    return;
   }
-  connection.query = util.promisify(connection.query);
-  if (connection) {
-    await clearDatabase(connection);
-    await getEvents(NUM_PAGES, connection);
-  }
-  editorPool.end();
-  return;
-});
+);
 
 /**
  * Delete events from the database that are from the API or have already passed.
