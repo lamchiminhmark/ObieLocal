@@ -7,7 +7,7 @@ class AgendaEventList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            events: []
+            events: [{title: "dfsfsdfsdfsdfsfs", location_name: "awasasdads", start_time: "19:00 PM", description: "asdasdsjdfbajfbhaegfujsgfliagiefipuegirlgesgijlfggesklfealjfegaiw;fgiuwagfiluaegfi;awgfilagfil"}]
         }
         this.fetchData = this.fetchData.bind(this);
     }
@@ -43,7 +43,7 @@ class AgendaEventList extends React.Component {
             <ul className="AgendaEventList">
             {
                 this.state.events.map( event => (
-                <AgendaEventItem key={event.id} event={event} />
+                <AgendaEventItem key={event.id} event={event} handleAgendaClick={this.props.handleAgendaClick}/>
                 ))
             }
             </ul>

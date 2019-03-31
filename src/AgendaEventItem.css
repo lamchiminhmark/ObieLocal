@@ -34,10 +34,11 @@ ul {
     float: left;
 }
 
-.event-text h2 {
-	color: #555;
+.event-title h2 {
+	color: rgb(41, 41, 41);
 	font-weight: bold;
     text-overflow: ellipsis;
+    background-color: #cedd0e;
 }
 
 .event-title {

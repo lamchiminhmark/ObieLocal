@@ -37,6 +37,7 @@ class App extends Component {
 
     this.fetchData = this.fetchData.bind(this);
     this.handleMarkerClick = this.handleMarkerClick.bind(this);
+    this.handleAgendaClick = this.handleAgendaClick.bind(this);
     this.handleEventSwitch = this.handleEventSwitch.bind(this);
     this.toggleSidepane = this.toggleSidepane.bind(this);
     this.toggleCreateEventContainer = this.toggleCreateEventContainer.bind(
@@ -65,6 +66,15 @@ class App extends Component {
         this.setState({ markers });
       })
       .catch(error => console.error('Loading markers failed! ', error));
+  }
+
+  handleAgendaClick(eventArray) {
+    this.setState({
+      activeEventArray: eventArray,
+      activeEventIdx: 0,
+      sidepaneOpen: true,
+      activeTab: "Event"
+    });
   }
 
   handleMarkerClick(eventArray) {
@@ -120,6 +130,7 @@ class App extends Component {
           eventIdx={this.state.activeEventIdx}
           checkEventTimes={this.checkEventTimes}
           activeTab={this.state.activeTab}
+          handleAgendaClick={this.handleAgendaClick}
         />
         <PlusButton
           toggleCreateEventContainer={this.toggleCreateEventContainer}

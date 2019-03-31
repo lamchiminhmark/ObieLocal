@@ -167,7 +167,7 @@ export default class Sidepane extends Component {
               </div>
               {/* Agenda Tab */}
           <div label="Agenda">
-            <AgendaEventList checkEventTimes={this.props.checkEventTimes} />
+            <AgendaEventList checkEventTimes={this.props.checkEventTimes} handleAgendaClick={this.props.handleAgendaClick} />
           </div>
             </Tabs>
           </PaneBody>
@@ -208,7 +208,7 @@ export default class Sidepane extends Component {
               </div>
               {/* Agenda Tab */}
           <div label="Agenda">
-          <AgendaEventList checkEventTimes={this.props.checkEventTimes} />
+          <AgendaEventList checkEventTimes={this.props.checkEventTimes} handleAgendaClick={this.props.handleAgendaClick}/>
           </div>
             </Tabs>
           </PaneBody>
