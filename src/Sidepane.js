@@ -149,6 +149,8 @@ export default class Sidepane extends Component {
     const desc = this.props.eventArray[this.props.eventIdx].desc;
     const eventSwitchButtons = this.getEventSwitchButtons();
     /* If no event is selected */
+    console.log("Prop in sidepane");
+    console.log(this.props.activeTab);
     if (this.props.eventArray[0].ID == 0)
       return (
         <StyledPane
@@ -158,7 +160,7 @@ export default class Sidepane extends Component {
           id="sidepane"
         >
           <PaneBody>
-            <Tabs>
+            <Tabs activeTab={this.props.activeTab}>
               {/* Event Tab */}
               <div label="Event">
                 <p>Please select an event to view details</p>
@@ -184,7 +186,7 @@ export default class Sidepane extends Component {
           }
         >
           <PaneBody>
-            <Tabs>
+            <Tabs activeTab={this.props.activeTab}>
               {/* Event Tab */}
               <div label="Event">
                 <h1>{this.props.eventArray[this.props.eventIdx].title}</h1>

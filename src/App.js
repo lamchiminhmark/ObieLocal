@@ -31,7 +31,8 @@ class App extends Component {
       ],
       activeEventIdx: 0,
       sidepaneOpen: false,
-      createEventContainerOpen: false
+      createEventContainerOpen: false,
+      activeTab: "Event"
     };
 
     this.fetchData = this.fetchData.bind(this);
@@ -57,7 +58,7 @@ class App extends Component {
       .then(response => response.json())
       .then(arr => {
         const markers = arr
-          .filter(checkEventTimes)
+          //.filter(checkEventTimes)
           .reduce(toMarkerArray, [])
           .map(toMarkerElement, this);
           
@@ -69,10 +70,12 @@ class App extends Component {
   handleMarkerClick(eventArray) {
     // If the CreateEvent panel is open, Sidepane can't be opened
     if (this.state.createEventContainerOpen) return;
+    console.log("Marker clicked!");
     this.setState({
       activeEventArray: eventArray,
       activeEventIdx: 0,
-      sidepaneOpen: true
+      sidepaneOpen: true,
+      activeTab: "Event"
     });
   }
 
@@ -116,6 +119,7 @@ class App extends Component {
           handleEventSwitch={this.handleEventSwitch}
           eventIdx={this.state.activeEventIdx}
           checkEventTimes={this.checkEventTimes}
+          activeTab={this.state.activeTab}
         />
         <PlusButton
           toggleCreateEventContainer={this.toggleCreateEventContainer}

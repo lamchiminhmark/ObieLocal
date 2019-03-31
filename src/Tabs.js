@@ -13,12 +13,16 @@ class Tabs extends Component {
         super(props);
 
         this.state = {
-            activeTab: this.props.children[0].props.label,
+            activeTab: this.props.activeTab,
         };
     }   
 
     onClickTabItem = (tab) => {
         this.setState({ activeTab: tab });
+    }
+
+    componentWillReceiveProps() {
+        this.setState({activeTab: this.props.activeTab});
     }
 
     render() {
@@ -31,7 +35,8 @@ class Tabs extends Component {
                 activeTab
             }
         } = this;
-
+        console.log("State in tabs");
+        console.log(this.state.activeTab);
         return (
             <div className="tabs">
                 <ol className="tab-list">
