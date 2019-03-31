@@ -14,6 +14,8 @@ const NUM_PAGES = 2;
 prints out a message on success or failure. If it succeeds, it
 calls the getEvents() function to pull from the API and
 populate the database. */
+// TODO: Should the pool ever be closed? Or kept open with a
+// sleeping connection?
 module.exports.updateDatabase = function() {
   return new Promise((resolve, reject) => {
     editorPool.getConnection(async (err, connection) => {
@@ -149,9 +151,7 @@ async function getEvents(maxPages, connection) {
                 resolve();
               }
             }
-            /* Log the rows as they are inserted into the database.
-            Upon reaching the final event, resolve the promise. */
-            console.log(rows);
+            /* Upon reaching the final event, resolve the promise. */
             if (i === body.events.length - 1) pagesRemaining--;
             if (pagesRemaining === 0) {
               resolve();
