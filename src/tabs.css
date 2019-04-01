@@ -1,0 +1,54 @@
+.tab-list {
+    padding: 0px;
+    margin: 0px;
+    border-bottom: 5px;
+    border-bottom-color:  rgb(10, 131, 20);
+  }
+  
+  .tab-list-item {
+    width: 50%;
+    display: inline-block;
+    list-style: none;
+    margin-bottom: -1px;
+    padding: 0.5rem 0.75rem;
+    color: #789
+  }
+  
+  .tab-list-active {
+    background-color: hsla(0, 0%, 98%, 1);
+    border: solid rgb(10, 131, 20);
+    border-width: 1px 1px 1px 1px;
+    color: rgb(12, 130, 28);
+  }
+
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,700');
+@import url('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
+
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}html,body{height:100vh;}body{display:flex;align-items:center;justify-content:center;padding:40px;font:14px/1.5 'Open Sans',sans-serif;color:#345;background:#f0f2f4;}
+
+p:not(:last-child) {
+  margin: 0 0 20px;
+}
+
+
+.tab-list {
+  width: 100%;
+  display: inline-block;
+  margin: 0 0 -1px;
+  padding: 15px 25px;
+  font-weight: 600;
+  text-align: center;
+  border: 1px solid transparent;
+}
+
+label:before {
+  font-family: fontawesome;
+  font-weight: normal;
+  margin-right: 10px;
+}
+
+.tab-list-item:hover {
+  color: rgb(12, 130, 28);
+  cursor: pointer;
+  background-color:  hsla(0, 0%, 99%, 1);
+}

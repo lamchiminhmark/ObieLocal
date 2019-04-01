@@ -1,10 +1,16 @@
 /* eslint-disable no-loop-func */
-const mariadb = require('mariadb');
+const mysql = require('mysql');
+// TODO(CP): Change where you source for ./db_logins
 const logins = require('./db_logins');
 const request = require('request');
+var util = require('util');
 
 /* Sets the login information for the mariadb module */
-const pool = mariadb.createPool(logins.editorPool);
+//const pool = mariadb.createPool(logins.editorPool);
+
+const editorPool = mysql.createPool(logins.editorPool);
+const viewerPool = mysql.createPool(logins.viewerPool);
+
 
 /* Assuming there are always 2 pages of events on the API */
 const NUM_PAGES = 2;
@@ -13,7 +19,30 @@ const NUM_PAGES = 2;
 prints out a message on success or failure. If it succeeds, it
 calls the getEvents() function to pull from the API and
 populate the database. */
-pool
+editorPool
+.getConnection((err, connection) => {
+  if (err) {
+      if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+          console.error('Database connection was closed.')
+      }
+      if (err.code === 'ER_CON_COUNT_ERROR') {
+          console.error('Database has too many connections.')
+      }
+      if (err.code === 'ECONNREFUSED') {
+          console.error('Database connection was refused.')
+      }
+  }
+  if (connection) {
+    clearDatabase();
+    getEvents(NUM_PAGES)
+    .then(() => {
+      editorPool.end();
+    })
+  }
+  return
+});
+
+/*pool
   .getConnection()
   .then(conn => {
     console.log('Successfully connected!');
@@ -27,13 +56,18 @@ pool
   })
   .then(() => {
     pool.end();
-  });
+  });*/
 
 /**
  * Delete events from the database that are from the API or have already passed.
  */
-function clearDatabase() {
-  return pool.query(`DELETE FROM Events WHERE verified=1 OR end_time < NOW()`);
+async function clearDatabase() {
+  try {
+    var result = await viewerPool.query(`DELETE FROM Events WHERE verified=1 OR end_time < NOW()`)
+} catch(err) {
+  throw new Error(err)
+}
+return result;
 }
 
 /* Uses the request module to send a request to the API and retrieve the JSON event
@@ -48,7 +82,7 @@ function getEvents(maxPages) {
       request(
         `https://calendar.oberlin.edu/api/2/events?page=${page}`,
         { json: true, timeout: 1500 },
-        (err, res, body) => {
+        async (err, res, body) => {
           /* Upon request error, log the error and kill the process immediately.
 					This should be reworked at some point. Calling process.exit() is
 					kind of bad practice. */
@@ -80,8 +114,9 @@ function getEvents(maxPages) {
 
             /* Begin insertion of event into database. If the INSERT query returns
 						an error, the script will log it and continue on to the next event. At
-						the end of all events, it will close the connection. */
-            pool
+            the end of all events, it will close the connection. */
+            try {
+            var rows = await editorPool
               .query(
                 `INSERT INTO Events (
 							ID,
@@ -125,31 +160,29 @@ function getEvents(maxPages) {
 							${event.longitude},
 							${event.start_time},
 							${event.end_time}
-						)`
-              )
-              /* Log the rows as they are inserted into the database.
-							Upon reaching the final event, resolve the promise. */
-              .then(rows => {
-                console.log(rows);
-                if (i === body.events.length - 1) pagesRemaining--;
-                if (pagesRemaining === 0) {
-                  resolve();
-                }
-              })
-              /* These errors are anticipated to be from duplicate
+            )`
+              )} 
+            /* These errors are anticipated to be from duplicate
 							entries, so the loop will continue to reach every event.
 							Upon reaching the final event, resolve the promise. */
-              .catch(err => {
-                console.log(
-                  `ERROR: EventID: ${event.eventID}, code: ${err.code}, i: ${i}`
-                );
-                if (i === body.events.length - 1) pagesRemaining--;
-                if (pagesRemaining === 0) {
-                  resolve();
+            catch (err){
+              console.log(
+                `ERROR: EventID: ${event.eventID}, code: ${err.code}, i: ${i}`
+              );
+              if (i === body.events.length - 1) pagesRemaining--;
+              if (pagesRemaining === 0) {
+                resolve();
                 }
-              });
+              }
+              /* Log the rows as they are inserted into the database.
+							Upon reaching the final event, resolve the promise. */
+              console.log(rows);
+              if (i === body.events.length - 1) pagesRemaining--;
+              if (pagesRemaining === 0) {
+                resolve();
+              }
+            }
           }
-        }
       );
     }
   });

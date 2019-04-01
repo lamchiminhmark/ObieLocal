@@ -146,7 +146,7 @@ export default class CreateEventContainer extends Component {
 
     const toSubmit = this.calculateTime();
 
-    fetch(`http://obielocal.cs.oberlin.edu:3001/query`, {
+    fetch(`obielocal-1541269219020.appspot.com/query`, {
       // fetch(`http://localhost:3001/query`, {
       method: 'POST',
       mode: 'cors',

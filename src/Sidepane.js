@@ -2,47 +2,53 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import ReactHtmlParser from 'react-html-parser';
 
+import Tabs from './Tabs';
+import './tabs.css';
+import SidepaneCloseButton from './SidepaneCloseButton';
+
+import AgendaEventList from './AgendaEventList'
+
 const StyledPane = styled.div`
   margin: 0px;
   padding: 0px;
-  top: 60px;
-  width: 25%;
-  --pane-min-width: 200px;
-  min-width: var(--pane-min-width);
-  height: 85%;
+  top: 0px;
+  width: 90%;
+  --pane-max-width: 450px;
+  max-width: var(--pane-max-width);
+  height: 100%;
+  position: fixed;
   transition: all 1s;
+  z-index: 2;
 `;
 
 const PaneBody = styled.div`
-  height: 95%;
-  width: 95%;
+  height: 100%;
+  width: 100%;
   position: absolute;
   top: 50%;
   transform: translate(0, -50%);
   margin: 0px;
-  padding: 5px;
+  padding: 0px;
   overflow: hidden auto;
-  background-color: #fb6060e3;
-  border: 3px solid white;
-  border-right: 12px solid rgb(75, 75, 75);
+  background-color: hsla(0, 0%, 96%, 1);
   border-radius: 0px;
-  border-style: inset;
-  box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.27);
+  box-shadow: 10px 10px 7px rgba(0, 0, 0, 0.27);
 
-  h1 {
-    background-color: rgba(255, 184, 29, 0.7);
-    cursor: default;
+  .event-details {
+    margin: 0px;
   }
-
+  h1 {
+    background-color: #cedd0e;
+    margin: 0px;
+  }
   p {
     overflow: clip;
+    padding: 15px;
     cursor: default;
   }
-
   em {
     font-weight: bold;
   }
-
   img {
     max-width: 95%;
     margin: auto;
@@ -54,7 +60,6 @@ const Div = styled.div`
   width: var(--pane-min-width);
   top: 0px;
   right: 0px;
-
   button {
     position: absolute;
     width: 50px;
@@ -66,22 +71,18 @@ const Div = styled.div`
     font-weight: bolder;
     transition: background-color 0.3s ease;
   }
-
   button:hover {
     background-color: #a1dafdef;
   }
-
   #button-prev-event {
     left: 0;
     margin-left: 16%;
   }
-
   #button-next-event {
     right: 0;
     margin-right: 16%;
   }
 `;
-
 export default class Sidepane extends Component {
   constructor(props) {
     super(props);
@@ -151,28 +152,82 @@ export default class Sidepane extends Component {
       this.props.eventArray[this.props.eventIdx].address || 'Location unknown.';
     const desc = this.props.eventArray[this.props.eventIdx].desc;
     const eventSwitchButtons = this.getEventSwitchButtons();
-
-    return (
-      <StyledPane
-        className={this.props.active ? 'Sidepane-active' : 'Sidepane-inactive'}
-      >
-        <PaneBody onClick={this.props.handleSidepaneClick}>
-          <h1>{this.props.eventArray[this.props.eventIdx].title}</h1>
-          <p>{desc}</p>
-          <p className="event-details">
-            <em>Where and When: </em>
-            {`${locationString} ${timeString}`}
-          </p>
-          <img
-            src={this.props.eventArray[this.props.eventIdx].photo_url}
-            alt=""
+    /* If no event is selected */
+    console.log("Prop in sidepane");
+    console.log(this.props.activeTab);
+    if (this.props.eventArray[0].ID == 0)
+      return (
+        <StyledPane
+          className={
+            this.props.active ? 'Sidepane-active' : 'Sidepane-inactive'
+          }
+          id="sidepane"
+        >
+          <PaneBody>
+            <Tabs activeTab={this.props.activeTab}>
+              {/* Event Tab */}
+              <div label="Event">
+                <p>Please select an event to view details</p>
+              </div>
+              {/* Agenda Tab */}
+          <div label="Agenda">
+            <AgendaEventList 
+              checkEventTimes={this.props.checkEventTimes} 
+              handleAgendaClick={this.props.handleAgendaClick} 
+              timeFormatter={this.getEventTimeString}/>
+          </div>
+            </Tabs>
+          </PaneBody>
+          <SidepaneCloseButton
+            id="sidepane-close"
+            handleSidepaneClick={this.props.handleSidepaneClick}
           />
-          {ReactHtmlParser(
-            this.props.eventArray[this.props.eventIdx].description
-          )}
-        </PaneBody>
-        {eventSwitchButtons}
-      </StyledPane>
-    );
+          {eventSwitchButtons}
+        </StyledPane>
+      );
+    else
+      return (
+        <StyledPane
+          className={
+            this.props.active ? 'Sidepane-active' : 'Sidepane-inactive'
+          }
+        >
+          <PaneBody>
+            <Tabs activeTab={this.props.activeTab}>
+              {/* Event Tab */}
+              <div label="Event">
+                <h1>{this.props.eventArray[this.props.eventIdx].title}</h1>
+                <p className="event-details">
+                  <em>Where and When: </em>
+                  <br />
+                  {`${locationString}`}
+                  <br />
+                  {`Today! ${timeString}`}
+                </p>
+                <img
+                  src={this.props.eventArray[this.props.eventIdx].photo_url}
+                  alt=""
+                />
+                {ReactHtmlParser(
+                  this.props.eventArray[this.props.eventIdx].description
+                )}
+              </div>
+              {/* Agenda Tab */}
+          <div label="Agenda">
+          <AgendaEventList 
+            checkEventTimes={this.props.checkEventTimes} 
+            handleAgendaClick={this.props.handleAgendaClick}
+            timeFormatter={this.getEventTimeString}
+          />
+          </div>
+            </Tabs>
+          </PaneBody>
+          {eventSwitchButtons}
+          <SidepaneCloseButton
+            handleSidepaneClick={this.props.handleSidepaneClick}
+            id="sidepane-close"
+          />
+        </StyledPane>
+      );
   }
 }

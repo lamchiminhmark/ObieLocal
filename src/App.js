@@ -8,6 +8,7 @@ import Sidepane from './Sidepane';
 import Marker from './Marker';
 import CreateEventContainer from './CreateEventContainer';
 import constants from './constants';
+import MenuButton from './MenuButton';
 
 class App extends Component {
   constructor(props) {
@@ -30,11 +31,13 @@ class App extends Component {
       ],
       activeEventIdx: 0,
       sidepaneOpen: false,
-      createEventContainerOpen: false
+      createEventContainerOpen: false,
+      activeTab: "Event"
     };
 
     this.fetchData = this.fetchData.bind(this);
     this.handleMarkerClick = this.handleMarkerClick.bind(this);
+    this.handleAgendaClick = this.handleAgendaClick.bind(this);
     this.handleEventSwitch = this.handleEventSwitch.bind(this);
     this.toggleSidepane = this.toggleSidepane.bind(this);
     this.toggleCreateEventContainer = this.toggleCreateEventContainer.bind(
@@ -51,26 +54,38 @@ class App extends Component {
    * appropriate markers that fall within the given time frame.
    */
   fetchData() {
-    fetch('http://obielocal.cs.oberlin.edu:3001/query')
+    fetch('https://obielocal-1541269219020.appspot.com/query')
       // fetch("http://localhost:3001/query")
       .then(response => response.json())
       .then(arr => {
         const markers = arr
-          .filter(checkEventTimes)
+          //.filter(checkEventTimes)
           .reduce(toMarkerArray, [])
           .map(toMarkerElement, this);
+          
         this.setState({ markers });
       })
       .catch(error => console.error('Loading markers failed! ', error));
   }
 
-  handleMarkerClick(eventArray) {
-    // If the CreateEvent panel is open, Sidepane can't be opened
-    if (this.state.createEventContainerOpen) return;
+  handleAgendaClick(eventArray) {
     this.setState({
       activeEventArray: eventArray,
       activeEventIdx: 0,
-      sidepaneOpen: true
+      sidepaneOpen: true,
+      activeTab: "Event"
+    });
+  }
+
+  handleMarkerClick(eventArray) {
+    // If the CreateEvent panel is open, Sidepane can't be opened
+    if (this.state.createEventContainerOpen) return;
+    console.log("Marker clicked!");
+    this.setState({
+      activeEventArray: eventArray,
+      activeEventIdx: 0,
+      sidepaneOpen: true,
+      activeTab: "Event"
     });
   }
 
@@ -90,9 +105,9 @@ class App extends Component {
   toggleSidepane(obj) {
     if (this.state.createEventContainerOpen) return;
     if (obj && obj.close) this.setState({ sidepaneOpen: !obj.close });
-    else if (this.state.activeEventArray[0].ID !== 0)
+    else //if (this.state.activeEventArray[0].ID !== 0)
       this.setState({ sidepaneOpen: !this.state.sidepaneOpen });
-    else alert('You must select an event marker to view event information.');
+    //else alert('You must select an event marker to view event information.');
   }
 
   /* If show is true, CreateEventContainer is opened, otherwise it is closed*/
@@ -103,7 +118,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <NavBar />
+        <NavBar handleMenuClick={this.toggleSidepane} />
         <MapContainer zoom={18}>
           {Children.toArray(this.state.markers)}
         </MapContainer>
@@ -113,6 +128,9 @@ class App extends Component {
           handleSidepaneClick={this.toggleSidepane}
           handleEventSwitch={this.handleEventSwitch}
           eventIdx={this.state.activeEventIdx}
+          checkEventTimes={this.checkEventTimes}
+          activeTab={this.state.activeTab}
+          handleAgendaClick={this.handleAgendaClick}
         />
         <PlusButton
           toggleCreateEventContainer={this.toggleCreateEventContainer}

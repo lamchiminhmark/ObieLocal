@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import Popup from './Popup';
 import styled from 'styled-components';
+import MenuButton from './MenuButton';
+
+const Container = styled.div`
+  width: 100%;
+  border: 5px red;
+`;
 
 const StyledNav = styled.div`
   background: #222222;
@@ -11,13 +17,14 @@ const StyledNav = styled.div`
 
   ul {
     font-family: 'Varela Round', sans-serif;
-    display: flex;
+    display: inline-flex;
     flex-direction: row;
-    justify-content: right;
+    justify-content: flex-end;
     flex-wrap: wrap;
     list-style-type: none;
     padding: 0px;
     margin: auto;
+    float: right;
   }
 
   li {
@@ -39,7 +46,7 @@ const StyledNav = styled.div`
 
   button:hover {
     /* background-color: rgba(255, 255, 255, 0.2); */
-    color: var(--oberlin-red);
+    color: #cedd0e;
   }
 `;
 
@@ -79,21 +86,24 @@ class NavBar extends Component {
     }
 
     return (
-      <StyledNav id="navbar">
-        <ul>
-          <li key="1">
-            <button id="aboutBtn" onClick={this.togglePopup}>
-              About
-            </button>
-          </li>
-          <li key="2">
-            <button id="contactBtn" onClick={this.togglePopup}>
-              Contact
-            </button>
-          </li>
-        </ul>
-        {popupElement}
-      </StyledNav>
+      <Container id="interface">
+        <StyledNav id="navbar">
+          <MenuButton handleMenuClick={this.props.handleMenuClick} />
+          <ul>
+            <li key="1">
+              <button id="aboutBtn" onClick={this.togglePopup}>
+                About
+              </button>
+            </li>
+            <li key="2">
+              <button id="contactBtn" onClick={this.togglePopup}>
+                Contact
+              </button>
+            </li>
+          </ul>
+          {popupElement}
+        </StyledNav>
+      </Container>
     );
   }
 }

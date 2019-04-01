@@ -5,14 +5,12 @@
 
 .Sidepane-active {
   position: fixed;
-  left: 0px;
-  cursor: pointer;
+  left: -3px;
 }
 
 .Sidepane-inactive {
   position: fixed;
-  transform: translate(-90%, 0%);
-  cursor: pointer;
+  transform: translate(-110%, 0%);
 }
 
 button {
