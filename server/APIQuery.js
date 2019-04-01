@@ -94,7 +94,7 @@ async function getEvents(maxPages, connection) {
 						an error, the script will log it and continue on to the next event. At
             the end of all events, it will close the connection. */
             try {
-              var rows = await connection.query(
+              await connection.query(
                 `INSERT INTO Events (
 							ID,
 							title,
