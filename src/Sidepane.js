@@ -6,7 +6,7 @@ import Tabs from './Tabs';
 import './tabs.css';
 import SidepaneCloseButton from './SidepaneCloseButton';
 
-import AgendaEventList from './AgendaEventList'
+import AgendaEventList from './AgendaEventList';
 
 const StyledPane = styled.div`
   margin: 0px;
@@ -150,12 +150,11 @@ export default class Sidepane extends Component {
     const timeString = this.getEventTimeString(this.props.eventIdx);
     const locationString =
       this.props.eventArray[this.props.eventIdx].address || 'Location unknown.';
-    const desc = this.props.eventArray[this.props.eventIdx].desc;
     const eventSwitchButtons = this.getEventSwitchButtons();
     /* If no event is selected */
-    console.log("Prop in sidepane");
+    console.log('Prop in sidepane');
     console.log(this.props.activeTab);
-    if (this.props.eventArray[0].ID == 0)
+    if (this.props.eventArray[0].ID === 0)
       return (
         <StyledPane
           className={
@@ -170,12 +169,13 @@ export default class Sidepane extends Component {
                 <p>Please select an event to view details</p>
               </div>
               {/* Agenda Tab */}
-          <div label="Agenda">
-            <AgendaEventList 
-              checkEventTimes={this.props.checkEventTimes} 
-              handleAgendaClick={this.props.handleAgendaClick} 
-              timeFormatter={this.getEventTimeString}/>
-          </div>
+              <div label="Agenda">
+                <AgendaEventList
+                  checkEventTimes={this.props.checkEventTimes}
+                  handleAgendaClick={this.props.handleAgendaClick}
+                  timeFormatter={this.getEventTimeString}
+                />
+              </div>
             </Tabs>
           </PaneBody>
           <SidepaneCloseButton
@@ -213,13 +213,13 @@ export default class Sidepane extends Component {
                 )}
               </div>
               {/* Agenda Tab */}
-          <div label="Agenda">
-          <AgendaEventList 
-            checkEventTimes={this.props.checkEventTimes} 
-            handleAgendaClick={this.props.handleAgendaClick}
-            timeFormatter={this.getEventTimeString}
-          />
-          </div>
+              <div label="Agenda">
+                <AgendaEventList
+                  checkEventTimes={this.props.checkEventTimes}
+                  handleAgendaClick={this.props.handleAgendaClick}
+                  timeFormatter={this.getEventTimeString}
+                />
+              </div>
             </Tabs>
           </PaneBody>
           {eventSwitchButtons}
