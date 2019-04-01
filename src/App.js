@@ -2,7 +2,6 @@ import React, { Component, Children } from 'react';
 import MapContainer from './MapContainer';
 import NavBar from './NavBar';
 import './App.css';
-import PlusButton from './PlusButton';
 import Sidepane from './Sidepane';
 import Marker from './Marker';
 import constants from './constants';
@@ -128,10 +127,6 @@ class App extends Component {
           checkEventTimes={this.checkEventTimes}
           activeTab={this.state.activeTab}
           handleAgendaClick={this.handleAgendaClick}
-        />
-        <PlusButton
-          toggleCreateEventContainer={this.toggleCreateEventContainer}
-          toggleSidepane={this.toggleSidepane}
         />
       </div>
     );
