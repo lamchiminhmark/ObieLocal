@@ -2,13 +2,10 @@ import React, { Component, Children } from 'react';
 import MapContainer from './MapContainer';
 import NavBar from './NavBar';
 import './App.css';
-import UserButton from './UserButton';
 import PlusButton from './PlusButton';
 import Sidepane from './Sidepane';
 import Marker from './Marker';
-import CreateEventContainer from './CreateEventContainer';
 import constants from './constants';
-import MenuButton from './MenuButton';
 
 class App extends Component {
   constructor(props) {
@@ -135,12 +132,6 @@ class App extends Component {
         <PlusButton
           toggleCreateEventContainer={this.toggleCreateEventContainer}
           toggleSidepane={this.toggleSidepane}
-        />
-        {/* <UserButton /> */}
-        <CreateEventContainer
-          active={this.state.createEventContainerOpen}
-          toggleCreateEventContainer={this.toggleCreateEventContainer}
-          fetchMarkers={this.fetchData}
         />
       </div>
     );
