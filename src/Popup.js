@@ -45,17 +45,12 @@ const bodyTexts = {
     students find out what's happening on campus through a visual interface.
     The first version of ObieLocal was developed by Colton Potter, Minh Lam,
     Thomas Nemeh, and Lukas Griffin for their 'Systems Programming' final
-    project. It continues to be developed by Colton and Minh.`,
-  use: `Click on a pin and information for all events at that location will be
-    displayed. To add a custom event, click on the plus button in the lower
-    right hand corner of the screen. The user button will be functional in a
-    later version (soon!).`
+    project. It continues to be developed by Colton and Minh.`
 };
 
 const titles = {
   contact: `Contact`,
-  about: `About`,
-  use: `Usage`
+  about: `About`
 };
 
 class Popup extends React.Component {

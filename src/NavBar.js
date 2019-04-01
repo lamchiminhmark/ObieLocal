@@ -1,37 +1,52 @@
 import React, { Component } from 'react';
 import Popup from './Popup';
 import styled from 'styled-components';
+import MenuButton from './MenuButton';
+
+const Container = styled.div`
+  width: 100%;
+  border: 5px red;
+`;
 
 const StyledNav = styled.div`
-  background: linear-gradient(#ff7873, #ef3b43);
+  background: #222222;
   position: fixed;
   top: 0px;
+  z-index: 1;
+  width: 100%;
 
   ul {
-    display: flex;
+    font-family: 'Varela Round', sans-serif;
+    display: inline-flex;
     flex-direction: row;
+    justify-content: flex-end;
     flex-wrap: wrap;
     list-style-type: none;
     padding: 0px;
-    margin: 0px;
-    border-right: 2px solid rgb(75, 75, 75);
-    border-bottom: 2px solid rgb(75, 75, 75);
+    margin: auto;
+    float: right;
   }
 
   li {
-    padding: 7px 3px;
+    padding: 0;
   }
 
   button {
-    padding: 10px;
-    border: 2px solid rgb(25, 25, 25);
-    background-color: rgba(255, 255, 255, 0.9);
+    color: white;
+    padding: 1vh;
+    border-top: none;
+    border-bottom: none;
+    border-right: 1px solid whitesmoke;
+    border-left: 1px solid whitesmoke;
+    background-color: rgba(255, 255, 255, 0);
     text-decoration: none;
-    color: black;
+    box-shadow: none;
+    font-size: 20px;
   }
 
   button:hover {
-    background-color: rgba(200, 200, 200, 0.9);
+    /* background-color: rgba(255, 255, 255, 0.2); */
+    color: #cedd0e;
   }
 `;
 
@@ -71,26 +86,24 @@ class NavBar extends Component {
     }
 
     return (
-      <StyledNav id="navbar">
-        <ul>
-          <li key="1">
-            <button id="aboutBtn" onClick={this.togglePopup}>
-              About
-            </button>
-          </li>
-          <li key="2">
-            <button id="contactBtn" onClick={this.togglePopup}>
-              Contact
-            </button>
-          </li>
-          <li key="3">
-            <button id="useBtn" onClick={this.togglePopup}>
-              How to Use
-            </button>
-          </li>
-        </ul>
-        {popupElement}
-      </StyledNav>
+      <Container id="interface">
+        <StyledNav id="navbar">
+          <MenuButton handleMenuClick={this.props.handleMenuClick} />
+          <ul>
+            <li key="1">
+              <button id="aboutBtn" onClick={this.togglePopup}>
+                About
+              </button>
+            </li>
+            <li key="2">
+              <button id="contactBtn" onClick={this.togglePopup}>
+                Contact
+              </button>
+            </li>
+          </ul>
+          {popupElement}
+        </StyledNav>
+      </Container>
     );
   }
 }

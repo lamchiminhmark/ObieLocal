@@ -2,12 +2,11 @@ import React, { Component, Children } from 'react';
 import MapContainer from './MapContainer';
 import NavBar from './NavBar';
 import './App.css';
-import UserButton from './UserButton';
-import PlusButton from './PlusButton';
 import Sidepane from './Sidepane';
 import Marker from './Marker';
-import CreateEventContainer from './CreateEventContainer';
 import constants from './constants';
+import ReactGA from 'react-ga';
+import config from './config';
 
 class App extends Component {
   constructor(props) {
@@ -30,11 +29,13 @@ class App extends Component {
       ],
       activeEventIdx: 0,
       sidepaneOpen: false,
-      createEventContainerOpen: false
+      createEventContainerOpen: false,
+      activeTab: 'Event'
     };
 
     this.fetchData = this.fetchData.bind(this);
     this.handleMarkerClick = this.handleMarkerClick.bind(this);
+    this.handleAgendaClick = this.handleAgendaClick.bind(this);
     this.handleEventSwitch = this.handleEventSwitch.bind(this);
     this.toggleSidepane = this.toggleSidepane.bind(this);
     this.toggleCreateEventContainer = this.toggleCreateEventContainer.bind(
@@ -43,6 +44,7 @@ class App extends Component {
   }
 
   componentDidMount() {
+    initializeReactGA();
     this.fetchData();
   }
 
@@ -51,7 +53,7 @@ class App extends Component {
    * appropriate markers that fall within the given time frame.
    */
   fetchData() {
-    fetch('http://obielocal.cs.oberlin.edu:3001/query')
+    fetch('https://obielocal-1541269219020.appspot.com/query')
       // fetch("http://localhost:3001/query")
       .then(response => response.json())
       .then(arr => {
@@ -59,18 +61,41 @@ class App extends Component {
           .filter(checkEventTimes)
           .reduce(toMarkerArray, [])
           .map(toMarkerElement, this);
+
         this.setState({ markers });
       })
       .catch(error => console.error('Loading markers failed! ', error));
   }
 
-  handleMarkerClick(eventArray) {
-    // If the CreateEvent panel is open, Sidepane can't be opened
-    if (this.state.createEventContainerOpen) return;
+  handleAgendaClick(eventArray) {
+    // Update google analytics on Agenda Click action
+    const selectedEvent = eventArray[0];
+    ReactGA.event({
+      category: 'User',
+      action: 'Agenda Click',
+      label: selectedEvent.title
+    });
     this.setState({
       activeEventArray: eventArray,
       activeEventIdx: 0,
-      sidepaneOpen: true
+      sidepaneOpen: true,
+      activeTab: 'Event'
+    });
+  }
+
+  handleMarkerClick(eventArray) {
+    // If the CreateEvent panel is open, Sidepane can't be opened
+    if (this.state.createEventContainerOpen) return;
+    // Update google analytics about user click
+    ReactGA.event({
+      category: 'User',
+      action: 'Marker Click'
+    });
+    this.setState({
+      activeEventArray: eventArray,
+      activeEventIdx: 0,
+      sidepaneOpen: true,
+      activeTab: 'Event'
     });
   }
 
@@ -90,9 +115,9 @@ class App extends Component {
   toggleSidepane(obj) {
     if (this.state.createEventContainerOpen) return;
     if (obj && obj.close) this.setState({ sidepaneOpen: !obj.close });
-    else if (this.state.activeEventArray[0].ID !== 0)
-      this.setState({ sidepaneOpen: !this.state.sidepaneOpen });
-    else alert('You must select an event marker to view event information.');
+    //if (this.state.activeEventArray[0].ID !== 0)
+    else this.setState({ sidepaneOpen: !this.state.sidepaneOpen });
+    //else alert('You must select an event marker to view event information.');
   }
 
   /* If show is true, CreateEventContainer is opened, otherwise it is closed*/
@@ -101,8 +126,10 @@ class App extends Component {
   }
 
   render() {
+    initializeReactGA();
     return (
       <div className="App">
+        <NavBar handleMenuClick={this.toggleSidepane} />
         <MapContainer zoom={18}>
           {Children.toArray(this.state.markers)}
         </MapContainer>
@@ -112,17 +139,9 @@ class App extends Component {
           handleSidepaneClick={this.toggleSidepane}
           handleEventSwitch={this.handleEventSwitch}
           eventIdx={this.state.activeEventIdx}
-        />
-        <NavBar />
-        <PlusButton
-          toggleCreateEventContainer={this.toggleCreateEventContainer}
-          toggleSidepane={this.toggleSidepane}
-        />
-        <UserButton />
-        <CreateEventContainer
-          active={this.state.createEventContainerOpen}
-          toggleCreateEventContainer={this.toggleCreateEventContainer}
-          fetchMarkers={this.fetchData}
+          checkEventTimes={this.checkEventTimes}
+          activeTab={this.state.activeTab}
+          handleAgendaClick={this.handleAgendaClick}
         />
       </div>
     );
@@ -200,6 +219,14 @@ function toMarkerElement(markerObj) {
       eventArray={markerObj.events}
     />
   );
+}
+
+/**
+ * Calling function will increase hit count on Google Analytics by 1
+ */
+function initializeReactGA() {
+  ReactGA.initialize(config.GOOGLE_ANALYTICS_ID);
+  ReactGA.pageview('/');
 }
 
 export default App;
