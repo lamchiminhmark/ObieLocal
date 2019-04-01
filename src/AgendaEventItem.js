@@ -68,6 +68,17 @@ render() {
     </div>
     )
 
+    const defaultImg = "https://d3e1o4bcbhmj8g.cloudfront.net/photos/204534/huge/ee2941c721f2cc491db9f4fb3abdf034ccad369c.jpg"
+    
+    //If photo_url is null then set it to default image
+    let photoURL;
+    if (photo_url) {
+      photoURL = photo_url
+    }
+    else {
+      photoURL = defaultImg
+    }
+
     const whichTitle = () => {
       if (!verified) {return titleAllRoad()} else {return titleNormal()}
     }
@@ -75,7 +86,7 @@ render() {
     return (
       <li className="agenda-event-item">
         <div className="event-img-title">
-          <img src={photo_url} alt={title} />
+          <img src={photoURL} alt={title} />
          {whichTitle()}
         </div>
         <div className="event-text">

@@ -5,6 +5,8 @@ import './App.css';
 import Sidepane from './Sidepane';
 import Marker from './Marker';
 import constants from './constants';
+import ReactGA from 'react-ga';
+import config from './config';
 
 class App extends Component {
   constructor(props) {
@@ -65,6 +67,13 @@ class App extends Component {
   }
 
   handleAgendaClick(eventArray) {
+    // Update google analytics on Agenda Click action
+    const selectedEvent = eventArray[0]
+    ReactGA.event({
+      category: 'User',
+      action: 'Agenda Click',
+      label: selectedEvent.title,
+    })
     this.setState({
       activeEventArray: eventArray,
       activeEventIdx: 0,
@@ -112,6 +121,7 @@ class App extends Component {
   }
 
   render() {
+    initializeReactGA();
     return (
       <div className="App">
         <NavBar handleMenuClick={this.toggleSidepane} />
@@ -204,6 +214,14 @@ function toMarkerElement(markerObj) {
       eventArray={markerObj.events}
     />
   );
+}
+
+/**
+ * Calling function will increase hit count on Google Analytics by 1
+ */
+function initializeReactGA() {
+  ReactGA.initialize(config.GOOGLE_ANALYTICS_ID);
+  ReactGA.pageview('/');
 }
 
 export default App;
