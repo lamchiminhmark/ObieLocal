@@ -71,6 +71,11 @@ class App extends Component {
   handleMarkerClick(eventArray) {
     // If the CreateEvent panel is open, Sidepane can't be opened
     if (this.state.createEventContainerOpen) return;
+    // Update google analytics about user click
+    ReactGA.event({
+      category: 'User',
+      action: 'Marker Click',
+    });
     this.setState({
       activeEventArray: eventArray,
       activeEventIdx: 0,
