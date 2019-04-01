@@ -58,7 +58,7 @@ class App extends Component {
       .then(response => response.json())
       .then(arr => {
         const markers = arr
-          //.filter(checkEventTimes)
+          .filter(checkEventTimes)
           .reduce(toMarkerArray, [])
           .map(toMarkerElement, this);
           
