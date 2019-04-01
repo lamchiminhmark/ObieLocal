@@ -152,8 +152,6 @@ export default class Sidepane extends Component {
       this.props.eventArray[this.props.eventIdx].address || 'Location unknown.';
     const eventSwitchButtons = this.getEventSwitchButtons();
     /* If no event is selected */
-    console.log('Prop in sidepane');
-    console.log(this.props.activeTab);
     if (this.props.eventArray[0].ID === 0)
       return (
         <StyledPane
