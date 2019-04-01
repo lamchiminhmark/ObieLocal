@@ -1,16 +1,11 @@
 /* eslint-disable no-loop-func */
 const mysql = require('mysql');
-// TODO(CP): Change where you source for ./db_logins
-const logins = require('./db_logins');
+const logins = require('./mysqlConfig');
 const request = require('request');
-var util = require('util');
+const util = require('util');
 
-/* Sets the login information for the mariadb module */
-//const pool = mariadb.createPool(logins.editorPool);
-
+/* Sets the login information for the mysql module */
 const editorPool = mysql.createPool(logins.editorPool);
-const viewerPool = mysql.createPool(logins.viewerPool);
-
 
 /* Assuming there are always 2 pages of events on the API */
 const NUM_PAGES = 2;
@@ -19,55 +14,38 @@ const NUM_PAGES = 2;
 prints out a message on success or failure. If it succeeds, it
 calls the getEvents() function to pull from the API and
 populate the database. */
-editorPool
-.getConnection((err, connection) => {
-  if (err) {
-      if (err.code === 'PROTOCOL_CONNECTION_LOST') {
-          console.error('Database connection was closed.')
-      }
-      if (err.code === 'ER_CON_COUNT_ERROR') {
-          console.error('Database has too many connections.')
-      }
-      if (err.code === 'ECONNREFUSED') {
-          console.error('Database connection was refused.')
-      }
-  }
-  if (connection) {
-    clearDatabase();
-    getEvents(NUM_PAGES)
-    .then(() => {
-      editorPool.end();
-    })
-  }
-  return
-});
-
-/*pool
-  .getConnection()
-  .then(conn => {
-    console.log('Successfully connected!');
-    return conn.end();
-  })
-  .then(() => {
-    return clearDatabase();
-  })
-  .then(() => {
-    return getEvents(NUM_PAGES);
-  })
-  .then(() => {
-    pool.end();
-  });*/
+// TODO: Should the pool ever be closed? Or kept open with a
+// sleeping connection?
+module.exports.updateDatabase = function() {
+  return new Promise((resolve, reject) => {
+    editorPool.getConnection(async (err, connection) => {
+      if (err) {
+        reject(err);
+      } else if (connection)
+        try {
+          connection.query = util.promisify(connection.query);
+          await clearDatabase(connection);
+          await getEvents(NUM_PAGES, connection);
+          resolve();
+        } catch (e) {
+          reject(e);
+        }
+    });
+  });
+};
 
 /**
  * Delete events from the database that are from the API or have already passed.
  */
-async function clearDatabase() {
+async function clearDatabase(connection) {
   try {
-    var result = await viewerPool.query(`DELETE FROM Events WHERE verified=1 OR end_time < NOW()`)
-} catch(err) {
-  throw new Error(err)
-}
-return result;
+    var result = await connection.query(
+      `DELETE FROM Events WHERE verified=1 OR end_time < NOW()`
+    );
+  } catch (err) {
+    throw new Error(err);
+  }
+  return result;
 }
 
 /* Uses the request module to send a request to the API and retrieve the JSON event
@@ -75,7 +53,7 @@ objects that are stored on each page. Then, it inserts the events into the datab
 This should eventually be refactored into smaller, more manageable functions.
 TODO: Find a way to implement *future* events using the following API: 
 'https://calendar.oberlin.edu/api/2/events?start=2018-12-15&end=2018-12-19&page=1' */
-function getEvents(maxPages) {
+async function getEvents(maxPages, connection) {
   return new Promise(function(resolve, reject) {
     let pagesRemaining = maxPages;
     for (let page = 1; page <= maxPages; page++) {
@@ -116,8 +94,7 @@ function getEvents(maxPages) {
 						an error, the script will log it and continue on to the next event. At
             the end of all events, it will close the connection. */
             try {
-            var rows = await editorPool
-              .query(
+              await connection.query(
                 `INSERT INTO Events (
 							ID,
 							title,
@@ -161,30 +138,29 @@ function getEvents(maxPages) {
 							${event.start_time},
 							${event.end_time}
             )`
-              )} 
-            /* These errors are anticipated to be from duplicate
+              );
+            } catch (err) {
+              /* These errors are anticipated to be from duplicate
 							entries, so the loop will continue to reach every event.
 							Upon reaching the final event, resolve the promise. */
-            catch (err){
               console.log(
                 `ERROR: EventID: ${event.eventID}, code: ${err.code}, i: ${i}`
               );
               if (i === body.events.length - 1) pagesRemaining--;
               if (pagesRemaining === 0) {
                 resolve();
-                }
-              }
-              /* Log the rows as they are inserted into the database.
-							Upon reaching the final event, resolve the promise. */
-              console.log(rows);
-              if (i === body.events.length - 1) pagesRemaining--;
-              if (pagesRemaining === 0) {
-                resolve();
               }
             }
+            /* Upon reaching the final event, resolve the promise. */
+            if (i === body.events.length - 1) pagesRemaining--;
+            if (pagesRemaining === 0) {
+              resolve();
+            }
           }
+        }
       );
     }
+    connection.release();
   });
 }
 
@@ -278,8 +254,8 @@ function formatEvent(body) {
     event.longitude = parseFloat(event.longitude);
   }
 
-	// TODO: We will need to find a way to deal with multiple event instances
-	// here.
+  // TODO: We will need to find a way to deal with multiple event instances
+  // here.
   event.start_time =
     body.event['event_instances'][0]['event_instance']['start'];
   event.start_time = formatDatetime(event.start_time);

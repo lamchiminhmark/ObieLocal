@@ -6,6 +6,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var queriesRouter = require('./routes/queries');
+var updateEventsRouter = require('./routes/updateEvents');
 
 var app = express();
 
@@ -26,8 +27,8 @@ app.use(function(req, res, next) {
   //   ['http://localhost:3000', 'obielocal.com']
   //     .includes(origin)
   // ) {
-    res.header('Access-Control-Allow-Origin', origin);
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
+  res.header('Access-Control-Allow-Origin', origin);
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
   // } else {
   //   next(createError(404));
   // }
@@ -36,6 +37,7 @@ app.use(function(req, res, next) {
 
 app.use('/', indexRouter);
 app.use('/query', queriesRouter);
+app.use('/updateEvents', updateEventsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
