@@ -20,7 +20,6 @@ class AgendaEventList extends React.Component {
       .then(response => response.json())
       .then(data => {
         this.storeEvents(data);
-        console.log(data);
       })
       .catch(error => console.error('Loading agenda failed ', error));
   }

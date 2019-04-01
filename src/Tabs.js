@@ -31,8 +31,6 @@ class Tabs extends Component {
       props: { children },
       state: { activeTab }
     } = this;
-    console.log('State in tabs');
-    console.log(this.state.activeTab);
     return (
       <div className="tabs">
         <ol className="tab-list">

@@ -154,8 +154,6 @@ export default class CreateEventContainer extends Component {
       body: JSON.stringify(toSubmit)
     })
       .then(async res => {
-        // console.log("res: ");
-        // console.log(res);
         const resObject = await res.json();
         if (res.status === 200 && resObject.eventAdded) {
           this.props.fetchMarkers();

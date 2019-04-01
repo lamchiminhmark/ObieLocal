@@ -60,7 +60,6 @@ class AgendaEventItem extends React.Component {
     } = this.props.event;
     var events = [];
     events.push(this.props.event);
-    console.log(events);
     /*All roads specific function */
     const titleAllRoad = () => (
       <div className="event-title-allroad">
