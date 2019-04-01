@@ -30,7 +30,7 @@ class App extends Component {
       activeEventIdx: 0,
       sidepaneOpen: false,
       createEventContainerOpen: false,
-      activeTab: "Event"
+      activeTab: 'Event'
     };
 
     this.fetchData = this.fetchData.bind(this);
@@ -61,7 +61,7 @@ class App extends Component {
           .filter(checkEventTimes)
           .reduce(toMarkerArray, [])
           .map(toMarkerElement, this);
-          
+
         this.setState({ markers });
       })
       .catch(error => console.error('Loading markers failed! ', error));
@@ -69,17 +69,17 @@ class App extends Component {
 
   handleAgendaClick(eventArray) {
     // Update google analytics on Agenda Click action
-    const selectedEvent = eventArray[0]
+    const selectedEvent = eventArray[0];
     ReactGA.event({
       category: 'User',
       action: 'Agenda Click',
-      label: selectedEvent.title,
-    })
+      label: selectedEvent.title
+    });
     this.setState({
       activeEventArray: eventArray,
       activeEventIdx: 0,
       sidepaneOpen: true,
-      activeTab: "Event"
+      activeTab: 'Event'
     });
   }
 
@@ -89,13 +89,13 @@ class App extends Component {
     // Update google analytics about user click
     ReactGA.event({
       category: 'User',
-      action: 'Marker Click',
+      action: 'Marker Click'
     });
     this.setState({
       activeEventArray: eventArray,
       activeEventIdx: 0,
       sidepaneOpen: true,
-      activeTab: "Event"
+      activeTab: 'Event'
     });
   }
 
@@ -115,8 +115,8 @@ class App extends Component {
   toggleSidepane(obj) {
     if (this.state.createEventContainerOpen) return;
     if (obj && obj.close) this.setState({ sidepaneOpen: !obj.close });
-    else //if (this.state.activeEventArray[0].ID !== 0)
-      this.setState({ sidepaneOpen: !this.state.sidepaneOpen });
+    //if (this.state.activeEventArray[0].ID !== 0)
+    else this.setState({ sidepaneOpen: !this.state.sidepaneOpen });
     //else alert('You must select an event marker to view event information.');
   }
 
