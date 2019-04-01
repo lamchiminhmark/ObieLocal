@@ -1,88 +1,86 @@
 .AgendaEventList {
-    flex-basis: auto;
-    display: flex;
-    flex-wrap: wrap;
-    padding: 20px 0;
-    margin: 0;
-  }
-  
+  flex-basis: auto;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 20px 0;
+  margin: 0;
+}
 
 ul {
-	display: flex;
-	padding: 20px;
+  display: flex;
+  padding: 20px;
 }
 
 .event-img-title {
-    display: inline-block;
-    /*max-height: 170px;*/
-    overflow: hidden;
-    width:100%;
+  display: inline-block;
+  /*max-height: 170px;*/
+  overflow: hidden;
+  width: 100%;
 }
 
 .agenda-event-item {
-    width: 100%;
-	/*height: 20%;*/
-	list-style: none;
-	box-sizing: border-box;
-	margin: 1.5%;
-	border: 1px solid rgb(218, 217, 217);
-    box-shadow: 0 10px 28px -7px rgba(0,0,0,0.1);
+  width: 100%;
+  /*height: 20%;*/
+  list-style: none;
+  box-sizing: border-box;
+  margin: 1.5%;
+  border: 1px solid rgb(218, 217, 217);
+  box-shadow: 0 10px 28px -7px rgba(0, 0, 0, 0.1);
 }
 
 .agenda-event-item img {
-    max-width: 40%;
-    float: left;
-    padding: 5px;
+  max-width: 40%;
+  float: left;
+  padding: 5px;
 }
 
 .event-title h2 {
-	color: rgb(41, 41, 41);
-	font-weight: bold;
-    text-overflow: ellipsis;
-    background-color: #cedd0e;
+  color: rgb(41, 41, 41);
+  font-weight: bold;
+  text-overflow: ellipsis;
+  background-color: #cedd0e;
 }
 
 .event-title-allroad img {
-    width: 100%;
+  width: 100%;
 }
 
 .event-title {
-    /*max-height: 170px;*/
-    overflow: hidden;
-    text-overflow: ellipsis; 
-    padding: 5px; 
+  /*max-height: 170px;*/
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 5px;
 }
 
 .agenda-event-desc {
-    max-height: 80px;
-    width: 100%;
-    text-align: left;
-    padding: 0px 0px 10px 10px;
-    margin-bottom: 15px;
-    overflow: hidden;
-
+  max-height: 80px;
+  width: 100%;
+  text-align: left;
+  padding: 0px 0px 10px 10px;
+  margin-bottom: 15px;
+  overflow: hidden;
 }
 
 .agenda-event-desc p {
-    /*! autoprefixer: off */
-    -webkit-box-orient: vertical;  
-    margin: 0px;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;  
-    overflow: hidden;
+  /*! autoprefixer: off */
+  -webkit-box-orient: vertical;
+  margin: 0px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .agenda-event-details {
-	/*display: flex;
+  /*display: flex;
     justify-content: space-between;*/
-    padding: 0 10px 10px;
+  padding: 0 10px 10px;
 }
 
 .agenda-event-details span {
-	color: #555;
-	font-size: 0.8rem;
-	font-weight: bold;
+  color: #555;
+  font-size: 0.8rem;
+  font-weight: bold;
 }
 
 /*.date_time, .location {
