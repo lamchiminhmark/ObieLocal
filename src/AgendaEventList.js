@@ -36,7 +36,9 @@ class AgendaEventList extends React.Component {
         end_time,
         description,
         address,
-        verified
+        verified,
+        longitude,
+        latitude,
       } = result;
       return {
         id,
@@ -47,7 +49,9 @@ class AgendaEventList extends React.Component {
         end_time,
         description,
         address,
-        verified
+        verified,
+        longitude,
+        latitude
       };
     });
     events.sort(function(a, b) {

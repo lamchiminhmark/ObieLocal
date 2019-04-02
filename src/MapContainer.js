@@ -5,14 +5,21 @@ import styledMapCanvas from './styledMapCanvas.js';
 import config from './config';
 
 export default props => {
+  console.log(props.zoom);
   return (
     <div style={styledMapCanvas}>
       <GoogleMapReact
+        /*Don't work
+        onZoomChanged={props.onZoomChanged}
+        ref={props.onMapMounted}
+        zoom={props.zoom}
+        onChange={props.handleRecenter}
+        =============================*/
         bootstrapURLKeys={{
           key: config.GOOGLE_MAP_API_KEY,
           language: 'en'
         }}
-        center={{ lat: 41.2926, lng: -82.2183 }}
+        center={{lat: props.lat,lng: props.lng}}
         zoom={props.zoom}
         options={{ styles: mapStyle, fullscreenControl: false }}
       >
