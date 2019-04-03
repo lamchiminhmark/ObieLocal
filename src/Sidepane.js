@@ -52,10 +52,10 @@ const PaneBody = styled.div`
     font-weight: bold;
   }
   /* // TODO(ML): remove this to see if img size is correct */
-  /* img {
+  .event-img{
     max-width: 95%;
     margin: auto;
-  } */
+  }
 `;
 
 const Div = styled.div`
@@ -207,6 +207,7 @@ export default class Sidepane extends Component {
                   {`Today! ${timeString}`}
                 </p>
                 <img
+                  className="event-img"
                   src={this.props.eventArray[this.props.eventIdx].photo_url}
                   alt=""
                 />
