@@ -12,7 +12,7 @@ const AgendaEventList = props => {
       <ul className="AgendaEventList">
         {sortedEvents.map(event => (
           <AgendaEventItem
-            key={event.id}
+            key={event.ID}
             lat={event.lat}
             lng={event.lng}
             event={event}

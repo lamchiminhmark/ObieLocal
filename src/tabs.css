@@ -6,19 +6,24 @@
 }
 
 .tab-list-item {
+  border-top: 1px solid #b4b4b4;
+  border-left: 1px solid #b4b4b4;
+  border-right: 1px solid #b4b4b4;
   width: 50%;
   display: inline-block;
   list-style: none;
   margin-bottom: -1px;
   padding: 0.5rem 0.75rem;
-  color: #789;
+  color: #222222;
 }
 
 .tab-list-active {
-  background-color: hsla(0, 0%, 98%, 1);
-  border: solid rgb(10, 131, 20);
+  background-color: #cedd0e;
+  /*border: solid #222222;*/
   border-width: 1px 1px 1px 1px;
-  color: rgb(12, 130, 28);
+  color: #222222;
+  font-weight: bold;
+  box-shadow: 1px 2px 1px rgba(0, 0, 0, 0.27);
 }
 
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,700');
@@ -66,7 +71,6 @@ label:before {
 }
 
 .tab-list-item:hover {
-  color: rgb(12, 130, 28);
   cursor: pointer;
-  background-color: hsla(0, 0%, 99%, 1);
+  border-top: 2px solid #cedd0e;
 }

@@ -95,6 +95,10 @@ const NextButton = styled.button`
   }
 `;
 
+const EventNumber = styled.span`
+  padding: 20px;
+`;
+
 export default class Sidepane extends Component {
   constructor(props) {
     super(props);
@@ -143,7 +147,7 @@ export default class Sidepane extends Component {
     const LIGHT_GREEN = '#cedd0e';
     const LIGHT_GREEN_HL = '#dceb0f';
     const LIGHT_GRAY = '#d7d7d7';
-    const BOX_SHADOW = '0 2px 5px rgb(0, 0, 0, 0.75)';
+    const BOX_SHADOW = '0 2px 3px rgb(0, 0, 0, 0.50)';
 
     const prevProps = {
       onClick: isPrevEvent ? this.props.handleEventSwitch : null,
@@ -168,6 +172,7 @@ export default class Sidepane extends Component {
         <PrevButton id="button-prev-event" {...prevProps}>
           {`<<`}
         </PrevButton>
+        <EventNumber>{this.props.eventIdx+1}/{this.props.eventArray.length}</EventNumber>
         <NextButton id={'button-next-event'} {...nextProps}>
           >>
         </NextButton>
@@ -177,6 +182,8 @@ export default class Sidepane extends Component {
 
   render() {
     const timeString = this.getEventTimeString(this.props.eventIdx);
+    const locationName = 
+      this.props.eventArray[this.props.eventIdx].location_name || '';
     const locationString =
       this.props.eventArray[this.props.eventIdx].address || 'Location unknown.';
     const EventSwitchButtons = this.getEventSwitchButtons();
@@ -227,6 +234,8 @@ export default class Sidepane extends Component {
                 {EventSwitchButtons}
                 <p className="event-details">
                   <em>Where and When: </em>
+                  <br />
+                  {`${locationName}`}
                   <br />
                   {`${locationString}`}
                   <br />
