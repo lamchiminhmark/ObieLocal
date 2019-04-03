@@ -33,6 +33,8 @@ const PaneBody = styled.div`
   background-color: hsla(0, 0%, 96%, 1);
   border-radius: 0px;
   box-shadow: 10px 10px 7px rgba(0, 0, 0, 0.27);
+  -webkit-overflow-scrolling: touch;
+  overflow-y: scroll;
 
   .event-details {
     margin: 0px;
