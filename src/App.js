@@ -87,8 +87,8 @@ class App extends Component {
       sidepaneOpen: true,
       activeTab: 'Event',
       mapZoom: 18.5,
-      lat: selectedEvent.latitude,
-      lng: selectedEvent.longitude
+      lat: selectedEvent.lat,
+      lng: selectedEvent.lng
     });
   }
 
