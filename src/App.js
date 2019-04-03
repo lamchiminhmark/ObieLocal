@@ -129,10 +129,17 @@ class App extends Component {
     initializeReactGA();
     // Convert markers to events
     // TECH_DEBT(ML): App should be passing a single state to both markers and agenda (preferably this state goes to the redux store)
-    const events = this.state.markers.reduce(
-      (soFar, marker) => soFar.concat(marker.props.eventArray),
-      []
-    );
+    const events = this.state.markers.reduce((soFar, marker) => {
+      // Add coordinates to the 1 or more events in a marker
+      const eventsWithCoor = marker.props.eventArray.map(event => ({
+        ...event,
+        lat: marker.props.lat,
+        lng: marker.props.lng
+      }));
+
+      // Add events one by one to soFar
+      return soFar.concat(eventsWithCoor);
+    }, []);
     return (
       <div className="App">
         <NavBar handleMenuClick={this.toggleSidepane} />
