@@ -72,5 +72,6 @@ label:before {
 
 .tab-list-item:hover {
   cursor: pointer;
-  border-top: 2px solid #cedd0e;
+  padding-top:  0.25rem;
+  border-top: 5px solid #cedd0e;
 }
