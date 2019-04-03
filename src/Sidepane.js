@@ -40,6 +40,7 @@ const PaneBody = styled.div`
   h1 {
     background-color: #cedd0e;
     margin: 0px;
+    padding: 5px 5px;
   }
   p {
     overflow: clip;
