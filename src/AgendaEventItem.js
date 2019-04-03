@@ -30,8 +30,6 @@ class AgendaEventItem extends React.Component {
     let endTime;
     var startDate;
     const dateTime = require('node-datetime');
-    // TODO: (CP) Do we actually need to check for start time in the event
-    // object here?
     if (start) {
       /* Note that the Date constructor automatically adjusts for timezone */
       const startTimeUTC = new Date(start);

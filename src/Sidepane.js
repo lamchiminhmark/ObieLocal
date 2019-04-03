@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import ReactHtmlParser from 'react-html-parser';
-
 import Tabs from './Tabs';
 import './tabs.css';
 import SidepaneCloseButton from './SidepaneCloseButton';
-
 import AgendaEventList from './AgendaEventList';
 
 const StyledPane = styled.div`
@@ -58,34 +56,45 @@ const PaneBody = styled.div`
   } */
 `;
 
-const Div = styled.div`
-  position: absolute;
+const EventSwitchButtons = styled.div`
+  position: relative;
   width: var(--pane-min-width);
-  top: 0px;
-  right: 0px;
   button {
-    position: absolute;
-    width: 50px;
-    height: 40px;
-    background-color: #73c9ffef;
+    position: relative;
+    margin: auto;
+    width: 80px;
+    height: 23px;
     border: none;
-    border-radius: 25%;
-    box-shadow: 0 2px 5px rgb(0, 0, 0, 0.75);
     font-weight: bolder;
-    transition: background-color 0.3s ease;
-  }
-  button:hover {
-    background-color: #a1dafdef;
-  }
-  #button-prev-event {
-    left: 0;
-    margin-left: 16%;
-  }
-  #button-next-event {
-    right: 0;
-    margin-right: 16%;
+    transition: background-color 0.3s ease, opacity 0.2s ease,
+      box-shadow 0.2s ease;
   }
 `;
+
+const PrevButton = styled.button`
+  left: 0;
+  margin-left: 16%;
+  background-color: ${props => props.bgColor};
+  box-shadow: ${props => props.boxShadow};
+  opacity: ${props => props.opacity};
+  cursor: ${props => props.cursor};
+  :hover {
+    background-color: ${props => props.bgHighlight};
+  }
+`;
+
+const NextButton = styled.button`
+  right: 0;
+  margin-right: 16%;
+  background-color: ${props => props.bgColor};
+  box-shadow: ${props => props.boxShadow};
+  opacity: ${props => props.opacity};
+  cursor: ${props => props.cursor};
+  :hover {
+    background-color: ${props => props.bgHighlight};
+  }
+`;
+
 export default class Sidepane extends Component {
   constructor(props) {
     super(props);
@@ -103,8 +112,8 @@ export default class Sidepane extends Component {
     let startTime = 'Time unknown.';
     let endTime;
     const dateTime = require('node-datetime');
-    // TODO: (CP) Do we actually need to check for start time in the event
-    // object here?
+    // TODO(CP): Do we actually need to check for start time in the event
+    // object here? Also see AgendaEventItem.timeFormatter.
     if (this.props.eventArray[eventIdx].start_time) {
       /* Note that the Date constructor automatically adjusts for timezone */
       const startTimeUTC = new Date(this.props.eventArray[eventIdx].start_time);
@@ -122,30 +131,47 @@ export default class Sidepane extends Component {
   /**
    * Determines whether there are multiple events at the current location and
    * creates buttons to switch through them if necessary.
-   * @returns {JSX.Element} A div with 0, 1, or 2 buttons.
+   * @returns {JSX.Element} A div with 0 or 2 styled buttons.
    */
+  // TODO(CP): Make this code cleaner
   getEventSwitchButtons() {
-    let prevButton, nextButton;
-    if (this.props.eventIdx < this.props.eventArray.length - 1) {
-      nextButton = (
-        <button id="button-next-event" onClick={this.props.handleEventSwitch}>
-          >>
-        </button>
-      );
-    }
-    if (this.props.eventIdx > 0) {
-      prevButton = (
-        <button
-          id="button-prev-event"
-          onClick={this.props.handleEventSwitch}
-        >{`<<`}</button>
-      );
-    }
+    const isPrevEvent = this.props.eventIdx > 0;
+    const isNextEvent =
+      this.props.eventIdx < this.props.eventArray.length - 1 ? true : false;
+    if (!isNextEvent && !isPrevEvent) return null;
+
+    const LIGHT_GREEN = '#cedd0e';
+    const LIGHT_GREEN_HL = '#dceb0f';
+    const LIGHT_GRAY = '#d7d7d7';
+    const BOX_SHADOW = '0 2px 5px rgb(0, 0, 0, 0.75)';
+
+    const prevProps = {
+      onClick: isPrevEvent ? this.props.handleEventSwitch : null,
+      bgColor: isPrevEvent ? LIGHT_GREEN : LIGHT_GRAY,
+      bgHighlight: isPrevEvent ? LIGHT_GREEN_HL : null,
+      cursor: isPrevEvent ? 'pointer' : 'default',
+      boxShadow: isPrevEvent ? BOX_SHADOW : 'none',
+      opacity: isPrevEvent ? '1' : '0.5'
+    };
+
+    const nextProps = {
+      onClick: isNextEvent ? this.props.handleEventSwitch : null,
+      bgColor: isNextEvent ? LIGHT_GREEN : LIGHT_GRAY,
+      bgHighlight: isNextEvent ? LIGHT_GREEN_HL : null,
+      cursor: isNextEvent ? 'pointer' : 'default',
+      boxShadow: isNextEvent ? BOX_SHADOW : 'none',
+      opacity: isNextEvent ? '1' : '0.5'
+    };
+
     return (
-      <Div id="multi-event-buttons">
-        {prevButton}
-        {nextButton}
-      </Div>
+      <EventSwitchButtons id="multi-event-buttons">
+        <PrevButton id="button-prev-event" {...prevProps}>
+          {`<<`}
+        </PrevButton>
+        <NextButton id={'button-next-event'} {...nextProps}>
+          >>
+        </NextButton>
+      </EventSwitchButtons>
     );
   }
 
@@ -153,7 +179,7 @@ export default class Sidepane extends Component {
     const timeString = this.getEventTimeString(this.props.eventIdx);
     const locationString =
       this.props.eventArray[this.props.eventIdx].address || 'Location unknown.';
-    const eventSwitchButtons = this.getEventSwitchButtons();
+    const EventSwitchButtons = this.getEventSwitchButtons();
     /* If no event is selected */
     if (this.props.eventArray[0].ID === 0)
       return (
@@ -184,7 +210,6 @@ export default class Sidepane extends Component {
             id="sidepane-close"
             handleSidepaneClick={this.props.handleSidepaneClick}
           />
-          {eventSwitchButtons}
         </StyledPane>
       );
     else
@@ -199,6 +224,7 @@ export default class Sidepane extends Component {
               {/* Event Tab */}
               <div label="Event">
                 <h1>{this.props.eventArray[this.props.eventIdx].title}</h1>
+                {EventSwitchButtons}
                 <p className="event-details">
                   <em>Where and When: </em>
                   <br />
@@ -225,7 +251,6 @@ export default class Sidepane extends Component {
               </div>
             </Tabs>
           </PaneBody>
-          {eventSwitchButtons}
           <SidepaneCloseButton
             handleSidepaneClick={this.props.handleSidepaneClick}
             id="sidepane-close"
