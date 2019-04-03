@@ -33,6 +33,8 @@ const PaneBody = styled.div`
   background-color: hsla(0, 0%, 96%, 1);
   border-radius: 0px;
   box-shadow: 10px 10px 7px rgba(0, 0, 0, 0.27);
+  -webkit-overflow-scrolling: touch;
+  overflow-y: scroll;
 
   .event-details {
     margin: 0px;
@@ -49,10 +51,11 @@ const PaneBody = styled.div`
   em {
     font-weight: bold;
   }
-  img {
+  /* // TODO(ML): remove this to see if img size is correct */
+  /* img {
     max-width: 95%;
     margin: auto;
-  }
+  } */
 `;
 
 const Div = styled.div`
@@ -169,6 +172,7 @@ export default class Sidepane extends Component {
               {/* Agenda Tab */}
               <div label="Agenda">
                 <AgendaEventList
+                  events={this.props.events}
                   checkEventTimes={this.props.checkEventTimes}
                   handleAgendaClick={this.props.handleAgendaClick}
                   timeFormatter={this.getEventTimeString}
@@ -213,6 +217,7 @@ export default class Sidepane extends Component {
               {/* Agenda Tab */}
               <div label="Agenda">
                 <AgendaEventList
+                  events={this.props.events}
                   checkEventTimes={this.props.checkEventTimes}
                   handleAgendaClick={this.props.handleAgendaClick}
                   timeFormatter={this.getEventTimeString}
