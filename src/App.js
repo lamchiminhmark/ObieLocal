@@ -30,7 +30,10 @@ class App extends Component {
       activeEventIdx: 0,
       sidepaneOpen: false,
       createEventContainerOpen: false,
-      activeTab: 'Event'
+      activeTab: 'Event',
+      lat: 41.2926, lng: -82.2183,
+      mapZoom: 17,
+      mapref: null
     };
 
     this.fetchData = this.fetchData.bind(this);
@@ -38,9 +41,12 @@ class App extends Component {
     this.handleAgendaClick = this.handleAgendaClick.bind(this);
     this.handleEventSwitch = this.handleEventSwitch.bind(this);
     this.toggleSidepane = this.toggleSidepane.bind(this);
-    this.toggleCreateEventContainer = this.toggleCreateEventContainer.bind(
-      this
-    );
+    this.toggleCreateEventContainer = this.toggleCreateEventContainer.bind(this);
+
+    /* Functions for map re-zoom - DON'T WORK
+    this.handleMapRecenter = this.handleMapRecenter.bind(this);
+    this.onZoomChanged = this.onZoomChanged.bind(this);
+    this.onMapMounted = this.onMapMounted.bind(this);*/
   }
 
   componentDidMount() {
@@ -79,7 +85,10 @@ class App extends Component {
       activeEventArray: eventArray,
       activeEventIdx: 0,
       sidepaneOpen: true,
-      activeTab: 'Event'
+      activeTab: 'Event',
+      mapZoom: 18.5,
+      lat: selectedEvent.lat,
+      lng: selectedEvent.lng
     });
   }
 
@@ -111,6 +120,24 @@ class App extends Component {
     }
   }
 
+  /*Try these for map re-zooming but don't work
+  handleMapRecenter({center, zoom}) {
+    this.setState({
+      lat: center[0],
+      lng: center[1],
+      mapZoom: zoom 
+    });
+    console.log(zoom);
+  }
+  onMapMounted(mapRef) {
+    this.setState({ mapRef: mapRef });
+  }
+  onZoomChanged(){
+    this.setState({ zoom: this.state.mapRef.getZoom() });
+    console.log(this.state.mapref);
+  }
+  // --------------------------------*/
+
   /* Closes or opens sidepane. If obj.close is true, just close side pane */
   toggleSidepane(obj) {
     if (this.state.createEventContainerOpen) return;
@@ -129,15 +156,30 @@ class App extends Component {
     initializeReactGA();
     // Convert markers to events
     // TECH_DEBT(ML): App should be passing a single state to both markers and agenda (preferably this state goes to the redux store)
-    const events = this.state.markers.reduce(
-      (soFar, marker) => soFar.concat(marker.props.eventArray),
-      []
-    );
+    const events = this.state.markers.reduce((soFar, marker) => {
+      // Add coordinates to the 1 or more events in a marker
+      const eventsWithCoor = marker.props.eventArray.map(event => ({
+        ...event,
+        lat: marker.props.lat,
+        lng: marker.props.lng
+      }));
+
+      // Add events one by one to soFar
+      return soFar.concat(eventsWithCoor);
+    }, []);
     return (
       <div className="App">
         <NavBar handleMenuClick={this.toggleSidepane} />
-        <MapContainer zoom={18}>
-          {Children.toArray(this.state.markers)}
+        <MapContainer 
+          lat={this.state.lat} 
+          lng={this.state.lng} 
+          zoom={this.state.mapZoom}
+          /*
+          handleRecenter={this.handleMapRecenter}
+          onMapMounted={this.onMapMounted}
+          onZoomChanged={this.onZoomChanged}*/
+          >
+            {Children.toArray(this.state.markers)}
         </MapContainer>
         <Sidepane
           eventArray={this.state.activeEventArray}

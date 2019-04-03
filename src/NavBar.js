@@ -14,6 +14,7 @@ const StyledNav = styled.div`
   top: 0px;
   z-index: 1;
   width: 100%;
+  box-shadow: 0px 2px 1px rgba(0, 0, 0, 0.27);
 
   ul {
     font-family: 'Varela Round', sans-serif;
@@ -33,11 +34,12 @@ const StyledNav = styled.div`
 
   button {
     color: white;
-    padding: 1vh;
-    border-top: none;
+    padding: 1vh 15px;
+    border: none;
+    /*border-top: none;
     border-bottom: none;
     border-right: 1px solid whitesmoke;
-    border-left: 1px solid whitesmoke;
+    border-left: 1px solid whitesmoke;*/
     background-color: rgba(255, 255, 255, 0);
     text-decoration: none;
     box-shadow: none;
@@ -47,6 +49,7 @@ const StyledNav = styled.div`
   button:hover {
     /* background-color: rgba(255, 255, 255, 0.2); */
     color: #cedd0e;
+    border-bottom: 2px solid #cedd0e;
   }
 `;
 
