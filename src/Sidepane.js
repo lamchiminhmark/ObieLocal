@@ -51,10 +51,11 @@ const PaneBody = styled.div`
   em {
     font-weight: bold;
   }
-  img {
+  /* // TODO(ML): remove this to see if img size is correct */
+  /* img {
     max-width: 95%;
     margin: auto;
-  }
+  } */
 `;
 
 const Div = styled.div`
@@ -171,6 +172,7 @@ export default class Sidepane extends Component {
               {/* Agenda Tab */}
               <div label="Agenda">
                 <AgendaEventList
+                  events={this.props.events}
                   checkEventTimes={this.props.checkEventTimes}
                   handleAgendaClick={this.props.handleAgendaClick}
                   timeFormatter={this.getEventTimeString}
@@ -215,6 +217,7 @@ export default class Sidepane extends Component {
               {/* Agenda Tab */}
               <div label="Agenda">
                 <AgendaEventList
+                  events={this.props.events}
                   checkEventTimes={this.props.checkEventTimes}
                   handleAgendaClick={this.props.handleAgendaClick}
                   timeFormatter={this.getEventTimeString}

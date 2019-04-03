@@ -127,6 +127,12 @@ class App extends Component {
 
   render() {
     initializeReactGA();
+    // Convert markers to events
+    // TECH_DEBT(ML): App should be passing a single state to both markers and agenda (preferably this state goes to the redux store)
+    const events = this.state.markers.reduce(
+      (soFar, marker) => soFar.concat(marker.props.eventArray),
+      []
+    );
     return (
       <div className="App">
         <NavBar handleMenuClick={this.toggleSidepane} />
@@ -135,6 +141,7 @@ class App extends Component {
         </MapContainer>
         <Sidepane
           eventArray={this.state.activeEventArray}
+          events={events}
           active={this.state.sidepaneOpen}
           handleSidepaneClick={this.toggleSidepane}
           handleEventSwitch={this.handleEventSwitch}
