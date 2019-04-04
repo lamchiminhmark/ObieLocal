@@ -8,6 +8,8 @@ import constants from './constants';
 import ReactGA from 'react-ga';
 import config from './config';
 
+const SECRET_SAUCE_CONSTANT = 0.0001;
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -31,9 +33,9 @@ class App extends Component {
       sidepaneOpen: false,
       createEventContainerOpen: false,
       activeTab: 'Event',
-      lat: 41.2926, lng: -82.2183,
-      mapZoom: 17,
-      mapref: null
+      lat: 41.2926,
+      lng: -82.2183,
+      mapZoom: 17
     };
 
     this.fetchData = this.fetchData.bind(this);
@@ -41,12 +43,9 @@ class App extends Component {
     this.handleAgendaClick = this.handleAgendaClick.bind(this);
     this.handleEventSwitch = this.handleEventSwitch.bind(this);
     this.toggleSidepane = this.toggleSidepane.bind(this);
-    this.toggleCreateEventContainer = this.toggleCreateEventContainer.bind(this);
-
-    /* Functions for map re-zoom - DON'T WORK
-    this.handleMapRecenter = this.handleMapRecenter.bind(this);
-    this.onZoomChanged = this.onZoomChanged.bind(this);
-    this.onMapMounted = this.onMapMounted.bind(this);*/
+    this.toggleCreateEventContainer = this.toggleCreateEventContainer.bind(
+      this
+    );
   }
 
   componentDidMount() {
@@ -67,12 +66,12 @@ class App extends Component {
           .filter(checkEventTimes)
           .reduce(toMarkerArray, [])
           .map(toMarkerElement, this);
-
         this.setState({ markers });
       })
       .catch(error => console.error('Loading markers failed! ', error));
   }
 
+  // TODO(ML): Documentation
   handleAgendaClick(eventArray) {
     // Update google analytics on Agenda Click action
     const selectedEvent = eventArray[0];
@@ -86,12 +85,17 @@ class App extends Component {
       activeEventIdx: 0,
       sidepaneOpen: true,
       activeTab: 'Event',
-      mapZoom: 18.5,
-      lat: selectedEvent.lat,
-      lng: selectedEvent.lng
+      mapZoom: 17.5 + Math.random() * 0.01,
+      lat:
+        (selectedEvent.lat || 41.2926) +
+        (1 + Math.random()) * SECRET_SAUCE_CONSTANT,
+      lng:
+        (selectedEvent.lng || -82.2183) -
+        (1 + Math.random()) * SECRET_SAUCE_CONSTANT
     });
   }
 
+  // TODO: Documentation
   handleMarkerClick(eventArray) {
     // If the CreateEvent panel is open, Sidepane can't be opened
     if (this.state.createEventContainerOpen) return;
@@ -120,24 +124,6 @@ class App extends Component {
     }
   }
 
-  /*Try these for map re-zooming but don't work
-  handleMapRecenter({center, zoom}) {
-    this.setState({
-      lat: center[0],
-      lng: center[1],
-      mapZoom: zoom 
-    });
-    console.log(zoom);
-  }
-  onMapMounted(mapRef) {
-    this.setState({ mapRef: mapRef });
-  }
-  onZoomChanged(){
-    this.setState({ zoom: this.state.mapRef.getZoom() });
-    console.log(this.state.mapref);
-  }
-  // --------------------------------*/
-
   /* Closes or opens sidepane. If obj.close is true, just close side pane */
   toggleSidepane(obj) {
     if (this.state.createEventContainerOpen) return;
@@ -163,23 +149,22 @@ class App extends Component {
         lat: marker.props.lat,
         lng: marker.props.lng
       }));
-
-      // Add events one by one to soFar
       return soFar.concat(eventsWithCoor);
     }, []);
     return (
       <div className="App">
         <NavBar handleMenuClick={this.toggleSidepane} />
-        <MapContainer 
-          lat={this.state.lat} 
-          lng={this.state.lng} 
+        <MapContainer
+          lat={this.state.lat}
+          lng={this.state.lng}
           zoom={this.state.mapZoom}
-          /*
-          handleRecenter={this.handleMapRecenter}
-          onMapMounted={this.onMapMounted}
-          onZoomChanged={this.onZoomChanged}*/
-          >
-            {Children.toArray(this.state.markers)}
+        >
+          {/*TECH_DEBT(KN): Clean this shit up */}
+          {Children.toArray(
+            this.state.markers.filter(
+              marker => marker.props.lat || marker.props.lng
+            )
+          )}
         </MapContainer>
         <Sidepane
           eventArray={this.state.activeEventArray}

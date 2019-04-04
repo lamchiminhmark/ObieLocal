@@ -5,16 +5,9 @@ import styledMapCanvas from './styledMapCanvas.js';
 import config from './config';
 
 export default props => {
-  console.log(props.zoom);
   return (
     <div style={styledMapCanvas}>
       <GoogleMapReact
-        /*Don't work
-        onZoomChanged={props.onZoomChanged}
-        ref={props.onMapMounted}
-        zoom={props.zoom}
-        onChange={props.handleRecenter}
-        =============================*/
         bootstrapURLKeys={{
           key: config.GOOGLE_MAP_API_KEY,
           language: 'en'
