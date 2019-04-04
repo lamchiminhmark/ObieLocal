@@ -13,28 +13,35 @@ const StyledPopup = styled.div`
     margin: auto;
     color: rgba(255, 255, 255, 0.8);
     background: linear-gradient(
-      rgba(85, 55, 55, 0.95),
+      rgba(55, 55, 55, 0.95),
       rgba(30, 30, 30, 0.95) 65%
     );
-    border: 5px solid rgba(35, 35, 35, 0.7);
+    border: 2px solid rgba(35, 35, 35, 0.7);
     border-radius: 14px;
+    box-shadow: 0px 3px 2px rgba(0, 0, 0, 0.27);
   }
 
   h1 {
-    background-color: rgba(255, 184, 29, 0.7);
+    background-color: #cedd0e;
     color: black;
+    border-radius:14px;
   }
 
   #x {
     position: relative;
     float: right;
     color: #ffffff;
-    width: 45px;
-    height: 45px;
+    width: 42px;
+    height: 42px;
     cursor: pointer;
     border: none;
     border-radius: 20%;
     background-color: rgb(166, 38, 38);
+    text-align: center;
+  }
+
+  p {
+    padding: 20px 20px 10px 10px;
   }
 `;
 
@@ -45,17 +52,12 @@ const bodyTexts = {
     students find out what's happening on campus through a visual interface.
     The first version of ObieLocal was developed by Colton Potter, Minh Lam,
     Thomas Nemeh, and Lukas Griffin for their 'Systems Programming' final
-    project. It continues to be developed by Colton and Minh.`,
-  use: `Click on a pin and information for all events at that location will be
-    displayed. To add a custom event, click on the plus button in the lower
-    right hand corner of the screen. The user button will be functional in a
-    later version (soon!).`
+    project. It continues to be developed by Colton, Minh, and Khang Nguyen.`
 };
 
 const titles = {
   contact: `Contact`,
-  about: `About`,
-  use: `Usage`
+  about: `About`
 };
 
 class Popup extends React.Component {

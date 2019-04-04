@@ -12,9 +12,9 @@ export default props => {
           key: config.GOOGLE_MAP_API_KEY,
           language: 'en'
         }}
-        center={{ lat: 41.2926, lng: -82.2183 }}
+        center={{lat: props.lat,lng: props.lng}}
         zoom={props.zoom}
-        options={{ styles: mapStyle }}
+        options={{ styles: mapStyle, fullscreenControl: false }}
       >
         {props.children}
       </GoogleMapReact>

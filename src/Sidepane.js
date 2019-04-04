@@ -1,85 +1,103 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import ReactHtmlParser from 'react-html-parser';
+import Tabs from './Tabs';
+import './tabs.css';
+import SidepaneCloseButton from './SidepaneCloseButton';
+import AgendaEventList from './AgendaEventList';
 
 const StyledPane = styled.div`
   margin: 0px;
   padding: 0px;
-  top: 60px;
-  width: 25%;
-  --pane-min-width: 200px;
-  min-width: var(--pane-min-width);
-  height: 85%;
+  top: 0px;
+  width: 90%;
+  --pane-max-width: 450px;
+  max-width: var(--pane-max-width);
+  height: 100%;
+  position: fixed;
   transition: all 1s;
+  z-index: 2;
 `;
 
 const PaneBody = styled.div`
-  height: 95%;
-  width: 95%;
+  height: 100%;
+  width: 100%;
   position: absolute;
   top: 50%;
   transform: translate(0, -50%);
   margin: 0px;
-  padding: 5px;
+  padding: 0px;
   overflow: hidden auto;
-  background-color: #fb6060e3;
-  border: 3px solid white;
-  border-right: 12px solid rgb(75, 75, 75);
+  background-color: hsla(0, 0%, 96%, 1);
   border-radius: 0px;
-  border-style: inset;
-  box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.27);
+  box-shadow: 10px 10px 7px rgba(0, 0, 0, 0.27);
+  -webkit-overflow-scrolling: touch;
+  overflow-y: scroll;
 
-  h1 {
-    background-color: rgba(255, 184, 29, 0.7);
-    cursor: default;
+  .event-details {
+    margin: 0px;
   }
-
+  h1 {
+    background-color: #cedd0e;
+    margin: 0px;
+    padding: 5px 5px;
+  }
   p {
     overflow: clip;
+    padding: 15px;
     cursor: default;
   }
-
   em {
     font-weight: bold;
   }
-
-  img {
+  /* // TODO(ML): remove this to see if img size is correct */
+  .event-img{
     max-width: 95%;
     margin: auto;
   }
 `;
 
-const Div = styled.div`
-  position: absolute;
+const EventSwitchButtons = styled.div`
+  position: relative;
   width: var(--pane-min-width);
-  top: 0px;
-  right: 0px;
-
   button {
-    position: absolute;
-    width: 50px;
-    height: 40px;
-    background-color: #73c9ffef;
+    position: relative;
+    margin: auto;
+    width: 80px;
+    height: 23px;
     border: none;
-    border-radius: 25%;
-    box-shadow: 0 2px 5px rgb(0, 0, 0, 0.75);
     font-weight: bolder;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, opacity 0.2s ease,
+      box-shadow 0.2s ease;
   }
+`;
 
-  button:hover {
-    background-color: #a1dafdef;
+const PrevButton = styled.button`
+  left: 0;
+  margin-left: 16%;
+  background-color: ${props => props.bgColor};
+  box-shadow: ${props => props.boxShadow};
+  opacity: ${props => props.opacity};
+  cursor: ${props => props.cursor};
+  :hover {
+    background-color: ${props => props.bgHighlight};
   }
+`;
 
-  #button-prev-event {
-    left: 0;
-    margin-left: 16%;
+const NextButton = styled.button`
+  right: 0;
+  margin-right: 16%;
+  background-color: ${props => props.bgColor};
+  box-shadow: ${props => props.boxShadow};
+  opacity: ${props => props.opacity};
+  cursor: ${props => props.cursor};
+  :hover {
+    background-color: ${props => props.bgHighlight};
   }
+`;
 
-  #button-next-event {
-    right: 0;
-    margin-right: 16%;
-  }
+const EventNumber = styled.span`
+  padding: 20px;
 `;
 
 export default class Sidepane extends Component {
@@ -99,8 +117,8 @@ export default class Sidepane extends Component {
     let startTime = 'Time unknown.';
     let endTime;
     const dateTime = require('node-datetime');
-    // TODO: (CP) Do we actually need to check for start time in the event
-    // object here?
+    // TODO(CP): Do we actually need to check for start time in the event
+    // object here? Also see AgendaEventItem.timeFormatter.
     if (this.props.eventArray[eventIdx].start_time) {
       /* Note that the Date constructor automatically adjusts for timezone */
       const startTimeUTC = new Date(this.props.eventArray[eventIdx].start_time);
@@ -118,61 +136,137 @@ export default class Sidepane extends Component {
   /**
    * Determines whether there are multiple events at the current location and
    * creates buttons to switch through them if necessary.
-   * @returns {JSX.Element} A div with 0, 1, or 2 buttons.
+   * @returns {JSX.Element} A div with 0 or 2 styled buttons.
    */
+  // TODO(CP): Make this code cleaner
   getEventSwitchButtons() {
-    let prevButton, nextButton;
-    if (this.props.eventIdx < this.props.eventArray.length - 1) {
-      nextButton = (
-        <button id="button-next-event" onClick={this.props.handleEventSwitch}>
-          >>
-        </button>
-      );
-    }
-    if (this.props.eventIdx > 0) {
-      prevButton = (
-        <button
-          id="button-prev-event"
-          onClick={this.props.handleEventSwitch}
-        >{`<<`}</button>
-      );
-    }
+    const isPrevEvent = this.props.eventIdx > 0;
+    const isNextEvent =
+      this.props.eventIdx < this.props.eventArray.length - 1 ? true : false;
+    if (!isNextEvent && !isPrevEvent) return null;
+
+    const LIGHT_GREEN = '#cedd0e';
+    const LIGHT_GREEN_HL = '#dceb0f';
+    const LIGHT_GRAY = '#d7d7d7';
+    const BOX_SHADOW = '0 2px 3px rgb(0, 0, 0, 0.50)';
+
+    const prevProps = {
+      onClick: isPrevEvent ? this.props.handleEventSwitch : null,
+      bgColor: isPrevEvent ? LIGHT_GREEN : LIGHT_GRAY,
+      bgHighlight: isPrevEvent ? LIGHT_GREEN_HL : null,
+      cursor: isPrevEvent ? 'pointer' : 'default',
+      boxShadow: isPrevEvent ? BOX_SHADOW : 'none',
+      opacity: isPrevEvent ? '1' : '0.5'
+    };
+
+    const nextProps = {
+      onClick: isNextEvent ? this.props.handleEventSwitch : null,
+      bgColor: isNextEvent ? LIGHT_GREEN : LIGHT_GRAY,
+      bgHighlight: isNextEvent ? LIGHT_GREEN_HL : null,
+      cursor: isNextEvent ? 'pointer' : 'default',
+      boxShadow: isNextEvent ? BOX_SHADOW : 'none',
+      opacity: isNextEvent ? '1' : '0.5'
+    };
+
     return (
-      <Div id="multi-event-buttons">
-        {prevButton}
-        {nextButton}
-      </Div>
+      <EventSwitchButtons id="multi-event-buttons">
+        <PrevButton id="button-prev-event" {...prevProps}>
+          {`<<`}
+        </PrevButton>
+        <EventNumber>{this.props.eventIdx+1}/{this.props.eventArray.length}</EventNumber>
+        <NextButton id={'button-next-event'} {...nextProps}>
+          >>
+        </NextButton>
+      </EventSwitchButtons>
     );
   }
 
   render() {
     const timeString = this.getEventTimeString(this.props.eventIdx);
+    const locationName = 
+      this.props.eventArray[this.props.eventIdx].location_name || '';
     const locationString =
       this.props.eventArray[this.props.eventIdx].address || 'Location unknown.';
-    const desc = this.props.eventArray[this.props.eventIdx].desc;
-    const eventSwitchButtons = this.getEventSwitchButtons();
-
-    return (
-      <StyledPane
-        className={this.props.active ? 'Sidepane-active' : 'Sidepane-inactive'}
-      >
-        <PaneBody onClick={this.props.handleSidepaneClick}>
-          <h1>{this.props.eventArray[this.props.eventIdx].title}</h1>
-          <p>{desc}</p>
-          <p className="event-details">
-            <em>Where and When: </em>
-            {`${locationString} ${timeString}`}
-          </p>
-          <img
-            src={this.props.eventArray[this.props.eventIdx].photo_url}
-            alt=""
+    const EventSwitchButtons = this.getEventSwitchButtons();
+    /* If no event is selected */
+    if (this.props.eventArray[0].ID === 0)
+      return (
+        <StyledPane
+          className={
+            this.props.active ? 'Sidepane-active' : 'Sidepane-inactive'
+          }
+          id="sidepane"
+        >
+          <PaneBody>
+            <Tabs activeTab={this.props.activeTab}>
+              {/* Event Tab */}
+              <div label="Event">
+                <p>Please select an event to view details</p>
+              </div>
+              {/* Agenda Tab */}
+              <div label="Agenda">
+                <AgendaEventList
+                  events={this.props.events}
+                  checkEventTimes={this.props.checkEventTimes}
+                  handleAgendaClick={this.props.handleAgendaClick}
+                  timeFormatter={this.getEventTimeString}
+                />
+              </div>
+            </Tabs>
+          </PaneBody>
+          <SidepaneCloseButton
+            id="sidepane-close"
+            handleSidepaneClick={this.props.handleSidepaneClick}
           />
-          {ReactHtmlParser(
-            this.props.eventArray[this.props.eventIdx].description
-          )}
-        </PaneBody>
-        {eventSwitchButtons}
-      </StyledPane>
-    );
+        </StyledPane>
+      );
+    else
+      return (
+        <StyledPane
+          className={
+            this.props.active ? 'Sidepane-active' : 'Sidepane-inactive'
+          }
+        >
+          <PaneBody>
+            <Tabs activeTab={this.props.activeTab}>
+              {/* Event Tab */}
+              <div label="Event">
+                <h1>{this.props.eventArray[this.props.eventIdx].title}</h1>
+                {EventSwitchButtons}
+                <p className="event-details">
+                  <em>Where and When: </em>
+                  <br />
+                  {`${locationName}`}
+                  <br />
+                  {`${locationString}`}
+                  <br />
+                  {`Today! ${timeString}`}
+                </p>
+                <img
+                  className="event-img"
+                  src={this.props.eventArray[this.props.eventIdx].photo_url}
+                  alt=""
+                />
+                {ReactHtmlParser(
+                  this.props.eventArray[this.props.eventIdx].description
+                )}
+              </div>
+              {/* Agenda Tab */}
+              <div label="Agenda">
+                <AgendaEventList
+                  events={this.props.events}
+                  checkEventTimes={this.props.checkEventTimes}
+                  handleAgendaClick={this.props.handleAgendaClick}
+                  timeFormatter={this.getEventTimeString}
+                />
+              </div>
+            </Tabs>
+          </PaneBody>
+          <SidepaneCloseButton
+            handleSidepaneClick={this.props.handleSidepaneClick}
+            id="sidepane-close"
+          />
+        </StyledPane>
+      );
   }
 }

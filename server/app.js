@@ -6,6 +6,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var queriesRouter = require('./routes/queries');
+var updateEventsRouter = require('./routes/updateEvents');
 
 var app = express();
 
@@ -21,20 +22,22 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Enable CORS for http://localhost:3000
 app.use(function(req, res, next) {
   const origin = req.get('origin');
-  if (
-    ['http://localhost:3000', 'http://obielocal.cs.oberlin.edu']
-      .includes(origin)
-  ) {
-    res.header('Access-Control-Allow-Origin', origin);
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
-  } else {
-    next(createError(404));
-  }
+  // TODO(ML): Add back the cors to prevent query attacks
+  // if (
+  //   ['http://localhost:3000', 'obielocal.com']
+  //     .includes(origin)
+  // ) {
+  res.header('Access-Control-Allow-Origin', origin);
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  // } else {
+  //   next(createError(404));
+  // }
   next();
 });
 
 app.use('/', indexRouter);
 app.use('/query', queriesRouter);
+app.use('/updateEvents', updateEventsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -2,12 +2,13 @@ import React, { Component, Children } from 'react';
 import MapContainer from './MapContainer';
 import NavBar from './NavBar';
 import './App.css';
-import UserButton from './UserButton';
-import PlusButton from './PlusButton';
 import Sidepane from './Sidepane';
 import Marker from './Marker';
-import CreateEventContainer from './CreateEventContainer';
 import constants from './constants';
+import ReactGA from 'react-ga';
+import config from './config';
+
+const SECRET_SAUCE_CONSTANT = 0.0001;
 
 class App extends Component {
   constructor(props) {
@@ -30,11 +31,16 @@ class App extends Component {
       ],
       activeEventIdx: 0,
       sidepaneOpen: false,
-      createEventContainerOpen: false
+      createEventContainerOpen: false,
+      activeTab: 'Event',
+      lat: 41.2926,
+      lng: -82.2183,
+      mapZoom: 17
     };
 
     this.fetchData = this.fetchData.bind(this);
     this.handleMarkerClick = this.handleMarkerClick.bind(this);
+    this.handleAgendaClick = this.handleAgendaClick.bind(this);
     this.handleEventSwitch = this.handleEventSwitch.bind(this);
     this.toggleSidepane = this.toggleSidepane.bind(this);
     this.toggleCreateEventContainer = this.toggleCreateEventContainer.bind(
@@ -43,6 +49,7 @@ class App extends Component {
   }
 
   componentDidMount() {
+    initializeReactGA();
     this.fetchData();
   }
 
@@ -51,7 +58,7 @@ class App extends Component {
    * appropriate markers that fall within the given time frame.
    */
   fetchData() {
-    fetch('http://obielocal.cs.oberlin.edu:3001/query')
+    fetch('https://obielocal-1541269219020.appspot.com/query')
       // fetch("http://localhost:3001/query")
       .then(response => response.json())
       .then(arr => {
@@ -64,13 +71,44 @@ class App extends Component {
       .catch(error => console.error('Loading markers failed! ', error));
   }
 
-  handleMarkerClick(eventArray) {
-    // If the CreateEvent panel is open, Sidepane can't be opened
-    if (this.state.createEventContainerOpen) return;
+  // TODO(ML): Documentation
+  handleAgendaClick(eventArray) {
+    // Update google analytics on Agenda Click action
+    const selectedEvent = eventArray[0];
+    ReactGA.event({
+      category: 'User',
+      action: 'Agenda Click',
+      label: selectedEvent.title
+    });
     this.setState({
       activeEventArray: eventArray,
       activeEventIdx: 0,
-      sidepaneOpen: true
+      sidepaneOpen: true,
+      activeTab: 'Event',
+      mapZoom: 17.5 + Math.random() * 0.01,
+      lat:
+        (selectedEvent.lat || 41.2926) +
+        (1 + Math.random()) * SECRET_SAUCE_CONSTANT,
+      lng:
+        (selectedEvent.lng || -82.2183) -
+        (1 + Math.random()) * SECRET_SAUCE_CONSTANT
+    });
+  }
+
+  // TODO: Documentation
+  handleMarkerClick(eventArray) {
+    // If the CreateEvent panel is open, Sidepane can't be opened
+    if (this.state.createEventContainerOpen) return;
+    // Update google analytics about user click
+    ReactGA.event({
+      category: 'User',
+      action: 'Marker Click'
+    });
+    this.setState({
+      activeEventArray: eventArray,
+      activeEventIdx: 0,
+      sidepaneOpen: true,
+      activeTab: 'Event'
     });
   }
 
@@ -90,9 +128,9 @@ class App extends Component {
   toggleSidepane(obj) {
     if (this.state.createEventContainerOpen) return;
     if (obj && obj.close) this.setState({ sidepaneOpen: !obj.close });
-    else if (this.state.activeEventArray[0].ID !== 0)
-      this.setState({ sidepaneOpen: !this.state.sidepaneOpen });
-    else alert('You must select an event marker to view event information.');
+    //if (this.state.activeEventArray[0].ID !== 0)
+    else this.setState({ sidepaneOpen: !this.state.sidepaneOpen });
+    //else alert('You must select an event marker to view event information.');
   }
 
   /* If show is true, CreateEventContainer is opened, otherwise it is closed*/
@@ -101,28 +139,43 @@ class App extends Component {
   }
 
   render() {
+    initializeReactGA();
+    // Convert markers to events
+    // TECH_DEBT(ML): App should be passing a single state to both markers and agenda (preferably this state goes to the redux store)
+    const events = this.state.markers.reduce((soFar, marker) => {
+      // Add coordinates to the 1 or more events in a marker
+      const eventsWithCoor = marker.props.eventArray.map(event => ({
+        ...event,
+        lat: marker.props.lat,
+        lng: marker.props.lng
+      }));
+      return soFar.concat(eventsWithCoor);
+    }, []);
     return (
       <div className="App">
-        <MapContainer zoom={18}>
-          {Children.toArray(this.state.markers)}
+        <NavBar handleMenuClick={this.toggleSidepane} />
+        <MapContainer
+          lat={this.state.lat}
+          lng={this.state.lng}
+          zoom={this.state.mapZoom}
+        >
+          {/*TECH_DEBT(KN): Clean this shit up */}
+          {Children.toArray(
+            this.state.markers.filter(
+              marker => marker.props.lat || marker.props.lng
+            )
+          )}
         </MapContainer>
         <Sidepane
           eventArray={this.state.activeEventArray}
+          events={events}
           active={this.state.sidepaneOpen}
           handleSidepaneClick={this.toggleSidepane}
           handleEventSwitch={this.handleEventSwitch}
           eventIdx={this.state.activeEventIdx}
-        />
-        <NavBar />
-        <PlusButton
-          toggleCreateEventContainer={this.toggleCreateEventContainer}
-          toggleSidepane={this.toggleSidepane}
-        />
-        <UserButton />
-        <CreateEventContainer
-          active={this.state.createEventContainerOpen}
-          toggleCreateEventContainer={this.toggleCreateEventContainer}
-          fetchMarkers={this.fetchData}
+          checkEventTimes={this.checkEventTimes}
+          activeTab={this.state.activeTab}
+          handleAgendaClick={this.handleAgendaClick}
         />
       </div>
     );
@@ -132,7 +185,8 @@ class App extends Component {
 /**
  * Checks if an event object falls within an appropriate time frame relative
  * to the current time. The function first checks by end_time, but if there
- * is no end_time field, it bases the return value on the start_time.
+ * is no end_time field, it bases the return value on the start_time. Only
+ * events that start on the current day are shown.
  * @constant HOUR_LIMIT the amount of hours before the current time such that
  *  markers with no end_time will return false.
  * @param {JSON} rawEvent the event object to be checked for validity.
@@ -142,10 +196,16 @@ function checkEventTimes(rawEvent) {
   const earlyBound = new Date(
     now.getTime() - constants.HOUR_LIMIT * constants.HOUR_TO_MILLISECONDS
   );
+  const rawEventDate = new Date(rawEvent.start_time).getDate();
   if (rawEvent.end_time) {
-    return rawEvent.end_time > now.toISOString();
+    return (
+      rawEvent.end_time > now.toISOString() && now.getDate() === rawEventDate
+    );
   } else {
-    return rawEvent.start_time > earlyBound.toISOString();
+    return (
+      rawEvent.start_time > earlyBound.toISOString() &&
+      now.getDate() === rawEventDate
+    );
   }
 }
 
@@ -200,6 +260,14 @@ function toMarkerElement(markerObj) {
       eventArray={markerObj.events}
     />
   );
+}
+
+/**
+ * Calling function will increase hit count on Google Analytics by 1
+ */
+function initializeReactGA() {
+  ReactGA.initialize(config.GOOGLE_ANALYTICS_ID);
+  ReactGA.pageview('/');
 }
 
 export default App;

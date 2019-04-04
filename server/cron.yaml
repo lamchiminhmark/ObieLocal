@@ -1,0 +1,9 @@
+cron:
+  - description: 'API scrape to update events'
+    url: /updateEvents
+    schedule: every 6 hours
+    timezone: America/New_York
+    retry_parameters:
+      min_backoff_seconds: 5
+      max_doublings: 5
+      job_retry_limit: 5

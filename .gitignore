@@ -13,6 +13,12 @@
 # production
 /build
 
+# API keys, passwords
+/src/config.js
+/src/config
+/server/mysqlConfig.js
+/server/googleMapConfig.js
+
 # misc
 .DS_Store
 .env.local
@@ -27,4 +33,3 @@ yarn-error.log*
 
 OBLdb_logins.txt
 db_logins.js
-src/config.js
