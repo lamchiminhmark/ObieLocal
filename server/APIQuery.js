@@ -40,7 +40,7 @@ module.exports.updateDatabase = function() {
 async function clearDatabase(connection) {
   try {
     var result = await connection.query(
-      `DELETE FROM Events WHERE verified=1 OR end_time < NOW()`
+      `DELETE FROM Events WHERE (verified=1 AND end_time IS NULL) OR end_time < NOW()`
     );
   } catch (err) {
     throw new Error(err);
