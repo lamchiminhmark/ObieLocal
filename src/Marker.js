@@ -41,7 +41,7 @@ const Boba = styled.input`
   height: 35px;
   padding: 0px;
   border-radius: 50%;
-  src: ${bobaLogo.default};
+  border: 3px solid #ffb81d;
 `;
 
 const MarkerWrap = styled.div`
@@ -97,18 +97,20 @@ class Marker extends React.Component {
         blink={this.displayData.blink}
         opacity={this.displayData.opacity}
       >
-       { title === "Ice Cream Social" ? <Boba
+       { title === "Ice Cream Social" ? 
+       <Boba
+          className="Marker-unverified"
           type="image"
           src={bobaLogo.default}
           onClick={() => this.props.handleMarkerClick(this.props.eventArray)}
           aria-label="boba-logo"
         /> :
-        <Button
+         <Button
           className={verified ? 'Marker-verified' : 'Marker-unverified'}
           onClick={() => this.props.handleMarkerClick(this.props.eventArray)}
           animationName={this.displayData.animationName}
           animationDelay={this.displayData.animationDelay}
-        />}
+        />} 
       </MarkerWrap>
     );
   }
