@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import constants from './constants';
+import * as bobaLogo from './boba-logo.jpg';
 
 const Button = styled.button`
   width: 35px;
@@ -33,6 +34,14 @@ const Button = styled.button`
     animation-play-state: paused;
     animation-delay: inherit;
   }
+`;
+
+const Boba = styled.input`
+  width: 35px;
+  height: 35px;
+  padding: 0px;
+  border-radius: 50%;
+  src: ${bobaLogo.default};
 `;
 
 const MarkerWrap = styled.div`
@@ -82,18 +91,24 @@ class Marker extends React.Component {
   };
 
   render() {
-    const verified = this.props.eventArray[0].verified;
+    const {title, verified} = this.props.eventArray[0];
     return (
       <MarkerWrap
         blink={this.displayData.blink}
         opacity={this.displayData.opacity}
       >
+       { title === "Ice Cream Social" ? <Boba
+          type="image"
+          src={bobaLogo.default}
+          onClick={() => this.props.handleMarkerClick(this.props.eventArray)}
+          aria-label="boba-logo"
+        /> :
         <Button
           className={verified ? 'Marker-verified' : 'Marker-unverified'}
           onClick={() => this.props.handleMarkerClick(this.props.eventArray)}
           animationName={this.displayData.animationName}
           animationDelay={this.displayData.animationDelay}
-        />
+        />}
       </MarkerWrap>
     );
   }
