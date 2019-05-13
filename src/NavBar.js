@@ -16,6 +16,18 @@ const StyledNav = styled.div`
   width: 100%;
   box-shadow: 0px 2px 1px rgba(0, 0, 0, 0.27);
 
+  h2 {
+    color: whitesmoke;
+    font-family: 'Varela Round', sans-serif;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%) }
+  }
+
+  
+
   ul {
     font-family: 'Varela Round', sans-serif;
     display: inline-flex;
@@ -43,13 +55,26 @@ const StyledNav = styled.div`
     background-color: rgba(255, 255, 255, 0);
     text-decoration: none;
     box-shadow: none;
-    font-size: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: 'Varela Round', sans-serif;
   }
 
   button:hover {
     /* background-color: rgba(255, 255, 255, 0.2); */
     color: #cedd0e;
-    border-bottom: 2px solid #cedd0e;
+    /*border-bottom: 2px solid #cedd0e;*/
+    box-shadow: 0px 2px #cedd0e;
+  }
+
+  @media only screen and (max-width: 475px) {
+    h2 {
+    left: 95px;
+    }
+
+    button {
+      padding: 1vh 7px;
+    }
   }
 `;
 
@@ -92,6 +117,7 @@ class NavBar extends Component {
       <Container id="interface">
         <StyledNav id="navbar">
           <MenuButton handleMenuClick={this.props.handleMenuClick} />
+          <h2>ObieLocal</h2>
           <ul>
             <li key="1">
               <button id="aboutBtn" onClick={this.togglePopup}>
