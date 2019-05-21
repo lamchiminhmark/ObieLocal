@@ -3,7 +3,7 @@ import MapContainer from './MapContainer';
 import NavBar from './NavBar';
 import './App.css';
 import Sidepane from './Sidepane';
-import Marker from './Marker';
+import Marker from './NewMarker';
 import constants from './constants';
 import ReactGA from 'react-ga';
 import config from './config';
@@ -63,7 +63,7 @@ class App extends Component {
       .then(response => response.json())
       .then(arr => {
         const markers = arr
-          .filter(checkEventTimes)
+          // .filter(checkEventTimes)
           .reduce(toMarkerArray, [])
           .map(toMarkerElement, this);
         this.setState({ markers });
