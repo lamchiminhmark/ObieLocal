@@ -2,13 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 import constants from './constants';
 
+// 18 hours in minutes
 const LATEST_POSSIBLE = 1080;
 
 const getColorFromStartTime = (minutes) => {
     minutes = Math.abs(minutes);
-    const gBAmount = minutes / LATEST_POSSIBLE;
-    const rAmount = 1 - gBAmount;
-    return `rgb(${rAmount * 207}, ${16 + gBAmount * (255 - 16)}, ${45 + gBAmount * (255 - 45)})`;
+    const bAmount = minutes / LATEST_POSSIBLE;
+    const rGAmount = 1 - bAmount;
+    return `rgb(${rGAmount * 207}, 16, ${45 + bAmount * (200 - 45)})`;
 }
 
 const getMinutesUntilStart = (eventObj) => {    
@@ -29,27 +30,28 @@ const Button = styled.button`
   /* opacity: ${props => props.opacity}; */
 
   /* The rotating semicircle in the animation. */
-  ::before {
-    content: ' ';
-    display: block;
-    padding: 0px;
-    margin-left: 50%;
-    height: 99%;
-    border-radius: 0 100% 100% 0 / 50%;
-    background-color: #f7f7f7;
-    transform-origin: left;
-    transform: rotate(0);
-    overflow: hidden;
+  `;
+//   ::before {
+//     content: ' ';
+//     display: block;
+//     padding: 0px;
+//     margin-left: 50%;
+//     height: 99%;
+//     border-radius: 0 100% 100% 0 / 50%;
+//     background-color: #f7f7f7;
+//     transform-origin: left;
+//     transform: rotate(0);
+//     overflow: hidden;
     
-    /* Each marker represents 6 hours, so the animation reflects that. */
-    animation-name: spin, ${props => props.animationName};
-    animation-duration: 10800s, 21600s;
-    animation-timing-function: linear, step-end;
-    animation-iteration-count: infinite;
-    animation-play-state: paused;
-    animation-delay: inherit;
-  }
-`;
+//     /* Each marker represents 6 hours, so the animation reflects that. */
+//     animation-name: spin, ${props => props.animationName};
+//     animation-duration: 10800s, 21600s;
+//     animation-timing-function: linear, step-end;
+//     animation-iteration-count: infinite;
+//     animation-play-state: paused;
+//     animation-delay: inherit;
+//   }
+// `;
 
 const MarkerWrap = styled.div`
   opacity: ${props => props.opacity};
@@ -104,7 +106,7 @@ class Marker extends React.Component {
         opacity={this.displayData.opacity}
       >
         <Button
-          className={verified ? 'Marker-verified' : 'Marker-unverified'}
+        //   className={verified ? 'Marker-verified' : 'Marker-unverified'}
           onClick={() => this.props.handleMarkerClick(this.props.eventArray)}
           animationName={this.displayData.animationName}
           animationDelay={this.displayData.animationDelay}
