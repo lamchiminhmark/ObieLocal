@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import constants from './constants';
+import dateTime from 'node-datetime';
 
 // 18 hours in minutes
 const LATEST_POSSIBLE = 1080;
@@ -102,7 +103,10 @@ class Marker extends React.Component {
 
   render() {
     const firstEvent = this.props.eventArray[0];
-    const verified = firstEvent.verified;
+    // const verified = firstEvent.verified;
+    const startTime = firstEvent.start_time ?
+        dateTime.create(new Date(firstEvent.start_time), 'I:M p').format() :
+        '??';
     const minutesUntilStart = getMinutesUntilStart(firstEvent);
     return (
       <MarkerWrap
@@ -116,7 +120,7 @@ class Marker extends React.Component {
           //   animationDelay={this.displayData.animationDelay}
           minutesUntilStart={minutesUntilStart}
         >
-          88:88
+          {startTime}
         </Button>
       </MarkerWrap>
     );
