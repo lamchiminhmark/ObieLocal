@@ -34,6 +34,15 @@ const Button = styled.button`
   /* Set clock number font*/
   font-family: 'digital-7', sans-serif;
   color: whitesmoke;
+
+  .numbers {
+    margin: 0 0 0;
+  }
+
+  .am-pm {
+    font-family: sans-serif;
+    font-size: 10px;
+  }
   /* The rotating semicircle in the animation. */
 `;
 //   ::before {
@@ -104,9 +113,9 @@ class Marker extends React.Component {
   render() {
     const firstEvent = this.props.eventArray[0];
     // const verified = firstEvent.verified;
-    const startTime = firstEvent.start_time ?
-        dateTime.create(new Date(firstEvent.start_time), 'I:M p').format() :
-        '??';
+    const startTime = firstEvent.start_time
+      ? dateTime.create(new Date(firstEvent.start_time), 'I:M').format()
+      : '??';
     const minutesUntilStart = getMinutesUntilStart(firstEvent);
     return (
       <MarkerWrap
@@ -120,7 +129,8 @@ class Marker extends React.Component {
           //   animationDelay={this.displayData.animationDelay}
           minutesUntilStart={minutesUntilStart}
         >
-          {startTime}
+          <p className="numbers">{startTime}</p>
+          <p className="am-pm">p</p>
         </Button>
       </MarkerWrap>
     );
