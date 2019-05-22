@@ -10,7 +10,8 @@ const getColorFromStartTime = minutes => {
   minutes = minutes > 0 ? Math.abs(minutes) : 0;
   const bAmount = minutes / LATEST_POSSIBLE;
   const rGAmount = 1 - bAmount;
-  return `rgb(${rGAmount * 207}, ${rGAmount * 16}, ${45 + bAmount * (200 - 45)})`;
+  return `rgb(${rGAmount * 207}, ${rGAmount * 16}, ${45 +
+    bAmount * (200 - 45)})`;
 };
 
 const getMinutesUntilStart = eventObj => {
@@ -37,7 +38,6 @@ const Button = styled.button`
 
   /* TODO(ML): Refactorise <p> in tabs.css to remove the class */
   .numbers {
-    margin: 0 0 0;
     left: 50%;
     top: 70%;
   }
@@ -90,7 +90,7 @@ class Marker extends React.Component {
    */
   getDisplayData = () => {
     const minutesUntilStart = getMinutesUntilStart(this.props.eventArray[0]);
-    console.log(minutesUntilStart);
+    // console.log(minutesUntilStart);
     const displayData = {
       animationDelay: '0s',
       opacity: 1.0,
@@ -120,8 +120,8 @@ class Marker extends React.Component {
       ? dateTime.create(new Date(firstEvent.start_time), 'I:M').format()
       : '??';
     const amOrPm = firstEvent.start_time
-    ? dateTime.create(new Date(firstEvent.start_time), 'p').format()
-    : '??';
+      ? dateTime.create(new Date(firstEvent.start_time), 'p').format()
+      : '??';
     const minutesUntilStart = getMinutesUntilStart(firstEvent);
     return (
       <MarkerWrap
@@ -135,8 +135,10 @@ class Marker extends React.Component {
           //   animationDelay={this.displayData.animationDelay}
           minutesUntilStart={minutesUntilStart}
         >
-          <p className="numbers">{startTime}</p>
-          <p className="am-pm"> {amOrPm.substring(0, 1)}</p>
+          <div className='marker-text'>
+            <p className="numbers">{startTime}</p>
+            <p className="am-pm"> {amOrPm.substring(0, 1)}</p>
+          </div>
         </Button>
       </MarkerWrap>
     );
