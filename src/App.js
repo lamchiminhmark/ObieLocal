@@ -3,7 +3,7 @@ import MapContainer from './MapContainer';
 import NavBar from './NavBar';
 import './App.css';
 import Sidepane from './Sidepane';
-import Marker from './NewMarker';
+import Marker from './Marker';
 import constants from './constants';
 import ReactGA from 'react-ga';
 import config from './config';

@@ -7,10 +7,10 @@ import dateTime from 'node-datetime';
 const LATEST_POSSIBLE = 1080;
 
 const getColorFromStartTime = minutes => {
-  minutes = Math.abs(minutes);
+  minutes = minutes > 0 ? Math.abs(minutes) : 0;
   const bAmount = minutes / LATEST_POSSIBLE;
   const rGAmount = 1 - bAmount;
-  return `rgb(${rGAmount * 207}, 16, ${45 + bAmount * (200 - 45)})`;
+  return `rgb(${rGAmount * 207}, ${rGAmount * 16}, ${45 + bAmount * (200 - 45)})`;
 };
 
 const getMinutesUntilStart = eventObj => {
@@ -119,6 +119,9 @@ class Marker extends React.Component {
     const startTime = firstEvent.start_time
       ? dateTime.create(new Date(firstEvent.start_time), 'I:M').format()
       : '??';
+    const amOrPm = firstEvent.start_time
+    ? dateTime.create(new Date(firstEvent.start_time), 'p').format()
+    : '??';
     const minutesUntilStart = getMinutesUntilStart(firstEvent);
     return (
       <MarkerWrap
@@ -133,7 +136,7 @@ class Marker extends React.Component {
           minutesUntilStart={minutesUntilStart}
         >
           <p className="numbers">{startTime}</p>
-          <p className="am-pm">p</p>
+          <p className="am-pm"> {amOrPm.substring(0, 1)}</p>
         </Button>
       </MarkerWrap>
     );
