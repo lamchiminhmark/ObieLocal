@@ -25,6 +25,8 @@ const Button = styled.button`
   height: 35px;
   padding: 0px;
   border-radius: 50%;
+  border-width: 0.5px;
+  box-shadow: 1px 1px 5px 1px #4e4e4e;
   background-color: ${props => getColorFromStartTime(props.minutesUntilStart)};
   animation-delay: ${props => props.animationDelay};
   /* opacity: ${props => props.opacity}; */
@@ -108,8 +110,8 @@ class Marker extends React.Component {
         <Button
         //   className={verified ? 'Marker-verified' : 'Marker-unverified'}
           onClick={() => this.props.handleMarkerClick(this.props.eventArray)}
-          animationName={this.displayData.animationName}
-          animationDelay={this.displayData.animationDelay}
+        //   animationName={this.displayData.animationName}
+        //   animationDelay={this.displayData.animationDelay}
           minutesUntilStart={minutesUntilStart}
         />
       </MarkerWrap>
