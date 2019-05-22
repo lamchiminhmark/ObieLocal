@@ -25,6 +25,7 @@ const StyledPopup = styled.div`
     background-color: #cedd0e;
     color: black;
     border-radius:14px;
+    font-family: 'Varela Round', sans-serif;
   }
 
   #x {
