@@ -51,9 +51,9 @@ body {
   background: #f0f2f4;
 }
 
-p:not(:last-child) {
+/* p:not(:last-child) {
   margin: 0 0 20px;
-}
+} */
 
 .tab-list {
   width: 100%;
