@@ -35,13 +35,16 @@ const Button = styled.button`
   font-family: 'digital-7', sans-serif;
   color: whitesmoke;
 
+  /* TODO(ML): Refactorise <p> in tabs.css to remove the class */
   .numbers {
     margin: 0 0 0;
+    left: 50%;
+    top: 70%;
   }
 
   .am-pm {
-    font-family: sans-serif;
     font-size: 10px;
+    bottom: 10%;
   }
   /* The rotating semicircle in the animation. */
 `;
