@@ -33,18 +33,29 @@ const Button = styled.button`
   animation-delay: ${props => props.animationDelay};
 
   /* Set clock number font*/
-  font-family: 'digital-7', sans-serif;
+  font-family: 'Varela Round', sans-serif;
   color: whitesmoke;
+
+  .marker-text {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    position: relative;
+  }
 
   /* TODO(ML): Refactorise <p> in tabs.css to remove the class */
   .numbers {
-    left: 50%;
-    top: 70%;
+    left: 5%;
+    top: 33%;
+    font-size: 11px;
+    position: absolute;
   }
 
   .am-pm {
-    font-size: 10px;
-    bottom: 10%;
+    font-size: 9px;
+    left: 41%;
+    bottom: 0px;
+    position: absolute;
   }
   /* The rotating semicircle in the animation. */
 `;
@@ -136,7 +147,7 @@ class Marker extends React.Component {
           minutesUntilStart={minutesUntilStart}
         >
           <div className='marker-text'>
-            <p className="numbers">{startTime}</p>
+            <div className="numbers">{startTime}</div>
             <p className="am-pm"> {amOrPm.substring(0, 1)}</p>
           </div>
         </Button>
