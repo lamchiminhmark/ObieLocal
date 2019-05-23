@@ -32,9 +32,10 @@ const getColorFromStartTime = minutes => {
 const getMinutesUntilStart = eventObj => {
   const now = new Date();
   const startTime = new Date(eventObj.start_time);
-  const hoursUntilStart =
+  const hoursUntilStart = 
     (startTime.getTime() - now.getTime()) / constants.HOUR_TO_MILLISECONDS;
-  return hoursUntilStart * 60;
+  return Math.ceil((hoursUntilStart * 60)/5)*5; //round to the nearest multiple of 5
+
 };
 
 const Button = styled.button`
@@ -150,6 +151,7 @@ class Marker extends React.Component {
       ? dateTime.create(new Date(firstEvent.start_time), 'p').format()
       : '??';
     const minutesUntilStart = getMinutesUntilStart(firstEvent);
+    console.log(minutesUntilStart);
     return (
       <MarkerWrap
         blink={this.displayData.blink}
