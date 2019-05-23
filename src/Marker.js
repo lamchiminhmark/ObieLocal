@@ -116,15 +116,19 @@ class Marker extends React.Component {
    * @returns An object including display properties.
    */
   getDisplayData = () => {
-    const minutesUntilStart = getMinutesUntilStart(this.props.eventArray[0]);
-    // console.log(minutesUntilStart);
+    const firstEvent = this.props.eventArray[0];
+    const minutesUntilStart = getMinutesUntilStart(firstEvent);
+    const startTime = this.getStartTime(firstEvent);
     const displayData = {
       animationDelay: '0s',
       opacity: 1.0,
       animationName: this.props.eventArray[0].verified
         ? 'bg-verified'
         : 'bg-unverified',
-      blink: 0
+      blink: 0,
+      minutesUntilStart: minutesUntilStart,
+      time: startTime.time,
+      amOrPm: startTime.amOrPm
     };
     if (minutesUntilStart > 360) {
       displayData.animationDelay = '0s';
@@ -140,9 +144,7 @@ class Marker extends React.Component {
     return displayData;
   };
 
-  render() {
-    const firstEvent = this.props.eventArray[0];
-    // const verified = firstEvent.verified;
+  getStartTime = (firstEvent) => {
     let startTime = firstEvent.start_time
       ? dateTime.create(new Date(firstEvent.start_time), 'I:M').format()
       : '??';
@@ -150,8 +152,10 @@ class Marker extends React.Component {
     const amOrPm = firstEvent.start_time
       ? dateTime.create(new Date(firstEvent.start_time), 'p').format()
       : '??';
-    const minutesUntilStart = getMinutesUntilStart(firstEvent);
-    console.log(minutesUntilStart);
+    return {time: startTime, amOrPm: amOrPm};
+  }
+
+  render() {
     return (
       <MarkerWrap
         blink={this.displayData.blink}
@@ -162,7 +166,7 @@ class Marker extends React.Component {
           onClick={() => this.props.handleMarkerClick(this.props.eventArray)}
           //   animationName={this.displayData.animationName}
           //   animationDelay={this.displayData.animationDelay}
-          minutesUntilStart={minutesUntilStart}
+          minutesUntilStart={this.displayData.minutesUntilStart}
         >
           {/* <div className='marker-text'>
             <div className="numbers">{startTime}</div>
@@ -170,9 +174,9 @@ class Marker extends React.Component {
           </div> */}
           <div className="marker-text">
             <p className="numbers">
-              {startTime}
+              {this.displayData.time}
               <span style={{ 'font-size': '10px' }}>
-                {amOrPm.substring(0, 1)}
+                {this.displayData.amOrPm.substring(0, 1)}
               </span>
             </p>
           </div>
