@@ -3,16 +3,15 @@ import styled from 'styled-components';
 import constants from './constants';
 import dateTime from 'node-datetime';
 
-// 6 hours in minutes
-const LATEST_POSSIBLE = 360;
+/** Upper bound on Marker coloring transition. */
+const MINUTES_TO_COLOR_LIMIT = 360;
 
 const getColorFromStartTime = minutes => {
   minutes = minutes > 0 ? Math.abs(minutes) : 0;
-  let bAmount = minutes / LATEST_POSSIBLE;
-  bAmount = bAmount > 1 ? 1 : bAmount;
-  let rGAmount = 1 - bAmount;
-
-  return `hsl(0, ${75}%, ${75 - rGAmount * 50}%)`;
+  let bValue = minutes / MINUTES_TO_COLOR_LIMIT;
+  bValue = bValue > 1 ? 1 : bValue;
+  let rgValue = 1 - bValue;
+  return `hsl(0, ${75}%, ${75 - rgValue * 50}%)`;
 };
 
 const getMinutesUntilStart = eventObj => {
