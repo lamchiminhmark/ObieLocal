@@ -71,11 +71,7 @@ class Marker extends React.Component {
     const minutesUntilStart = getMinutesUntilStart(firstEvent);
     const startTime = this.getStartTime(firstEvent);
     const displayData = {
-      animationDelay: '0s',
       opacity: 1.0,
-      animationName: this.props.eventArray[0].verified
-        ? 'bg-verified'
-        : 'bg-unverified',
       blink: 0,
       minutesUntilStart: minutesUntilStart,
       time: startTime.time,
@@ -113,10 +109,7 @@ class Marker extends React.Component {
         opacity={this.displayData.opacity}
       >
         <Button
-          //   className={verified ? 'Marker-verified' : 'Marker-unverified'}
           onClick={() => this.props.handleMarkerClick(this.props.eventArray)}
-          //   animationName={this.displayData.animationName}
-          //   animationDelay={this.displayData.animationDelay}
           minutesUntilStart={this.displayData.minutesUntilStart}
         >
           <div className="marker-text">
