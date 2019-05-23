@@ -17,6 +17,10 @@ const StyledPane = styled.div`
   position: fixed;
   transition: all 1s;
   z-index: 2;
+
+  p:not(:last-child) {
+    margin: 0 0 20px;
+  }
 `;
 
 const PaneBody = styled.div`

@@ -12,6 +12,7 @@ const SeeMoreButton = styled.button`
   background-color: #cedd0e;
   color: #555;
   font-weight: bold;
+  font-family: 'Varela Round', sans-serif;
 
   :hover {
     background-color: #303030;
