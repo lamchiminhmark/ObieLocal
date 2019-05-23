@@ -12,21 +12,7 @@ const getColorFromStartTime = minutes => {
   bAmount = bAmount > 1 ? 1 : bAmount;
   let rGAmount = 1 - bAmount;
 
-
-//   if (bAmount > 0.5) {
-//     bAmount = (bAmount - 0.5) * 2;
-//     const rGAmount = 1 - bAmount;
-//     return `rgb(${255 - (255 - 205) * rGAmount}, ${150 - (150 - 16) * rGAmount}, ${150 -
-//       (150 - 45) * rGAmount})`;
-//   } else {
-//       bAmount = bAmount * 2
-//       const rGAmount = 1 - bAmount;
-//       return `rgb(${205 - (205 - 150) * rGAmount}, ${16 - (16 - 0) * rGAmount}, ${45 +
-//         (80 - 45) * rGAmount})`;
-//   }
-
   return `hsl(0, ${75}%, ${75 - rGAmount * 50}%)`;
-  //   return `rgb(80, 0, 80)`;
 };
 
 const getMinutesUntilStart = eventObj => {
@@ -47,24 +33,12 @@ const Button = styled.button`
   box-shadow: 1px 1px 5px 1px #4e4e4e;
   background-color: ${props => getColorFromStartTime(props.minutesUntilStart)};
   animation-delay: ${props => props.animationDelay};
-
-  /* Set clock number font*/
   font-family: 'Barlow Condensed', sans-serif;
   color: whitesmoke;
 
-  .marker-text {
-    /* width: 100%;
-    height: 100%;
-    text-align: center;
-    position: relative; */
-  }
-
   /* TODO(ML): Refactorise <p> in tabs.css to remove the class */
   .numbers {
-    /* left: 5%;
-    top: 33%; */
     font-size: 14px;
-    /* position: absolute; */
   }
 
   .am-pm {
@@ -73,29 +47,7 @@ const Button = styled.button`
     bottom: 0px;
     position: absolute;
   }
-  /* The rotating semicircle in the animation. */
 `;
-//   ::before {
-//     content: ' ';
-//     display: block;
-//     padding: 0px;
-//     margin-left: 50%;
-//     height: 99%;
-//     border-radius: 0 100% 100% 0 / 50%;
-//     background-color: #f7f7f7;
-//     transform-origin: left;
-//     transform: rotate(0);
-//     overflow: hidden;
-
-//     /* Each marker represents 6 hours, so the animation reflects that. */
-//     animation-name: spin, ${props => props.animationName};
-//     animation-duration: 10800s, 21600s;
-//     animation-timing-function: linear, step-end;
-//     animation-iteration-count: infinite;
-//     animation-play-state: paused;
-//     animation-delay: inherit;
-//   }
-// `;
 
 const MarkerWrap = styled.div`
   opacity: ${props => props.opacity};
@@ -168,10 +120,6 @@ class Marker extends React.Component {
           //   animationDelay={this.displayData.animationDelay}
           minutesUntilStart={this.displayData.minutesUntilStart}
         >
-          {/* <div className='marker-text'>
-            <div className="numbers">{startTime}</div>
-            <p className="am-pm"> {amOrPm.substring(0, 1)}</p>
-          </div> */}
           <div className="marker-text">
             <p className="numbers">
               {this.displayData.time}
