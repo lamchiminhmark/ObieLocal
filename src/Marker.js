@@ -34,7 +34,6 @@ const Button = styled.button`
   font-family: 'Barlow Condensed', sans-serif;
   color: whitesmoke;
 
-  /* TODO(ML): Refactorise <p> in tabs.css to remove the class */
   .numbers {
     font-size: 14px;
   }
@@ -114,7 +113,7 @@ class Marker extends React.Component {
           <div className="marker-text">
             <p className="numbers">
               {this.displayData.time}
-              <span style={{ 'font-size': '10px' }}>
+              <span style={{ fontSize: '10px' }}>
                 {this.displayData.amOrPm.substring(0, 1)}
               </span>
             </p>
