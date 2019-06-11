@@ -1,7 +1,7 @@
 import React, { Component, Children } from 'react';
 import MapContainer from './MapContainer';
 import NavBar from './NavBar';
-import './App.css';
+import './styles/App.css';
 import Sidepane from './Sidepane';
 import Marker from './Marker';
 import constants from './constants';
