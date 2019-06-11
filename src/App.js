@@ -1,12 +1,12 @@
 import React, { Component, Children } from 'react';
-import MapContainer from './MapContainer';
-import NavBar from './NavBar';
+import MapContainer from './components/MapContainer';
+import NavBar from './components/NavBar';
 import './styles/App.css';
-import Sidepane from './Sidepane';
-import Marker from './Marker';
-import constants from './constants';
+import Sidepane from './components/Sidepane';
+import Marker from './components/Marker';
+import constants from './shared/constants';
 import ReactGA from 'react-ga';
-import config from './config';
+import config from './shared/config';
 
 const SECRET_SAUCE_CONSTANT = 0.0001;
 

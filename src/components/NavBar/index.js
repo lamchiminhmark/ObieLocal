@@ -23,10 +23,8 @@ const StyledNav = styled.div`
     top: 50%;
     left: 50%;
     margin-right: -50%;
-    transform: translate(-50%, -50%) }
+    transform: translate(-50%, -50%);
   }
-
-  
 
   ul {
     font-family: 'Varela Round', sans-serif;
@@ -69,7 +67,7 @@ const StyledNav = styled.div`
 
   @media only screen and (max-width: 475px) {
     h2 {
-    left: 95px;
+      left: 95px;
     }
 
     button {

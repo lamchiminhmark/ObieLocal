@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import constants from './constants';
+import constants from '../../shared/constants';
 import dateTime from 'node-datetime';
 
 /** Upper bound on Marker coloring transition. */
