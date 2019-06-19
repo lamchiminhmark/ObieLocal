@@ -1,14 +1,16 @@
-import React, { Component, Children } from 'react';
-import MapContainer from './MapContainer';
-import NavBar from './NavBar';
-import './App.css';
-import Sidepane from './Sidepane';
-import Marker from './Marker';
-import constants from './constants';
-import ReactGA from 'react-ga';
-import config from './config';
+import React, { Component, Children } from "react";
+import MapContainer from "./MapContainer";
+import NavBar from "./NavBar";
+import "./App.css";
+import Sidepane from "./Sidepane";
+import Marker from "./Marker";
+import constants from "./constants";
+import ReactGA from "react-ga";
+import config from "./config";
+import { Provider } from "react-redux";
+import store from './store'
 
-const SECRET_SAUCE_CONSTANT = 0.0001;
+
 
 class App extends Component {
   constructor(props) {
@@ -18,21 +20,21 @@ class App extends Component {
       activeEventArray: [
         {
           ID: 0,
-          title: '',
-          date: '',
-          time: '',
-          location_name: '',
+          title: "",
+          date: "",
+          time: "",
+          location_name: "",
           price: 0,
-          desc: '',
-          photo_url: '',
-          address: '',
-          filters: ''
+          desc: "",
+          photo_url: "",
+          address: "",
+          filters: ""
         }
       ],
       activeEventIdx: 0,
       sidepaneOpen: false,
       createEventContainerOpen: false,
-      activeTab: 'Event',
+      activeTab: "Event",
       lat: 41.2926,
       lng: -82.2183,
       mapZoom: 17
@@ -50,7 +52,7 @@ class App extends Component {
 
   componentDidMount() {
     initializeReactGA();
-    this.fetchData();
+    this.props.fetchData();
   }
 
   /**
@@ -58,7 +60,7 @@ class App extends Component {
    * appropriate markers that fall within the given time frame.
    */
   fetchData() {
-    fetch('https://obielocal-1541269219020.appspot.com/query')
+    fetch("https://obielocal-1541269219020.appspot.com/query")
       // fetch("http://localhost:3001/query")
       .then(response => response.json())
       .then(arr => {
@@ -68,7 +70,7 @@ class App extends Component {
           .map(toMarkerElement, this);
         this.setState({ markers });
       })
-      .catch(error => console.error('Loading markers failed! ', error));
+      .catch(error => console.error("Loading markers failed! ", error));
   }
 
   // TODO(ML): Documentation
@@ -76,15 +78,15 @@ class App extends Component {
     // Update google analytics on Agenda Click action
     const selectedEvent = eventArray[0];
     ReactGA.event({
-      category: 'User',
-      action: 'Agenda Click',
+      category: "User",
+      action: "Agenda Click",
       label: selectedEvent.title
     });
     this.setState({
       activeEventArray: eventArray,
       activeEventIdx: 0,
       sidepaneOpen: true,
-      activeTab: 'Event',
+      activeTab: "Event",
       mapZoom: 17.5 + Math.random() * 0.01,
       lat:
         (selectedEvent.lat || 41.2926) +
@@ -101,23 +103,23 @@ class App extends Component {
     if (this.state.createEventContainerOpen) return;
     // Update google analytics about user click
     ReactGA.event({
-      category: 'User',
-      action: 'Marker Click'
+      category: "User",
+      action: "Marker Click"
     });
     this.setState({
       activeEventArray: eventArray,
       activeEventIdx: 0,
       sidepaneOpen: true,
-      activeTab: 'Event'
+      activeTab: "Event"
     });
   }
 
   handleEventSwitch(e) {
     switch (e.target.id) {
-      case 'button-prev-event':
+      case "button-prev-event":
         this.setState({ activeEventIdx: this.state.activeEventIdx - 1 });
         break;
-      case 'button-next-event':
+      case "button-next-event":
         this.setState({ activeEventIdx: this.state.activeEventIdx + 1 });
         break;
       default:
@@ -152,32 +154,34 @@ class App extends Component {
       return soFar.concat(eventsWithCoor);
     }, []);
     return (
-      <div className="App">
-        <NavBar handleMenuClick={this.toggleSidepane} />
-        <MapContainer
-          lat={this.state.lat}
-          lng={this.state.lng}
-          zoom={this.state.mapZoom}
-        >
-          {/*TECH_DEBT(KN): Clean this shit up */}
-          {Children.toArray(
-            this.state.markers.filter(
-              marker => marker.props.lat || marker.props.lng
-            )
-          )}
-        </MapContainer>
-        <Sidepane
-          eventArray={this.state.activeEventArray}
-          events={events}
-          active={this.state.sidepaneOpen}
-          handleSidepaneClick={this.toggleSidepane}
-          handleEventSwitch={this.handleEventSwitch}
-          eventIdx={this.state.activeEventIdx}
-          checkEventTimes={this.checkEventTimes}
-          activeTab={this.state.activeTab}
-          handleAgendaClick={this.handleAgendaClick}
-        />
-      </div>
+      <Provider store = {store}>
+        <div className="App">
+          <NavBar handleMenuClick={this.toggleSidepane} />
+          <MapContainer
+            lat={this.state.lat}
+            lng={this.state.lng}
+            zoom={this.state.mapZoom}
+          >
+            {/*TECH_DEBT(KN): Clean this shit up */}
+            {Children.toArray(
+              this.state.markers.filter(
+                marker => marker.props.lat || marker.props.lng
+              )
+            )}
+          </MapContainer>
+          <Sidepane
+            eventArray={this.state.activeEventArray}
+            events={events}
+            active={this.state.sidepaneOpen}
+            handleSidepaneClick={this.toggleSidepane}
+            handleEventSwitch={this.handleEventSwitch}
+            eventIdx={this.state.activeEventIdx}
+            checkEventTimes={this.checkEventTimes}
+            activeTab={this.state.activeTab}
+            handleAgendaClick={this.handleAgendaClick}
+          />
+        </div>
+      </Provider>
     );
   }
 }
@@ -267,7 +271,9 @@ function toMarkerElement(markerObj) {
  */
 function initializeReactGA() {
   ReactGA.initialize(config.GOOGLE_ANALYTICS_ID);
-  ReactGA.pageview('/');
+  ReactGA.pageview("/");
 }
+
+
 
 export default App;
