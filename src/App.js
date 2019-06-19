@@ -7,9 +7,8 @@ import Marker from "./Marker";
 import constants from "./constants";
 import ReactGA from "react-ga";
 import config from "./config";
-import { Provider } from "react-redux";
-import store from './store'
-
+import { connect } from "react-redux";
+import { fetchData } from './actions/markerAction';
 
 
 class App extends Component {
@@ -40,9 +39,6 @@ class App extends Component {
       mapZoom: 17
     };
 
-    this.fetchData = this.fetchData.bind(this);
-    this.handleMarkerClick = this.handleMarkerClick.bind(this);
-    this.handleAgendaClick = this.handleAgendaClick.bind(this);
     this.handleEventSwitch = this.handleEventSwitch.bind(this);
     this.toggleSidepane = this.toggleSidepane.bind(this);
     this.toggleCreateEventContainer = this.toggleCreateEventContainer.bind(
@@ -53,48 +49,6 @@ class App extends Component {
   componentDidMount() {
     initializeReactGA();
     this.props.fetchData();
-  }
-
-  /**
-   * Fetch all events from the database, reformat the data, and display
-   * appropriate markers that fall within the given time frame.
-   */
-  fetchData() {
-    fetch("https://obielocal-1541269219020.appspot.com/query")
-      // fetch("http://localhost:3001/query")
-      .then(response => response.json())
-      .then(arr => {
-        const markers = arr
-          .filter(checkEventTimes)
-          .reduce(toMarkerArray, [])
-          .map(toMarkerElement, this);
-        this.setState({ markers });
-      })
-      .catch(error => console.error("Loading markers failed! ", error));
-  }
-
-  // TODO(ML): Documentation
-  handleAgendaClick(eventArray) {
-    // Update google analytics on Agenda Click action
-    const selectedEvent = eventArray[0];
-    ReactGA.event({
-      category: "User",
-      action: "Agenda Click",
-      label: selectedEvent.title
-    });
-    this.setState({
-      activeEventArray: eventArray,
-      activeEventIdx: 0,
-      sidepaneOpen: true,
-      activeTab: "Event",
-      mapZoom: 17.5 + Math.random() * 0.01,
-      lat:
-        (selectedEvent.lat || 41.2926) +
-        (1 + Math.random()) * SECRET_SAUCE_CONSTANT,
-      lng:
-        (selectedEvent.lng || -82.2183) -
-        (1 + Math.random()) * SECRET_SAUCE_CONSTANT
-    });
   }
 
   // TODO: Documentation
@@ -141,10 +95,11 @@ class App extends Component {
   }
 
   render() {
+    const {markers} = this.props;
     initializeReactGA();
     // Convert markers to events
     // TECH_DEBT(ML): App should be passing a single state to both markers and agenda (preferably this state goes to the redux store)
-    const events = this.state.markers.reduce((soFar, marker) => {
+    const events = markers.reduce((soFar, marker) => {
       // Add coordinates to the 1 or more events in a marker
       const eventsWithCoor = marker.props.eventArray.map(event => ({
         ...event,
@@ -154,7 +109,6 @@ class App extends Component {
       return soFar.concat(eventsWithCoor);
     }, []);
     return (
-      <Provider store = {store}>
         <div className="App">
           <NavBar handleMenuClick={this.toggleSidepane} />
           <MapContainer
@@ -164,7 +118,7 @@ class App extends Component {
           >
             {/*TECH_DEBT(KN): Clean this shit up */}
             {Children.toArray(
-              this.state.markers.filter(
+              markers.filter(
                 marker => marker.props.lat || marker.props.lng
               )
             )}
@@ -181,7 +135,6 @@ class App extends Component {
             handleAgendaClick={this.handleAgendaClick}
           />
         </div>
-      </Provider>
     );
   }
 }
@@ -274,6 +227,16 @@ function initializeReactGA() {
   ReactGA.pageview("/");
 }
 
+const mapStateToProps = ({markers}) => {
+  return {markers}
+}
 
+const mapDispatchToProps = dispatch => {
+  // What to return? The action you want the component to have access to
+  return {
+    // a fetchData function that will dispatch a FETCH_DATA action when called
+    fetchData: () => dispatch(fetchData()),
+  }
+}
 
-export default App;
+export default connect(mapStateToProps, mapDispatchToProps)(App);

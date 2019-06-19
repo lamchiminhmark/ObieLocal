@@ -1,6 +1,6 @@
-import { combineReducer } from "redux";
+import { combineReducers } from "redux";
 import markers from "./markersReducer.js";
 
-export default combineReducer({
+export default combineReducers({
   markers: markers
 });
