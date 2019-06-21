@@ -1,6 +1,9 @@
 import React from 'react';
+import ReactGA from 'react-ga';
 import styled from 'styled-components';
 import constants from './constants';
+import { connect } from 'react-redux';
+import { setSelectedEvents } from './actions/markerAction';
 import dateTime from 'node-datetime';
 
 /** Upper bound on Marker coloring transition. */
@@ -101,6 +104,16 @@ class Marker extends React.Component {
     return { time: startTime, amOrPm: amOrPm };
   };
 
+  // TODO: Documentation
+  handleMarkerClick = eventArray => {
+    // Update google analytics about user click
+    ReactGA.event({
+      category: 'User',
+      action: 'Marker Click'
+    });
+    this.props.setSelectedEvents(eventArray);
+  };
+
   render() {
     return (
       <MarkerWrap
@@ -108,7 +121,7 @@ class Marker extends React.Component {
         opacity={this.displayData.opacity}
       >
         <Button
-          onClick={() => this.props.handleMarkerClick(this.props.eventArray)}
+          onClick={() => this.handleMarkerClick(this.props.eventArray)}
           minutesUntilStart={this.displayData.minutesUntilStart}
         >
           <div className="marker-text">
@@ -125,4 +138,12 @@ class Marker extends React.Component {
   }
 }
 
-export default Marker;
+const mapDispatchToProps = dispatch => ({
+  setSelectedEvents: activeEventArray =>
+    dispatch(setSelectedEvents(activeEventArray))
+});
+
+export default connect(
+  undefined,
+  mapDispatchToProps
+)(Marker);

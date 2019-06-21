@@ -1,9 +1,9 @@
-import React from "react";
-import Marker from "../Marker";
-import { FETCH_DATA } from "./types";
+import React from 'react';
+import Marker from '../Marker';
+import { FETCH_DATA, SET_SELECTED_EVENTS } from './types';
 
 export const fetchData = () => dispatch => {
-  fetch("https://obielocal-1541269219020.appspot.com/query")
+  fetch('https://obielocal-1541269219020.appspot.com/query')
     // fetch("http://localhost:3001/query")
     .then(response => response.json())
     .then(arr => {
@@ -11,21 +11,32 @@ export const fetchData = () => dispatch => {
         //.filter(checkEventTimes)
         .reduce(toMarkerArray, [])
         .map(toMarkerElement, this);
-        alert('fetched data');
+      alert('fetched data');
       dispatch({
         type: FETCH_DATA,
         payload: markers
       });
     })
-    .catch(error => console.error("Loading markers failed! ", error));
+    .catch(error => console.error('Loading markers failed! ', error));
 };
 
+export const setSelectedEvents = selectedEventArray => dispatch => {
+  dispatch({
+    type: SET_SELECTED_EVENTS,
+    selectedEventArray
+  });
+};
+
+/**
+ * Formats a marker object as a Marker element.
+ * @param {JSON} markerObj the marker object to be rendered as a Marker.
+ * @returns {JSX.Element} a Marker element.
+ */
 function toMarkerElement(markerObj) {
   return (
     <Marker
       lat={markerObj.geo.latitude}
       lng={markerObj.geo.longitude}
-      handleMarkerClick={this.handleMarkerClick}
       eventArray={markerObj.events}
     />
   );

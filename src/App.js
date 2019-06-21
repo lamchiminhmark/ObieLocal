@@ -1,39 +1,20 @@
-import React, { Component, Children } from "react";
-import MapContainer from "./MapContainer";
-import NavBar from "./NavBar";
-import "./App.css";
-import Sidepane from "./Sidepane";
-import Marker from "./Marker";
-import constants from "./constants";
-import ReactGA from "react-ga";
-import config from "./config";
-import { connect } from "react-redux";
+import React, { Component, Children } from 'react';
+import MapContainer from './MapContainer';
+import NavBar from './NavBar';
+import './App.css';
+import Sidepane from './Sidepane';
+import Marker from './Marker';
+import constants from './constants';
+import ReactGA from 'react-ga';
+import config from './config';
+import { connect } from 'react-redux';
 import { fetchData } from './actions/markerAction';
-
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      markers: [],
-      activeEventArray: [
-        {
-          ID: 0,
-          title: "",
-          date: "",
-          time: "",
-          location_name: "",
-          price: 0,
-          desc: "",
-          photo_url: "",
-          address: "",
-          filters: ""
-        }
-      ],
-      activeEventIdx: 0,
-      sidepaneOpen: false,
       createEventContainerOpen: false,
-      activeTab: "Event",
       lat: 41.2926,
       lng: -82.2183,
       mapZoom: 17
@@ -51,30 +32,13 @@ class App extends Component {
     this.props.fetchData();
   }
 
-  // TODO: Documentation
-  handleMarkerClick(eventArray) {
-    // If the CreateEvent panel is open, Sidepane can't be opened
-    if (this.state.createEventContainerOpen) return;
-    // Update google analytics about user click
-    ReactGA.event({
-      category: "User",
-      action: "Marker Click"
-    });
-    this.setState({
-      activeEventArray: eventArray,
-      activeEventIdx: 0,
-      sidepaneOpen: true,
-      activeTab: "Event"
-    });
-  }
-
   handleEventSwitch(e) {
     switch (e.target.id) {
-      case "button-prev-event":
-        this.setState({ activeEventIdx: this.state.activeEventIdx - 1 });
+      case 'button-prev-event':
+        this.setState({ activeEventIdx: this.props.activeEventIdx - 1 });
         break;
-      case "button-next-event":
-        this.setState({ activeEventIdx: this.state.activeEventIdx + 1 });
+      case 'button-next-event':
+        this.setState({ activeEventIdx: this.props.activeEventIdx + 1 });
         break;
       default:
     }
@@ -84,8 +48,8 @@ class App extends Component {
   toggleSidepane(obj) {
     if (this.state.createEventContainerOpen) return;
     if (obj && obj.close) this.setState({ sidepaneOpen: !obj.close });
-    //if (this.state.activeEventArray[0].ID !== 0)
-    else this.setState({ sidepaneOpen: !this.state.sidepaneOpen });
+    //if (this.props.activeEventArray[0].ID !== 0)
+    else this.setState({ sidepaneOpen: !this.props.sidepaneOpen });
     //else alert('You must select an event marker to view event information.');
   }
 
@@ -95,7 +59,8 @@ class App extends Component {
   }
 
   render() {
-    const {markers} = this.props;
+    const { markers } = this.props;
+    console.log(this.props.selectedEventArray);
     initializeReactGA();
     // Convert markers to events
     // TECH_DEBT(ML): App should be passing a single state to both markers and agenda (preferably this state goes to the redux store)
@@ -109,32 +74,30 @@ class App extends Component {
       return soFar.concat(eventsWithCoor);
     }, []);
     return (
-        <div className="App">
-          <NavBar handleMenuClick={this.toggleSidepane} />
-          <MapContainer
-            lat={this.state.lat}
-            lng={this.state.lng}
-            zoom={this.state.mapZoom}
-          >
-            {/*TECH_DEBT(KN): Clean this shit up */}
-            {Children.toArray(
-              markers.filter(
-                marker => marker.props.lat || marker.props.lng
-              )
-            )}
-          </MapContainer>
-          <Sidepane
-            eventArray={this.state.activeEventArray}
-            events={events}
-            active={this.state.sidepaneOpen}
-            handleSidepaneClick={this.toggleSidepane}
-            handleEventSwitch={this.handleEventSwitch}
-            eventIdx={this.state.activeEventIdx}
-            checkEventTimes={this.checkEventTimes}
-            activeTab={this.state.activeTab}
-            handleAgendaClick={this.handleAgendaClick}
-          />
-        </div>
+      <div className="App">
+        <NavBar handleMenuClick={this.toggleSidepane} />
+        <MapContainer
+          lat={this.state.lat}
+          lng={this.state.lng}
+          zoom={this.state.mapZoom}
+        >
+          {/*TECH_DEBT(KN): Clean this shit up */}
+          {Children.toArray(
+            markers.filter(marker => marker.props.lat || marker.props.lng)
+          )}
+        </MapContainer>
+        <Sidepane
+          eventArray={this.props.selectedEventArray}
+          events={events}
+          active={this.props.sidepaneOpen}
+          handleSidepaneClick={this.toggleSidepane}
+          handleEventSwitch={this.handleEventSwitch}
+          eventIdx={this.props.activeEventIdx}
+          checkEventTimes={this.checkEventTimes}
+          activeTab={this.props.activeTab}
+          handleAgendaClick={this.handleAgendaClick}
+        />
+      </div>
     );
   }
 }
@@ -204,39 +167,30 @@ function toMarkerArray(result, rawEvent) {
 }
 
 /**
- * Formats a marker object as a Marker element.
- * @param {JSON} markerObj the marker object to be rendered as a Marker.
- * @returns {JSX.Element} a Marker element.
- */
-function toMarkerElement(markerObj) {
-  return (
-    <Marker
-      lat={markerObj.geo.latitude}
-      lng={markerObj.geo.longitude}
-      handleMarkerClick={this.handleMarkerClick}
-      eventArray={markerObj.events}
-    />
-  );
-}
-
-/**
  * Calling function will increase hit count on Google Analytics by 1
  */
 function initializeReactGA() {
   ReactGA.initialize(config.GOOGLE_ANALYTICS_ID);
-  ReactGA.pageview("/");
+  ReactGA.pageview('/');
 }
 
-const mapStateToProps = ({markers}) => {
-  return {markers}
-}
+const mapStateToProps = ({ markers }) => {
+  return {
+    ...markers,
+    markers: markers.allMarkers,
+    allMarkers: undefined
+  };
+};
 
 const mapDispatchToProps = dispatch => {
   // What to return? The action you want the component to have access to
   return {
     // a fetchData function that will dispatch a FETCH_DATA action when called
-    fetchData: () => dispatch(fetchData()),
-  }
-}
+    fetchData: () => dispatch(fetchData())
+  };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);
