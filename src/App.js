@@ -21,7 +21,6 @@ class App extends Component {
     };
 
     this.handleEventSwitch = this.handleEventSwitch.bind(this);
-    this.toggleSidepane = this.toggleSidepane.bind(this);
     this.toggleCreateEventContainer = this.toggleCreateEventContainer.bind(
       this
     );
@@ -45,10 +44,11 @@ class App extends Component {
   }
 
   /* Closes or opens sidepane. If obj.close is true, just close side pane */
-  toggleSidepane(obj) {
+  toggleSidepane = obj => {
     if (this.state.createEventContainerOpen) return;
     if (obj && obj.close) this.setState({ sidepaneOpen: !obj.close });
     //if (this.props.activeEventArray[0].ID !== 0)
+    // CONTINUE(ML): This sidepaneOpen state is in the redux store now.
     else this.setState({ sidepaneOpen: !this.props.sidepaneOpen });
     //else alert('You must select an event marker to view event information.');
   }
