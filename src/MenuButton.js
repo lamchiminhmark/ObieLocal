@@ -23,14 +23,10 @@ const Button = styled.button`
   }
 `;
 
-class MenuButton extends React.Component {
-  render() {
-    return (
-      <Button onClick={this.props.handleMenuClick}>
+const MenuButton = props => (
+      <Button onClick={props.handleMenuClick}>
         <FontAwesomeIcon id="hamburger-icon" icon="bars" size="1x" />
       </Button>
     );
-  }
-}
 
 export default MenuButton;
