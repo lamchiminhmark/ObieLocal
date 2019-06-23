@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import ReactHtmlParser from 'react-html-parser';
 import { toggleSidepane } from './actions/sidepaneActions';
 import Tabs from './Tabs';
-import './tabs.css';
+import '../../styles/tabs.css';
 import SidepaneCloseButton from './SidepaneCloseButton';
 import AgendaEventList from './AgendaEventList';
 

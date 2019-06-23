@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactGA from 'react-ga';
 import styled from 'styled-components';
-import constants from './constants';
 import { connect } from 'react-redux';
 import { setSelectedEvents } from './actions/markerAction';
+import constants from '../../shared/constants';
 import dateTime from 'node-datetime';
 
 /** Upper bound on Marker coloring transition. */

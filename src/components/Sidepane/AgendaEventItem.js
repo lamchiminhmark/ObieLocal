@@ -1,5 +1,5 @@
 import React from 'react';
-import './AgendaEventItem.css';
+import '../../styles/AgendaEventItem.css';
 import styled from 'styled-components';
 import ReactHtmlParser from 'react-html-parser';
 

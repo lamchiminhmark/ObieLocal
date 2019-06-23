@@ -1,10 +1,10 @@
 import React, { Component, Children } from 'react';
-import MapContainer from './MapContainer';
-import NavBar from './NavBar';
-import './App.css';
-import Sidepane from './Sidepane';
-import Marker from './Marker';
-import constants from './constants';
+import MapContainer from './components/MapContainer';
+import NavBar from './components/NavBar';
+import './styles/App.css';
+import Sidepane from './components/Sidepane';
+import Marker from './components/Marker';
+import constants from './shared/constants';
 import ReactGA from 'react-ga';
 import config from './config';
 import { connect } from 'react-redux';
