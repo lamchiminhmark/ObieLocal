@@ -3,7 +3,6 @@ import MapContainer from './components/MapContainer';
 import NavBar from './components/NavBar';
 import './styles/App.css';
 import Sidepane from './components/Sidepane';
-import Marker from './components/Marker';
 import constants from './shared/constants';
 import ReactGA from 'react-ga';
 import config from './shared/config';
@@ -15,9 +14,7 @@ class App extends Component {
     super(props);
     this.state = {
       createEventContainerOpen: false,
-      lat: 41.2926,
-      lng: -82.2183,
-      mapZoom: 17
+      
     };
 
     this.handleEventSwitch = this.handleEventSwitch.bind(this);
@@ -67,9 +64,9 @@ class App extends Component {
       <div className="App">
         <NavBar handleMenuClick={this.props.toggleSidepane} />
         <MapContainer
-          lat={this.state.lat}
-          lng={this.state.lng}
-          zoom={this.state.mapZoom}
+          lat={this.props.lat}
+          lng={this.props.lng}
+          zoom={this.props.zoom}
         >
           {/*TECH_DEBT(KN): Clean this shit up */}
           {Children.toArray(
@@ -124,11 +121,13 @@ function initializeReactGA() {
   ReactGA.pageview('/');
 }
 
-const mapStateToProps = ({ markers }) => {
+const mapStateToProps = ({ markers, map }) => {
+  const {zoom, lat, lng} = map;
   return {
     ...markers,
     markers: markers.allMarkers,
-    allMarkers: undefined
+    allMarkers: undefined,
+    zoom, lat, lng
   };
 };
 
