@@ -73,8 +73,6 @@ class AgendaEventItem extends React.Component {
       description,
       verified
     } = this.props.event;
-    var events = [];
-    events.push(this.props.event);
     /*All roads specific function */
     const titleAllRoad = () => (
       <div className="event-title-allroad">
@@ -150,4 +148,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(undefined, mapDispatchToProps) (AgendaEventItem);
+export default connect(undefined, mapDispatchToProps)(AgendaEventItem);

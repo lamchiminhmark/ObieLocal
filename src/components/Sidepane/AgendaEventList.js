@@ -18,7 +18,6 @@ const AgendaEventList = props => {
             lat={event.lat}
             lng={event.lng}
             event={event}
-            handleAgendaClick={props.handleAgendaClick}
           />
         ))}
       </ul>
