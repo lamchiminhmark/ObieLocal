@@ -6,7 +6,7 @@ const initialState = {
   activeEventIdx: 0,
 };
 
-const markersReducer = (state = initialState, action) => {
+const eventsReducer = (state = initialState, action) => {
   switch (action.type) {
     case FETCH_DATA:
       return { ...state, allMarkers: [...action.payload] };
@@ -21,4 +21,4 @@ const markersReducer = (state = initialState, action) => {
   }
 };
 
-export default markersReducer;
+export default eventsReducer;

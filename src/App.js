@@ -7,7 +7,7 @@ import constants from './shared/constants';
 import ReactGA from 'react-ga';
 import config from './shared/config';
 import { connect } from 'react-redux';
-import { fetchData } from './actions/markerActions';
+import { fetchData } from './actions/eventActions';
 
 class App extends Component {
   constructor(props) {
@@ -121,11 +121,11 @@ function initializeReactGA() {
   ReactGA.pageview('/');
 }
 
-const mapStateToProps = ({ markers, map }) => {
+const mapStateToProps = ({ events, map }) => {
   const {zoom, lat, lng} = map;
   return {
-    ...markers,
-    markers: markers.allMarkers,
+    ...events,
+    markers: events.allMarkers,
     allMarkers: undefined,
     zoom, lat, lng
   };
