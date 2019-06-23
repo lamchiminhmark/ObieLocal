@@ -52,15 +52,16 @@ class AgendaEventItem extends React.Component {
   }
 
   handleAgendaClick = () => {
-    // Update google analytics about user click
+    const event = this.props.event
     ReactGA.event({
-      category: 'User',
-      action: 'Agenda Click',
-      label: this.props.event.title
+      category: "User",
+      action: "Agenda Click",
+      label: event.title,
     });
-    this.props.setSelectedEvents([this.props.event]);
-    this.props.recenterMap(this.props.event);
-  };
+    // dispatch({
+    this.props.setSelectedEvents([event]);
+    this.props.centerOnEvent(event);
+  }
 
   render() {
     const {
@@ -137,13 +138,15 @@ class AgendaEventItem extends React.Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  setSelectedEvents: activeEventArray =>
+const mapDispatchToProps = dispatch => {
+  return {
+    setSelectedEvents: activeEventArray =>
     dispatch(setSelectedEvents(activeEventArray)),
-  centerOnEvent: ({ lat, lng }) => dispatch(recenterMap({ lat, lng }))
-});
+    centerOnEvent: event => dispatch(recenterMap({
+      lat: event.lat,
+      lng: event.lng,
+    }))
+  }
+}
 
-export default connect(
-  undefined,
-  mapDispatchToProps
-)(AgendaEventItem);
+export default connect(undefined, mapDispatchToProps)(AgendaEventItem);

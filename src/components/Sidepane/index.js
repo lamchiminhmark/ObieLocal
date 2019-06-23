@@ -216,7 +216,6 @@ class Sidepane extends Component {
                 <AgendaEventList
                   events={this.props.events}
                   checkEventTimes={this.props.checkEventTimes}
-                  handleAgendaClick={this.props.handleAgendaClick}
                   timeFormatter={this.getEventTimeString}
                 />
               </div>
@@ -261,7 +260,6 @@ class Sidepane extends Component {
                 <AgendaEventList
                   events={this.props.events}
                   checkEventTimes={this.props.checkEventTimes}
-                  handleAgendaClick={this.props.handleAgendaClick}
                   timeFormatter={this.getEventTimeString}
                 />
               </div>
