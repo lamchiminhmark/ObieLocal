@@ -47,7 +47,6 @@ class App extends Component {
 
   render() {
     const { markers } = this.props;
-    console.log(this.props.selectedEventArray);
     initializeReactGA();
     // Convert markers to events
     // TECH_DEBT(ML): App should be passing a single state to both markers and agenda (preferably this state goes to the redux store)

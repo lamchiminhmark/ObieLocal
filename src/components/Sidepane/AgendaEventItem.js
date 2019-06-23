@@ -1,4 +1,8 @@
 import React from 'react';
+import ReactGA from 'react-ga';
+import { connect } from 'react-redux';
+import { setSelectedEvents } from '../../actions/eventActions';
+import { recenterMap } from '../../actions/mapActions';
 import '../../styles/AgendaEventItem.css';
 import styled from 'styled-components';
 import ReactHtmlParser from 'react-html-parser';
@@ -45,6 +49,18 @@ class AgendaEventItem extends React.Component {
     endTime = endTime ? ` - ${endTime}` : ``;
 
     return `${startDate}, ${startTime}${endTime}`;
+  }
+
+  handleAgendaClick = () => {
+    const event = this.props.event
+    ReactGA.event({
+      category: "User",
+      action: "Agenda Click",
+      label: event.title,
+    });
+    // dispatch({
+    this.props.setSelectedEvents([event]);
+    this.props.centerOnEvent(event);
   }
 
   render() {
@@ -113,7 +129,7 @@ class AgendaEventItem extends React.Component {
               <span className="date_time_title">When? - </span>
               <span>{this.timeFormatter(start_time, end_time)}</span>
             </div>
-            <SeeMoreButton onClick={() => this.props.handleAgendaClick(events)}>
+            <SeeMoreButton onClick={() => this.handleAgendaClick()}>
               See details >>
             </SeeMoreButton>
           </section>
@@ -123,4 +139,15 @@ class AgendaEventItem extends React.Component {
   }
 }
 
-export default AgendaEventItem;
+const mapDispatchToProps = dispatch => {
+  return {
+    setSelectedEvents: activeEventArray =>
+    dispatch(setSelectedEvents(activeEventArray)),
+    centerOnEvent: event => dispatch(recenterMap({
+      lat: event.lat,
+      lng: event.lng,
+    }))
+  }
+}
+
+export default connect(undefined, mapDispatchToProps) (AgendaEventItem);
