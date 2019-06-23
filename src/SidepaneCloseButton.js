@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { toggleSidepane } from './actions/sidepaneActions';
 import styled from 'styled-components';
 
 const Div = styled.div`
@@ -22,7 +24,7 @@ const Div = styled.div`
 const SidepaneCloseButton = props => {
   return (
     <Div>
-      <button onClick={props.handleSidepaneClick}>
+      <button onClick={props.toggleSidepane}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -36,4 +38,10 @@ const SidepaneCloseButton = props => {
   );
 };
 
-export default SidepaneCloseButton;
+const mapDispatchToProps = dispatch => {
+  return {
+    toggleSidepane: args => dispatch(toggleSidepane(args)),
+  }
+}
+
+export default connect(undefined, mapDispatchToProps)(SidepaneCloseButton);

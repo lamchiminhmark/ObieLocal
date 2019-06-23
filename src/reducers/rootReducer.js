@@ -1,6 +1,8 @@
 import { combineReducers } from "redux";
-import markers from "./markersReducer.js";
+import markersReducer from "./markersReducer.js";
+import sidepaneReducer from "./sidepaneReducer.js";
 
 export default combineReducers({
-  markers: markers
+  markers: markersReducer,
+  sidepane: sidepaneReducer,
 });

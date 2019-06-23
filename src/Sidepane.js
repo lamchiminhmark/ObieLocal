@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
 import ReactHtmlParser from 'react-html-parser';
+import { toggleSidepane } from './actions/sidepaneActions';
 import Tabs from './Tabs';
 import './tabs.css';
 import SidepaneCloseButton from './SidepaneCloseButton';
@@ -55,7 +57,7 @@ const PaneBody = styled.div`
     font-weight: bold;
   }
   /* // TODO(ML): remove this to see if img size is correct */
-  .event-img{
+  .event-img {
     max-width: 95%;
     margin: auto;
   }
@@ -104,7 +106,7 @@ const EventNumber = styled.span`
   padding: 20px;
 `;
 
-export default class Sidepane extends Component {
+class Sidepane extends Component {
   constructor(props) {
     super(props);
     this.getEventTimeString = this.getEventTimeString.bind(this);
@@ -177,7 +179,9 @@ export default class Sidepane extends Component {
         <PrevButton id="button-prev-event" {...prevProps}>
           {`<<`}
         </PrevButton>
-        <EventNumber>{this.props.eventIdx+1}/{this.props.eventArray.length}</EventNumber>
+        <EventNumber>
+          {this.props.eventIdx + 1}/{this.props.eventArray.length}
+        </EventNumber>
         <NextButton id={'button-next-event'} {...nextProps}>
           >>
         </NextButton>
@@ -187,7 +191,7 @@ export default class Sidepane extends Component {
 
   render() {
     const timeString = this.getEventTimeString(this.props.eventIdx);
-    const locationName = 
+    const locationName =
       this.props.eventArray[this.props.eventIdx].location_name || '';
     const locationString =
       this.props.eventArray[this.props.eventIdx].address || 'Location unknown.';
@@ -218,10 +222,7 @@ export default class Sidepane extends Component {
               </div>
             </Tabs>
           </PaneBody>
-          <SidepaneCloseButton
-            id="sidepane-close"
-            handleSidepaneClick={this.props.handleSidepaneClick}
-          />
+          <SidepaneCloseButton id="sidepane-close" />
         </StyledPane>
       );
     else
@@ -266,11 +267,26 @@ export default class Sidepane extends Component {
               </div>
             </Tabs>
           </PaneBody>
-          <SidepaneCloseButton
-            handleSidepaneClick={this.props.handleSidepaneClick}
-            id="sidepane-close"
-          />
+          <SidepaneCloseButton id="sidepane-close" />
         </StyledPane>
       );
   }
 }
+
+const mapStateToProps = ({sidepane}) => {
+  return {
+    active: sidepane.sidepaneOpen,
+    activeTab: sidepane.activeTab,
+  }
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    // toggleSidepane: args => dispatch(toggleSidepane(args))
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Sidepane);

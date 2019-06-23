@@ -43,16 +43,6 @@ class App extends Component {
     }
   }
 
-  /* Closes or opens sidepane. If obj.close is true, just close side pane */
-  toggleSidepane = obj => {
-    if (this.state.createEventContainerOpen) return;
-    if (obj && obj.close) this.setState({ sidepaneOpen: !obj.close });
-    //if (this.props.activeEventArray[0].ID !== 0)
-    // CONTINUE(ML): This sidepaneOpen state is in the redux store now.
-    else this.setState({ sidepaneOpen: !this.props.sidepaneOpen });
-    //else alert('You must select an event marker to view event information.');
-  }
-
   /* If show is true, CreateEventContainer is opened, otherwise it is closed*/
   toggleCreateEventContainer(show) {
     this.setState({ createEventContainerOpen: show });
@@ -75,7 +65,7 @@ class App extends Component {
     }, []);
     return (
       <div className="App">
-        <NavBar handleMenuClick={this.toggleSidepane} />
+        <NavBar handleMenuClick={this.props.toggleSidepane} />
         <MapContainer
           lat={this.state.lat}
           lng={this.state.lng}
@@ -89,12 +79,9 @@ class App extends Component {
         <Sidepane
           eventArray={this.props.selectedEventArray}
           events={events}
-          active={this.props.sidepaneOpen}
-          handleSidepaneClick={this.toggleSidepane}
           handleEventSwitch={this.handleEventSwitch}
           eventIdx={this.props.activeEventIdx}
           checkEventTimes={this.checkEventTimes}
-          activeTab={this.props.activeTab}
           handleAgendaClick={this.handleAgendaClick}
         />
       </div>
@@ -130,43 +117,6 @@ function checkEventTimes(rawEvent) {
 }
 
 /**
- * Inserts an event object into a marker object that represents a given
- * location on the map. If no marker object with matching coordinates exists
- * within the result array, then a new object is added. The events array within
- * each object is sorted by start time of the event.
- * @param {Array<JSON>} result an array of marker objects.
- * @param {JSON} rawEvent the event object to be inserted within the result
- *  array.
- */
-function toMarkerArray(result, rawEvent) {
-  const { latitude, longitude, ...event } = rawEvent;
-  const markerIdx = result.findIndex(markerObj => {
-    return (
-      markerObj.geo.latitude === latitude &&
-      markerObj.geo.longitude === longitude
-    );
-  });
-  if (markerIdx >= 0) {
-    const markerObj = result[markerIdx];
-    markerObj.events.push(event);
-    markerObj.events.sort((a, b) => {
-      if (a.start_time > b.start_time) return 1;
-      if (a.start_time < b.start_time) return -1;
-      return 0;
-    });
-  } else {
-    result.push({
-      geo: {
-        latitude,
-        longitude
-      },
-      events: [event]
-    });
-  }
-  return result;
-}
-
-/**
  * Calling function will increase hit count on Google Analytics by 1
  */
 function initializeReactGA() {
@@ -186,7 +136,7 @@ const mapDispatchToProps = dispatch => {
   // What to return? The action you want the component to have access to
   return {
     // a fetchData function that will dispatch a FETCH_DATA action when called
-    fetchData: () => dispatch(fetchData())
+    fetchData: () => dispatch(fetchData()),
   };
 };
 
