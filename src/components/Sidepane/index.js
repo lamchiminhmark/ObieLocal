@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import ReactHtmlParser from 'react-html-parser';
 import Tabs from './Tabs';
-import './tabs.css';
+import '../../styles/tabs.css';
 import SidepaneCloseButton from './SidepaneCloseButton';
 import AgendaEventList from './AgendaEventList';
 
@@ -55,7 +55,7 @@ const PaneBody = styled.div`
     font-weight: bold;
   }
   /* // TODO(ML): remove this to see if img size is correct */
-  .event-img{
+  .event-img {
     max-width: 95%;
     margin: auto;
   }
@@ -177,7 +177,9 @@ export default class Sidepane extends Component {
         <PrevButton id="button-prev-event" {...prevProps}>
           {`<<`}
         </PrevButton>
-        <EventNumber>{this.props.eventIdx+1}/{this.props.eventArray.length}</EventNumber>
+        <EventNumber>
+          {this.props.eventIdx + 1}/{this.props.eventArray.length}
+        </EventNumber>
         <NextButton id={'button-next-event'} {...nextProps}>
           >>
         </NextButton>
@@ -187,7 +189,7 @@ export default class Sidepane extends Component {
 
   render() {
     const timeString = this.getEventTimeString(this.props.eventIdx);
-    const locationName = 
+    const locationName =
       this.props.eventArray[this.props.eventIdx].location_name || '';
     const locationString =
       this.props.eventArray[this.props.eventIdx].address || 'Location unknown.';

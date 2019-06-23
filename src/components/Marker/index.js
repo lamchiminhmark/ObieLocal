@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import constants from './constants';
+import constants from '../../shared/constants';
 import dateTime from 'node-datetime';
 
 /** Upper bound on Marker coloring transition. */
@@ -114,7 +114,7 @@ class Marker extends React.Component {
           <div className="marker-text">
             <p className="numbers">
               {this.displayData.time}
-              <span style={{ 'font-size': '10px' }}>
+              <span style={{ fontSize: '10px' }}>
                 {this.displayData.amOrPm.substring(0, 1)}
               </span>
             </p>
