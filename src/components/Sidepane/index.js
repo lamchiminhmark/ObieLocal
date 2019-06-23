@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import ReactHtmlParser from 'react-html-parser';
-import { toggleSidepane } from '../../actions/sidepaneActions';
 import Tabs from './Tabs';
 import '../../styles/tabs.css';
 import SidepaneCloseButton from './SidepaneCloseButton';
@@ -215,7 +214,6 @@ class Sidepane extends Component {
               <div label="Agenda">
                 <AgendaEventList
                   events={this.props.events}
-                  checkEventTimes={this.props.checkEventTimes}
                   timeFormatter={this.getEventTimeString}
                 />
               </div>
@@ -259,7 +257,6 @@ class Sidepane extends Component {
               <div label="Agenda">
                 <AgendaEventList
                   events={this.props.events}
-                  checkEventTimes={this.props.checkEventTimes}
                   timeFormatter={this.getEventTimeString}
                 />
               </div>
@@ -278,13 +275,6 @@ const mapStateToProps = ({sidepane}) => {
   }
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    // toggleSidepane: args => dispatch(toggleSidepane(args))
-  };
-};
-
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+  mapStateToProps
 )(Sidepane);
