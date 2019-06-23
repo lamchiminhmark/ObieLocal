@@ -11,7 +11,6 @@ export const fetchData = () => dispatch => {
         //.filter(checkEventTimes)
         .reduce(toMarkerArray, [])
         .map(toMarkerElement, this);
-      alert('fetched data');
       dispatch({
         type: FETCH_DATA,
         payload: markers
