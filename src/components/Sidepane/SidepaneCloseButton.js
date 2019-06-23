@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { toggleSidepane } from './actions/sidepaneActions';
+import { toggleSidepane } from '../../actions/sidepaneActions';
 import styled from 'styled-components';
 
 const Div = styled.div`

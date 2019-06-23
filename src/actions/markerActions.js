@@ -1,5 +1,5 @@
 import React from 'react';
-import Marker from '../Marker';
+import Marker from '../components/Marker';
 import { FETCH_DATA, SET_SELECTED_EVENTS } from './types';
 
 export const fetchData = () => dispatch => {

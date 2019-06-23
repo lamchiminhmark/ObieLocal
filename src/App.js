@@ -6,9 +6,9 @@ import Sidepane from './components/Sidepane';
 import Marker from './components/Marker';
 import constants from './shared/constants';
 import ReactGA from 'react-ga';
-import config from './config';
+import config from './shared/config';
 import { connect } from 'react-redux';
-import { fetchData } from './actions/markerAction';
+import { fetchData } from './actions/markerActions';
 
 class App extends Component {
   constructor(props) {

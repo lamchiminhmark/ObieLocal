@@ -2,7 +2,7 @@ import React from 'react';
 import ReactGA from 'react-ga';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { setSelectedEvents } from './actions/markerAction';
+import { setSelectedEvents } from '../../actions/markerActions';
 import constants from '../../shared/constants';
 import dateTime from 'node-datetime';
 

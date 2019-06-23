@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import ReactHtmlParser from 'react-html-parser';
-import { toggleSidepane } from './actions/sidepaneActions';
+import { toggleSidepane } from '../../actions/sidepaneActions';
 import Tabs from './Tabs';
 import '../../styles/tabs.css';
 import SidepaneCloseButton from './SidepaneCloseButton';
