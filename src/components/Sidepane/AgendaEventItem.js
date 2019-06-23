@@ -1,4 +1,8 @@
 import React from 'react';
+import ReactGA from 'react-ga';
+import { connect } from 'react-redux';
+import { setSelectedEvents } from '../../actions/eventActions';
+import { recenterMap } from '../../actions/mapActions';
 import '../../styles/AgendaEventItem.css';
 import styled from 'styled-components';
 import ReactHtmlParser from 'react-html-parser';
@@ -47,6 +51,17 @@ class AgendaEventItem extends React.Component {
     return `${startDate}, ${startTime}${endTime}`;
   }
 
+  handleAgendaClick = () => {
+    // Update google analytics about user click
+    ReactGA.event({
+      category: 'User',
+      action: 'Agenda Click',
+      label: this.props.event.title
+    });
+    this.props.setSelectedEvents([this.props.event]);
+    this.props.recenterMap(this.props.event);
+  };
+
   render() {
     const {
       title,
@@ -57,8 +72,6 @@ class AgendaEventItem extends React.Component {
       description,
       verified
     } = this.props.event;
-    var events = [];
-    events.push(this.props.event);
     /*All roads specific function */
     const titleAllRoad = () => (
       <div className="event-title-allroad">
@@ -94,6 +107,7 @@ class AgendaEventItem extends React.Component {
       }
     };
 
+    // CONTINUE(ML): Invalid LatLng object
     return (
       <li className="agenda-event-item">
         <div className="event-img-title">
@@ -113,7 +127,7 @@ class AgendaEventItem extends React.Component {
               <span className="date_time_title">When? - </span>
               <span>{this.timeFormatter(start_time, end_time)}</span>
             </div>
-            <SeeMoreButton onClick={() => this.props.handleAgendaClick(events)}>
+            <SeeMoreButton onClick={() => this.handleAgendaClick()}>
               See details >>
             </SeeMoreButton>
           </section>
@@ -123,4 +137,13 @@ class AgendaEventItem extends React.Component {
   }
 }
 
-export default AgendaEventItem;
+const mapDispatchToProps = dispatch => ({
+  setSelectedEvents: activeEventArray =>
+    dispatch(setSelectedEvents(activeEventArray)),
+  centerOnEvent: ({ lat, lng }) => dispatch(recenterMap({ lat, lng }))
+});
+
+export default connect(
+  undefined,
+  mapDispatchToProps
+)(AgendaEventItem);

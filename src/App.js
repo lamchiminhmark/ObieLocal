@@ -3,21 +3,17 @@ import MapContainer from './components/MapContainer';
 import NavBar from './components/NavBar';
 import './styles/App.css';
 import Sidepane from './components/Sidepane';
-import Marker from './components/Marker';
 import constants from './shared/constants';
 import ReactGA from 'react-ga';
 import config from './shared/config';
 import { connect } from 'react-redux';
-import { fetchData } from './actions/markerActions';
+import { fetchData } from './actions/eventActions';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       createEventContainerOpen: false,
-      lat: 41.2926,
-      lng: -82.2183,
-      mapZoom: 17
     };
 
     this.handleEventSwitch = this.handleEventSwitch.bind(this);
@@ -67,9 +63,9 @@ class App extends Component {
       <div className="App">
         <NavBar handleMenuClick={this.props.toggleSidepane} />
         <MapContainer
-          lat={this.state.lat}
-          lng={this.state.lng}
-          zoom={this.state.mapZoom}
+          lat={41.2926}
+          lng={-82.2183}
+          zoom={this.props.zoom}
         >
           {/*TECH_DEBT(KN): Clean this shit up */}
           {Children.toArray(
@@ -89,6 +85,8 @@ class App extends Component {
   }
 }
 
+
+// TODO(ML): Remove this from App.js if it already exists somewhere else
 /**
  * Checks if an event object falls within an appropriate time frame relative
  * to the current time. The function first checks by end_time, but if there
@@ -124,11 +122,15 @@ function initializeReactGA() {
   ReactGA.pageview('/');
 }
 
-const mapStateToProps = ({ markers }) => {
+const mapStateToProps = ({ events, map }) => {
+  const {zoom, lat, lng} = map;
   return {
-    ...markers,
-    markers: markers.allMarkers,
-    allMarkers: undefined
+    ...events,
+    markers: events.allMarkers,
+    allMarkers: undefined,
+    zoom, 
+    lat,
+    lng,
   };
 };
 
