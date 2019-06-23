@@ -139,7 +139,6 @@ class App extends Component {
   }
 
   render() {
-    initializeReactGA();
     // Convert markers to events
     // TECH_DEBT(ML): App should be passing a single state to both markers and agenda (preferably this state goes to the redux store)
     const events = this.state.markers.reduce((soFar, marker) => {
