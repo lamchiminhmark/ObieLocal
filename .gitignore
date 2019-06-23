@@ -14,8 +14,8 @@
 /build
 
 # API keys, passwords
-/src/config.js
-/src/config
+/src/shared/config.js
+/src/shared/config
 /server/mysqlConfig.js
 /server/googleMapConfig.js
 
