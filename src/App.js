@@ -3,7 +3,6 @@ import MapContainer from './components/MapContainer';
 import NavBar from './components/NavBar';
 import './styles/App.css';
 import Sidepane from './components/Sidepane';
-import constants from './shared/constants';
 import ReactGA from 'react-ga';
 import config from './shared/config';
 import { connect } from 'react-redux';
@@ -76,39 +75,8 @@ class App extends Component {
           events={events}
           handleEventSwitch={this.handleEventSwitch}
           eventIdx={this.props.activeEventIdx}
-          checkEventTimes={this.checkEventTimes}
-          handleAgendaClick={this.handleAgendaClick}
         />
       </div>
-    );
-  }
-}
-
-
-// TODO(ML): Remove this from App.js if it already exists somewhere else
-/**
- * Checks if an event object falls within an appropriate time frame relative
- * to the current time. The function first checks by end_time, but if there
- * is no end_time field, it bases the return value on the start_time. Only
- * events that start on the current day are shown.
- * @constant HOUR_LIMIT the amount of hours before the current time such that
- *  markers with no end_time will return false.
- * @param {JSON} rawEvent the event object to be checked for validity.
- */
-function checkEventTimes(rawEvent) {
-  const now = new Date();
-  const earlyBound = new Date(
-    now.getTime() - constants.HOUR_LIMIT * constants.HOUR_TO_MILLISECONDS
-  );
-  const rawEventDate = new Date(rawEvent.start_time).getDate();
-  if (rawEvent.end_time) {
-    return (
-      rawEvent.end_time > now.toISOString() && now.getDate() === rawEventDate
-    );
-  } else {
-    return (
-      rawEvent.start_time > earlyBound.toISOString() &&
-      now.getDate() === rawEventDate
     );
   }
 }
