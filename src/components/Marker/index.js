@@ -1,7 +1,7 @@
 import React from 'react';
-import styled from 'styled-components';
 import constants from '../../shared/constants';
 import dateTime from 'node-datetime';
+import { StyledMarkerButton, StyledMarkerWrap } from './styles';
 
 /** Upper bound on Marker coloring transition. */
 const MINUTES_TO_COLOR_LIMIT = 360;
@@ -21,39 +21,6 @@ const getMinutesUntilStart = eventObj => {
     (startTime.getTime() - now.getTime()) / constants.HOUR_TO_MILLISECONDS;
   return Math.ceil((hoursUntilStart * 60) / 5) * 5; //round to the nearest multiple of 5
 };
-
-const Button = styled.button`
-  width: 35px;
-  height: 35px;
-  padding: 0px;
-  border-radius: 50%;
-  border-width: 0.5px;
-  box-shadow: 1px 1px 5px 1px #4e4e4e;
-  background-color: ${props => getColorFromStartTime(props.minutesUntilStart)};
-  animation-delay: ${props => props.animationDelay};
-  font-family: 'Barlow Condensed', sans-serif;
-  color: whitesmoke;
-
-  /* TODO(ML): Refactorise <p> in tabs.css to remove the class */
-  .numbers {
-    font-size: 14px;
-  }
-
-  .am-pm {
-    font-size: 9px;
-    left: 41%;
-    bottom: 0px;
-    position: absolute;
-  }
-`;
-
-const MarkerWrap = styled.div`
-  opacity: ${props => props.opacity};
-  animation-name: ${props => (props.blink ? 'marker-blink' : '')};
-  animation-duration: 1.5s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-`;
 
 class Marker extends React.Component {
   constructor(props) {
@@ -102,14 +69,17 @@ class Marker extends React.Component {
   };
 
   render() {
+    const backgroundColor = getColorFromStartTime(
+      this.displayData.minutesUntilStart
+    );
     return (
-      <MarkerWrap
+      <StyledMarkerWrap
         blink={this.displayData.blink}
         opacity={this.displayData.opacity}
       >
-        <Button
+        <StyledMarkerButton
           onClick={() => this.props.handleMarkerClick(this.props.eventArray)}
-          minutesUntilStart={this.displayData.minutesUntilStart}
+          backgroundColor={backgroundColor}
         >
           <div className="marker-text">
             <p className="numbers">
@@ -119,8 +89,8 @@ class Marker extends React.Component {
               </span>
             </p>
           </div>
-        </Button>
-      </MarkerWrap>
+        </StyledMarkerButton>
+      </StyledMarkerWrap>
     );
   }
 }
