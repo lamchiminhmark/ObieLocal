@@ -24,33 +24,28 @@ const SeeMoreButton = styled.button`
   }
 `;
 
+const timeFormatter = (start, end) => {
+  let startTime = 'Time unknown.';
+  let endTime;
+  var startDate;
+  const dateTime = require('node-datetime');
+  if (start) {
+    /* Note that the Date constructor automatically adjusts for timezone */
+    const startTimeUTC = new Date(start);
+    /*format times to display hour, minute, and period in 12 hour time*/
+    startTime = dateTime.create(startTimeUTC, 'I:M p').format();
+    startDate = dateTime.create(startTimeUTC, 'n d').format();
+  }
+  if (end) {
+    const endTimeUTC = new Date(end);
+    endTime = dateTime.create(endTimeUTC, 'I:M p').format();
+  }
+  endTime = endTime ? ` - ${endTime}` : ``;
+
+  return `${startDate}, ${startTime}${endTime}`;
+}
+
 class AgendaEventItem extends React.Component {
-  constructor(props) {
-    super(props);
-    this.timeFormatter = this.timeFormatter.bind(this);
-  }
-
-  timeFormatter(start, end) {
-    let startTime = 'Time unknown.';
-    let endTime;
-    var startDate;
-    const dateTime = require('node-datetime');
-    if (start) {
-      /* Note that the Date constructor automatically adjusts for timezone */
-      const startTimeUTC = new Date(start);
-      /*format times to display hour, minute, and period in 12 hour time*/
-      startTime = dateTime.create(startTimeUTC, 'I:M p').format();
-      startDate = dateTime.create(startTimeUTC, 'n d').format();
-    }
-    if (end) {
-      const endTimeUTC = new Date(end);
-      endTime = dateTime.create(endTimeUTC, 'I:M p').format();
-    }
-    endTime = endTime ? ` - ${endTime}` : ``;
-
-    return `${startDate}, ${startTime}${endTime}`;
-  }
-
   handleAgendaClick = () => {
     const event = this.props.event
     ReactGA.event({
@@ -108,7 +103,6 @@ class AgendaEventItem extends React.Component {
       }
     };
 
-    // CONTINUE(ML): Invalid LatLng object
     return (
       <li className="agenda-event-item">
         <div className="event-img-title">
@@ -126,7 +120,7 @@ class AgendaEventItem extends React.Component {
             </div>
             <div className="date_time">
               <span className="date_time_title">When? - </span>
-              <span>{this.timeFormatter(start_time, end_time)}</span>
+              <span>{timeFormatter(start_time, end_time)}</span>
             </div>
             <SeeMoreButton onClick={() => this.handleAgendaClick()}>
               See details >>
