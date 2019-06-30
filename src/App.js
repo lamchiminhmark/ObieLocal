@@ -60,11 +60,7 @@ class App extends Component {
     return (
       <div className="App">
         <NavBar handleMenuClick={this.props.toggleSidepane} />
-        <MapContainer
-          lat={this.props.lat}
-          lng={this.props.lng}
-          zoom={this.props.zoom}
-        >
+        <MapContainer>
           {/*TECH_DEBT(KN): Clean this shit up */}
           {Children.toArray(
             markers.filter(marker => marker.props.lat || marker.props.lng)
@@ -89,15 +85,11 @@ function initializeReactGA() {
   ReactGA.pageview('/');
 }
 
-const mapStateToProps = ({ events, map }) => {
-  const {zoom, lat, lng} = map;
+const mapStateToProps = ({ events}) => {
   return {
     ...events,
     markers: events.allMarkers,
     allMarkers: undefined,
-    zoom, 
-    lat,
-    lng,
   };
 };
 

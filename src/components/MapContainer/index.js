@@ -1,10 +1,11 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import GoogleMapReact from 'google-map-react';
 import mapStyle from './mapStyle';
 import styledMapCanvas from './styledMapCanvas.js';
 import config from '../../shared/config';
 
-export default props => {
+const MapContainer =  props => {
   return (
     <div style={styledMapCanvas}>
       <GoogleMapReact
@@ -21,3 +22,13 @@ export default props => {
     </div>
   );
 };
+
+const mapStateToProps = ({map}) => {
+  return {
+    lat: map.lat,
+    lng: map.lng,
+    zoom: map.zoom
+  }
+}
+
+export default connect(mapStateToProps)(MapContainer);
