@@ -59,7 +59,7 @@ class App extends Component {
     }, []);
     return (
       <div className="App">
-        <NavBar handleMenuClick={this.props.toggleSidepane} />
+        <NavBar/>
         <MapContainer>
           {/*TECH_DEBT(KN): Clean this shit up */}
           {Children.toArray(
