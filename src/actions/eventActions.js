@@ -1,6 +1,6 @@
 import React from 'react';
 import Marker from '../components/Marker';
-import { FETCH_DATA, SET_SELECTED_EVENTS } from './types';
+import { FETCH_DATA, SET_SELECTED_EVENTS, TOGGLE_EVENT } from './types';
 
 export const fetchData = () => dispatch => {
   fetch('https://obielocal-1541269219020.appspot.com/query')
@@ -19,10 +19,17 @@ export const fetchData = () => dispatch => {
     .catch(error => console.error('Loading markers failed! ', error));
 };
 
-export const setSelectedEvents = selectedEventArray => dispatch => {
+export const setSelectedEvents = selectedEventsArray => dispatch => {
   dispatch({
     type: SET_SELECTED_EVENTS,
-    selectedEventArray
+    selectedEventsArray,
+  });
+};
+
+export const toggleEvent = direction => dispatch => {
+  dispatch({
+    type: TOGGLE_EVENT,
+    direction,
   });
 };
 

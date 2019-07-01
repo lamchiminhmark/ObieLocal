@@ -35,6 +35,7 @@ class Tabs extends Component {
       <div className="tabs">
         <ol className="tab-list">
           {children.map(child => {
+            // CONTINUE(ML): children is being referenced here to get a label
             const { label } = child.props;
 
             return (

@@ -1,8 +1,6 @@
+/* Presentational component */
+
 import React from 'react';
-import ReactGA from 'react-ga';
-import { connect } from 'react-redux';
-import { setSelectedEvents } from '../../actions/eventActions';
-import { recenterMap } from '../../actions/mapActions';
 import '../../styles/AgendaEventItem.css';
 import styled from 'styled-components';
 import ReactHtmlParser from 'react-html-parser';
@@ -43,104 +41,77 @@ const timeFormatter = (start, end) => {
   endTime = endTime ? ` - ${endTime}` : ``;
 
   return `${startDate}, ${startTime}${endTime}`;
-}
+};
 
-class AgendaEventItem extends React.Component {
-  handleAgendaClick = () => {
-    const event = this.props.event
-    ReactGA.event({
-      category: "User",
-      action: "Agenda Click",
-      label: event.title,
-    });
-    // dispatch({
-    this.props.setSelectedEvents([event]);
-    this.props.centerOnEvent(event);
+const AgendaEventItem = props => {
+  const {
+    title,
+    photo_url,
+    location_name,
+    start_time,
+    end_time,
+    description,
+    verified
+  } = this.props.event;
+  /*All roads specific function */
+  const titleAllRoad = () => (
+    <div className="event-title-allroad">
+      <h2>{title}</h2>
+      <img
+        src="https://www.oberlin.edu/sites/default/files/styles/width_760/public/content/basic-page/header-image/all-roads-graphic-760.png?itok=oi9qcVb-"
+        alt="All Roads Lead to Oberlin"
+      />
+    </div>
+  );
+  const titleNormal = () => (
+    <div className="event-title">
+      <h2>{title}</h2>
+    </div>
+  );
+
+  const defaultImg =
+    'https://d3e1o4bcbhmj8g.cloudfront.net/photos/204534/huge/ee2941c721f2cc491db9f4fb3abdf034ccad369c.jpg';
+
+  //If photo_url is null then set it to default image
+  let photoURL;
+  if (photo_url) {
+    photoURL = photo_url;
+  } else {
+    photoURL = defaultImg;
   }
 
-  render() {
-    const {
-      title,
-      photo_url,
-      location_name,
-      start_time,
-      end_time,
-      description,
-      verified
-    } = this.props.event;
-    /*All roads specific function */
-    const titleAllRoad = () => (
-      <div className="event-title-allroad">
-        <h2>{title}</h2>
-        <img
-          src="https://www.oberlin.edu/sites/default/files/styles/width_760/public/content/basic-page/header-image/all-roads-graphic-760.png?itok=oi9qcVb-"
-          alt="All Roads Lead to Oberlin"
-        />
-      </div>
-    );
-    const titleNormal = () => (
-      <div className="event-title">
-        <h2>{title}</h2>
-      </div>
-    );
-
-    const defaultImg =
-      'https://d3e1o4bcbhmj8g.cloudfront.net/photos/204534/huge/ee2941c721f2cc491db9f4fb3abdf034ccad369c.jpg';
-
-    //If photo_url is null then set it to default image
-    let photoURL;
-    if (photo_url) {
-      photoURL = photo_url;
+  const whichTitle = () => {
+    if (!verified) {
+      return titleAllRoad();
     } else {
-      photoURL = defaultImg;
+      return titleNormal();
     }
+  };
 
-    const whichTitle = () => {
-      if (!verified) {
-        return titleAllRoad();
-      } else {
-        return titleNormal();
-      }
-    };
-
-    return (
-      <li className="agenda-event-item">
-        <div className="event-img-title">
-          <img src={photoURL} alt={title} />
-          {whichTitle()}
-        </div>
-        <div className="event-text">
-          <div className="agenda-event-desc">
-            {ReactHtmlParser(description)}
+  return (
+    <li className="agenda-event-item">
+      <div className="event-img-title">
+        <img src={photoURL} alt={title} />
+        {whichTitle()}
+      </div>
+      <div className="event-text">
+        <div className="agenda-event-desc">{ReactHtmlParser(description)}</div>
+        <section className="agenda-event-details">
+          <div className="location">
+            <span className="location-title">Where? - </span>
+            <span>{location_name}</span>
           </div>
-          <section className="agenda-event-details">
-            <div className="location">
-              <span className="location-title">Where? - </span>
-              <span>{location_name}</span>
-            </div>
-            <div className="date_time">
-              <span className="date_time_title">When? - </span>
-              <span>{timeFormatter(start_time, end_time)}</span>
-            </div>
-            <SeeMoreButton onClick={() => this.handleAgendaClick()}>
-              See details >>
-            </SeeMoreButton>
-          </section>
-        </div>
-      </li>
-    );
-  }
-}
+          <div className="date_time">
+            <span className="date_time_title">When? - </span>
+            <span>{timeFormatter(start_time, end_time)}</span>
+          </div>
+          <SeeMoreButton onClick={() => this.props.handleAgendaClick()}>
+            See details >>
+          </SeeMoreButton>
+        </section>
+      </div>
+    </li>
+  );
+};
 
-const mapDispatchToProps = dispatch => {
-  return {
-    setSelectedEvents: activeEventArray =>
-    dispatch(setSelectedEvents(activeEventArray)),
-    centerOnEvent: event => dispatch(recenterMap({
-      lat: event.lat,
-      lng: event.lng,
-    }))
-  }
-}
-
-export default connect(undefined, mapDispatchToProps)(AgendaEventItem);
+export default AgendaEventItem;

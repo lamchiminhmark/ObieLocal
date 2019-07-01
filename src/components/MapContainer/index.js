@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { Children } from 'react';
 import { connect } from 'react-redux';
 import GoogleMapReact from 'google-map-react';
 import mapStyle from './mapStyle';
 import styledMapCanvas from './styledMapCanvas.js';
 import config from '../../shared/config';
 
-const MapContainer =  props => {
+const MapContainer = props => {
   return (
     <div style={styledMapCanvas}>
       <GoogleMapReact
@@ -17,18 +17,19 @@ const MapContainer =  props => {
         zoom={props.zoom}
         options={{ styles: mapStyle, fullscreenControl: false }}
       >
-        {props.children}
+        {/*TECH_DEBT(KN): Clean this shit up */}
+        {Children.toArray(
+          props.markers.filter(marker => marker.props.lat || marker.props.lng)
+        )}
       </GoogleMapReact>
     </div>
   );
 };
 
-const mapStateToProps = ({map}) => {
-  return {
-    lat: map.lat,
-    lng: map.lng,
-    zoom: map.zoom
-  }
-}
+const mapStateToProps = ({ events, map }) => {
+  const { lat, lng, zoom } = map;
+  const { allMarkers: markers } = events;
+  return { lat, lng, zoom, markers };
+};
 
 export default connect(mapStateToProps)(MapContainer);

@@ -1,4 +1,6 @@
-import React, { Component, Children } from 'react';
+/* Container */
+
+import React, { Component } from 'react';
 import MapContainer from './components/MapContainer';
 import NavBar from './components/NavBar';
 import './styles/App.css';
@@ -12,10 +14,9 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      createEventContainerOpen: false,
+      createEventContainerOpen: false
     };
 
-    this.handleEventSwitch = this.handleEventSwitch.bind(this);
     this.toggleCreateEventContainer = this.toggleCreateEventContainer.bind(
       this
     );
@@ -26,52 +27,18 @@ class App extends Component {
     this.props.fetchData();
   }
 
-  handleEventSwitch(e) {
-    switch (e.target.id) {
-      case 'button-prev-event':
-        this.setState({ activeEventIdx: this.props.activeEventIdx - 1 });
-        break;
-      case 'button-next-event':
-        this.setState({ activeEventIdx: this.props.activeEventIdx + 1 });
-        break;
-      default:
-    }
-  }
-
   /* If show is true, CreateEventContainer is opened, otherwise it is closed*/
   toggleCreateEventContainer(show) {
     this.setState({ createEventContainerOpen: show });
   }
 
   render() {
-    const { markers } = this.props;
     initializeReactGA();
-    // Convert markers to events
-    // TECH_DEBT(ML): App should be passing a single state to both markers and agenda (preferably this state goes to the redux store)
-    const events = markers.reduce((soFar, marker) => {
-      // Add coordinates to the 1 or more events in a marker
-      const eventsWithCoor = marker.props.eventArray.map(event => ({
-        ...event,
-        lat: marker.props.lat,
-        lng: marker.props.lng
-      }));
-      return soFar.concat(eventsWithCoor);
-    }, []);
     return (
       <div className="App">
-        <NavBar/>
-        <MapContainer>
-          {/*TECH_DEBT(KN): Clean this shit up */}
-          {Children.toArray(
-            markers.filter(marker => marker.props.lat || marker.props.lng)
-          )}
-        </MapContainer>
-        <Sidepane
-          eventArray={this.props.selectedEventArray}
-          events={events}
-          handleEventSwitch={this.handleEventSwitch}
-          eventIdx={this.props.activeEventIdx}
-        />
+        <NavBar />
+        <MapContainer />
+        <Sidepane />
       </div>
     );
   }
@@ -85,19 +52,13 @@ function initializeReactGA() {
   ReactGA.pageview('/');
 }
 
-const mapStateToProps = ({ events}) => {
-  return {
-    ...events,
-    markers: events.allMarkers,
-    allMarkers: undefined,
-  };
-};
+const mapStateToProps = undefined;
 
 const mapDispatchToProps = dispatch => {
   // What to return? The action you want the component to have access to
   return {
     // a fetchData function that will dispatch a FETCH_DATA action when called
-    fetchData: () => dispatch(fetchData()),
+    fetchData: () => dispatch(fetchData())
   };
 };
 

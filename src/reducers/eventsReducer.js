@@ -1,9 +1,13 @@
-import { FETCH_DATA, SET_SELECTED_EVENTS } from '../actions/types';
+import {
+  FETCH_DATA,
+  SET_SELECTED_EVENTS,
+  TOGGLE_EVENT
+} from '../actions/types';
 
 const initialState = {
   allMarkers: [],
-  selectedEventArray: [{}],
-  activeEventIdx: 0,
+  selectedEventsArray: [{ID: 0}],
+  activeEventIdx: 0
 };
 
 const eventsReducer = (state = initialState, action) => {
@@ -13,8 +17,16 @@ const eventsReducer = (state = initialState, action) => {
     case SET_SELECTED_EVENTS:
       return {
         ...state,
-        selectedEventArray: action.selectedEventArray,
-        activeEventIdx: 0,
+        selectedEventsArray: action.selectedEventsArray,
+        activeEventIdx: 0
+      };
+    case TOGGLE_EVENT:
+      return {
+        ...state,
+        activeEventIdx:
+          action.direction === 'PREV'
+            ? state.activeEventIdx - 1
+            : state.activeEventIdx + 1
       };
     default:
       return state;
