@@ -52,7 +52,7 @@ const AgendaEventItem = props => {
     end_time,
     description,
     verified
-  } = this.props.event;
+  } = props.event;
   /*All roads specific function */
   const titleAllRoad = () => (
     <div className="event-title-allroad">
@@ -105,7 +105,7 @@ const AgendaEventItem = props => {
             <span className="date_time_title">When? - </span>
             <span>{timeFormatter(start_time, end_time)}</span>
           </div>
-          <SeeMoreButton onClick={() => this.props.handleAgendaClick()}>
+          <SeeMoreButton onClick={() => props.handleAgendaClick()}>
             See details >>
           </SeeMoreButton>
         </section>

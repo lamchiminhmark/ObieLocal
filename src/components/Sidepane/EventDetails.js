@@ -6,7 +6,7 @@ import ReactHtmlParser from 'react-html-parser';
 import { toggleEvent } from '../../actions/eventActions';
 import EventSwitchButtons from './EventSwitchButtons';
 
-class EventDetails {
+class EventDetails extends React.Component {
   /**
    * Returns the time string to be displayed in the sidepane for an event in
    * the active event array.
@@ -20,16 +20,12 @@ class EventDetails {
     // object here? Also see AgendaEventItem.timeFormatter.
     if (this.props.event.start_time) {
       /* Note that the Date constructor automatically adjusts for timezone */
-      const startTimeUTC = new Date(
-        this.props.event.start_time
-      );
+      const startTimeUTC = new Date(this.props.event.start_time);
       /*format times to display hour, minute, and period in 12 hour time*/
       startTime = dateTime.create(startTimeUTC, 'I:M p').format();
     }
     if (this.props.event.end_time) {
-      const endTimeUTC = new Date(
-        this.props.event.end_time
-      );
+      const endTimeUTC = new Date(this.props.event.end_time);
       endTime = dateTime.create(endTimeUTC, 'I:M p').format();
     }
     endTime = endTime ? ` - ${endTime}` : ``;
@@ -37,17 +33,18 @@ class EventDetails {
   }
 
   render() {
+    const { event, toggleEvent, totalEvents, activeEventIdx } = this.props;
     const timeString = this.getEventTimeString();
-    const locationName = this.props.handleEventSwitch.location_name || '';
-    const locationString = this.props.event.address || 'Location unknown.';
+    const locationName = event.location_name || '';
+    const locationString = event.address || 'Location unknown.';
 
     return (
-      <div label="Event">
-        <h1>{this.props.selectedEventsArray[this.props.eventIdx].title}</h1>
+      <div>
+        <h1>{event.title}</h1>
         <EventSwitchButtons
-          handleEventSwitch={this.props.toggleEvent}
-          nextExists={this.props.nextExists}
-          prevExists={this.props.prevExists}
+          handleEventSwitch={toggleEvent}
+          totalEvents={totalEvents}
+          eventIdx={activeEventIdx}
         />
         <p className="event-details">
           <em>Where and When: </em>
@@ -58,14 +55,8 @@ class EventDetails {
           <br />
           {`Today! ${timeString}`}
         </p>
-        <img
-          className="event-img"
-          src={this.props.selectedEventsArray[this.props.eventIdx].photo_url}
-          alt=""
-        />
-        {ReactHtmlParser(
-          this.props.selectedEventsArray[this.props.eventIdx].description
-        )}
+        <img className="event-img" src={event.photo_url} alt="" />
+        {ReactHtmlParser(event.description)}
       </div>
     );
   }
@@ -75,8 +66,8 @@ const mapStateToProps = ({ events }) => {
   const { selectedEventsArray, activeEventIdx } = events;
   return {
     event: selectedEventsArray[activeEventIdx],
-    nextExists: selectedEventsArray.length - 1 > activeEventIdx,
-    prevExists: activeEventIdx > 0
+    totalEvents: selectedEventsArray.length,
+    activeEventIdx
   };
 };
 

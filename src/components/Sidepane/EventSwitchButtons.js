@@ -1,3 +1,5 @@
+/* Presentational components */
+
 import React from 'react';
 import styled from 'styled-components';
 
@@ -48,14 +50,17 @@ const NextButton = styled.button`
 `;
 
 /**
-   * Determines whether there are multiple events at the current location and
-   * creates buttons to switch through them if necessary.
-   * @returns {JSX.Element} A div with 0 or 2 styled buttons.
-   */
-  // TODO(CP): Make this code cleaner
+ * Determines whether there are multiple events at the current location and
+ * creates buttons to switch through them if necessary.
+ * @returns {JSX.Element} A div with 0 or 2 styled buttons.
+ */
+// TODO(CP): Make this code cleaner
 
 const EventSwitchButtons = props => {
-  if (!props.nextExists && !props.prevExists) return null;
+  const { eventIdx, totalEvents, handleEventSwitch } = props;
+  const prevExists = eventIdx > 0;
+  const nextExists = eventIdx < totalEvents - 1;
+  if (!nextExists && !prevExists) return null;
 
   const LIGHT_GREEN = '#cedd0e';
   const LIGHT_GREEN_HL = '#dceb0f';
@@ -63,21 +68,21 @@ const EventSwitchButtons = props => {
   const BOX_SHADOW = '0 2px 3px rgb(0, 0, 0, 0.50)';
 
   const prevProps = {
-    onClick: props.prevExists ? props.handleEventSwitch(PREV) : null,
-    bgColor: props.prevExists ? LIGHT_GREEN : LIGHT_GRAY,
-    bgHighlight: props.prevExists ? LIGHT_GREEN_HL : null,
-    cursor: props.prevExists ? 'pointer' : 'default',
-    boxShadow: props.prevExists ? BOX_SHADOW : 'none',
-    opacity: props.prevExists ? '1' : '0.5'
+    onClick: prevExists ? handleEventSwitch(PREV) : null,
+    bgColor: prevExists ? LIGHT_GREEN : LIGHT_GRAY,
+    bgHighlight: prevExists ? LIGHT_GREEN_HL : null,
+    cursor: prevExists ? 'pointer' : 'default',
+    boxShadow: prevExists ? BOX_SHADOW : 'none',
+    opacity: prevExists ? '1' : '0.5'
   };
 
   const nextProps = {
-    onClick: props.nextExists ? this.props.handleEventSwitch(NEXT) : null,
-    bgColor: props.nextExists ? LIGHT_GREEN : LIGHT_GRAY,
-    bgHighlight: props.nextExists ? LIGHT_GREEN_HL : null,
-    cursor: props.nextExists ? 'pointer' : 'default',
-    boxShadow: props.nextExists ? BOX_SHADOW : 'none',
-    opacity: props.nextExists ? '1' : '0.5'
+    onClick: nextExists ? handleEventSwitch(NEXT) : null,
+    bgColor: nextExists ? LIGHT_GREEN : LIGHT_GRAY,
+    bgHighlight: nextExists ? LIGHT_GREEN_HL : null,
+    cursor: nextExists ? 'pointer' : 'default',
+    boxShadow: nextExists ? BOX_SHADOW : 'none',
+    opacity: nextExists ? '1' : '0.5'
   };
 
   return (
@@ -86,7 +91,7 @@ const EventSwitchButtons = props => {
         {`<<`}
       </PrevButton>
       <EventNumber>
-        {this.props.eventIdx + 1}/{this.props.selectedEventsArray.length}
+        {eventIdx + 1}/{totalEvents}
       </EventNumber>
       <NextButton id={'button-next-event'} {...nextProps}>
         >>

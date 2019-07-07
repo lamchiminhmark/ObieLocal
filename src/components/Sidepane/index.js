@@ -64,14 +64,13 @@ const PaneBody = styled.div`
 
 class Sidepane extends Component {
   render() {
-    console.log(`selected events array is ${this.props.selectedEventsArray}`);
     return (
       <StyledPane
         className={this.props.active ? 'Sidepane-active' : 'Sidepane-inactive'}
         id="sidepane"
       >
         <PaneBody>
-          <Tabs activeTab={this.props.activeTab}>
+          <Tabs>
             {/* Event Tab */}
             {/* If no event is selected  */}
             {this.props.selectedEventsArray[0].ID === 0 ? (
@@ -79,10 +78,10 @@ class Sidepane extends Component {
                 <p>Please select an event to view details</p>
               </div>
             ) : (
-              <EventDetails />
+              <EventDetails label="Event" />
             )}
             {/* Agenda Tab */}
-            <AgendaEventList />
+            <AgendaEventList label="Agenda" />
           </Tabs>
         </PaneBody>
         <SidepaneCloseButton id="sidepane-close" />
@@ -93,8 +92,8 @@ class Sidepane extends Component {
 
 const mapStateToProps = ({ sidepane, events }) => {
   const { selectedEventsArray, activeEventIdx: eventIdx } = events;
-  const { sidepaneOpen: active, activeTab } = sidepane;
-  return { active, activeTab, selectedEventsArray, eventIdx };
+  const { sidepaneOpen: active } = sidepane;
+  return { active, selectedEventsArray, eventIdx };
 };
 
 export default connect(mapStateToProps)(Sidepane);

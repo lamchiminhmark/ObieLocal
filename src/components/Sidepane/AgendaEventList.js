@@ -7,7 +7,7 @@ import { recenterMap } from '../../actions/mapActions';
 import ReactGA from 'react-ga';
 import AgendaEventItem from './AgendaEventItem';
 
-class AgendaEventList {
+class AgendaEventList extends React.Component {
   handleAgendaClick = event => () => {
     ReactGA.event({
       category: 'User',
@@ -28,14 +28,12 @@ class AgendaEventList {
     );
 
     return (
-      <div label="Agenda">
+      <div>
         <section>
           <ul className="AgendaEventList">
             {sortedEvents.map(event => (
               <AgendaEventItem
                 key={event.ID}
-                lat={event.lat}
-                lng={event.lng}
                 handleAgendaClick={this.handleAgendaClick(event)}
                 event={event}
               />
@@ -67,6 +65,7 @@ const mapStateToProps = ({ events }) => {
 const mapDispatchToProps = dispatch => {
   return {
     setSelectedEvents: activeEventArray =>
+      // TODO(ML): Add optional arg to setSelectedEvents to know which of the many events to go to
       dispatch(setSelectedEvents(activeEventArray)),
     centerOnEvent: event =>
       dispatch(
