@@ -1,5 +1,7 @@
 // Specifying action types allowed in the app
 
+/** Redux action: Change sidepane tabs */
+export const CHANGE_TAB = 'CHANGE_TAB';
 /** Redux action: Retrieves events from database */
 export const FETCH_DATA='FETCH_DATA';
 /** Redux action: Set the selected events to the clicked marker */

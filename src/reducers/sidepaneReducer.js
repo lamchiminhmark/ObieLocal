@@ -1,4 +1,4 @@
-import { TOGGLE_SIDE_PANE, SET_SELECTED_EVENTS } from '../actions/types';
+import { TOGGLE_SIDE_PANE, SET_SELECTED_EVENTS, CHANGE_TAB } from '../actions/types';
 
 const initialState = {
     createEventContainerOpen: false,
@@ -15,10 +15,15 @@ const sidepaneReducer = (state = initialState, action) => {
                 activeTab: 'Event'
             };
         case TOGGLE_SIDE_PANE:
-            const obj = action.args
+            const obj = action.payload
             if (state.createEventContainerOpen) return;
             if (obj && obj.close) return { ...state, sidepaneOpen: !obj.close }
             else return{ ...state, sidepaneOpen: !state.sidepaneOpen }
+        case CHANGE_TAB:
+            return {
+                ...state,
+                activeTab: action.payload.tab,
+            }
         default:
             return state
     }

@@ -1,12 +1,18 @@
-import { TOGGLE_SIDE_PANE } from './types';
+import { TOGGLE_SIDE_PANE, CHANGE_TAB } from './types';
 
 /**
- * 
- * @param {{close?: boolean}} args 
+ * @param {{close?: boolean}} payload if close is true, just close sidepane
  */
-export const toggleSidepane = args => dispatch => {
+export const toggleSidepane = payload => dispatch => {
     dispatch({
         type: TOGGLE_SIDE_PANE,
-        args
+        payload,
     })
+}
+
+export const changeTab = tab => dispatch => {
+    return {
+        type: CHANGE_TAB,
+        payload: {tab},
+    }
 }
