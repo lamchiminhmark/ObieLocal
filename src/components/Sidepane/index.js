@@ -6,6 +6,7 @@ import '../../styles/tabs.css';
 import SidepaneCloseButton from './SidepaneCloseButton';
 import AgendaEventList from './AgendaEventList';
 import EventDetails from './EventDetails';
+import { toggleSidepane } from '../../actions/sidepaneActions';
 
 const StyledPane = styled.div`
   margin: 0px;
@@ -84,7 +85,10 @@ class Sidepane extends Component {
             <AgendaEventList label="Agenda" />
           </Tabs>
         </PaneBody>
-        <SidepaneCloseButton id="sidepane-close" />
+        <SidepaneCloseButton
+          id="sidepane-close"
+          onClick={this.props.closeSidepane}
+        />
       </StyledPane>
     );
   }
@@ -96,4 +100,13 @@ const mapStateToProps = ({ sidepane, events }) => {
   return { active, selectedEventsArray, eventIdx };
 };
 
-export default connect(mapStateToProps)(Sidepane);
+const mapDispatchToProps = dispatch => {
+  return {
+    closeSidepane: () => dispatch(toggleSidepane({ close: true }))
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Sidepane);
