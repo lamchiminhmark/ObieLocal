@@ -1,11 +1,9 @@
-import * as actions from "../eventActions";
-import React from "react";
-import Marker from "../components/Marker";
 import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
 import fetchMock from "fetch-mock";
 import expect from "expect";
 import { FETCH_DATA } from "../types";
+import { fetchData, toMarkerArray } from "../eventActions";
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -78,7 +76,7 @@ const event2 = {
   start_time: "2019-07-12T00:00:00.000Z",
   end_time: null
 };
-const mockEvents = [event1, event2];
+const mockEvents = [event0, event1, event2];
 
 let markerEvent0 = Object.assign({}, event0);
 delete markerEvent0.longitude;
@@ -86,7 +84,7 @@ delete markerEvent0.latitude;
 let markerEvent1 = Object.assign({}, event1);
 delete markerEvent1.longitude;
 delete markerEvent1.latitude;
-let markerEvent2 = Object.assign({}, event1);
+let markerEvent2 = Object.assign({}, event2);
 delete markerEvent2.longitude;
 delete markerEvent2.latitude;
 
@@ -101,38 +99,33 @@ const expectedMarkerArray = [
   }
 ];
 
-const mockMarkers = [
-  <Marker
-    lat={event0.latitude}
-    lng={event0.latitude}
-    eventArray={[markerEvent1, markerEvent0]}
-  />,
-  <Marker
-    lat={event2.latitude}
-    lng={event2.latitude}
-    eventArray={[markerEvent2]}
-  />
-];
-
 describe("fetch data and returns marker array", () => {
   afterEach(() => {
     fetchMock.restore();
   });
   it("toMarkerElement returns correctly", () => {
-    expect(actions.toMarkerArray(mockEvents)).toEqual(expectedMarkerArray);
+    expect(mockEvents.reduce(toMarkerArray,[])).toEqual(expectedMarkerArray);
   });
 
-  it("creates FETCH_TODOS_SUCCESS when fetching todos has been done", () => {
-    fetchMock.getOnce("/fetchData", mockEvents);
+  it("fetches from API and dispatch action", () => {
+    fetchMock
+      .getOnce("https://obielocal-1541269219020.appspot.com/query", mockEvents)
+      .catch(unmatchedUrl => {
+        // fallover call original fetch, because fetch-mock treats
+        // any unmatched call as an error - its target is testing
+        console.log("Unmatched " + unmatchedUrl);
+      });
 
     const expectedReturn = {
       type: FETCH_DATA,
-      payload: mockMarkers
+      payload: expectedMarkerArray
     };
-    const store = mockStore({ todos: [] });
+    const store = mockStore({allMarkers: []});
 
-    return store.dispatch(actions.fetchData()).then(() => {
-      expect(store.getActions()).toEqual(expectedReturn);
+    return store.dispatch(fetchData()).then(() => {
+      expect(store.getActions()).toEqual([expectedReturn]);
     });
   });
 });
+
+
