@@ -48,7 +48,7 @@ function toMarkerElement(markerObj) {
   );
 }
 
-function toMarkerArray(result, rawEvent) {
+export function toMarkerArray(result, rawEvent) {
   const { latitude, longitude, ...event } = rawEvent;
   const markerIdx = result.findIndex(markerObj => {
     return (
