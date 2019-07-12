@@ -1,5 +1,3 @@
-import React from 'react';
-import Marker from '../components/Marker';
 import { FETCH_DATA, SET_SELECTED_EVENTS, TOGGLE_EVENT } from './types';
 
 export const fetchData = () => dispatch => {
@@ -10,7 +8,6 @@ export const fetchData = () => dispatch => {
       const markers = arr
         //.filter(checkEventTimes)
         .reduce(toMarkerArray, [])
-        .map(toMarkerElement, this);
       dispatch({
         type: FETCH_DATA,
         payload: markers
@@ -33,20 +30,6 @@ export const toggleEvent = direction => dispatch => {
   });
 };
 
-/**
- * Formats a marker object as a Marker element.
- * @param {JSON} markerObj the marker object to be rendered as a Marker.
- * @returns {JSX.Element} a Marker element.
- */
-function toMarkerElement(markerObj) {
-  return (
-    <Marker
-      lat={markerObj.geo.latitude}
-      lng={markerObj.geo.longitude}
-      eventArray={markerObj.events}
-    />
-  );
-}
 
 function toMarkerArray(result, rawEvent) {
   const { latitude, longitude, ...event } = rawEvent;

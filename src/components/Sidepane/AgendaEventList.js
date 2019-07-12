@@ -49,10 +49,10 @@ const mapStateToProps = ({ events }) => {
   // Flatten each marker
   const allEvents = events.allMarkers.reduce((soFar, marker) => {
     // Add coordinates to the 1 or more events in a marker
-    const eventsWithCoor = marker.props.eventArray.map(event => ({
+    const eventsWithCoor = marker.events.map(event => ({
       ...event,
-      lat: marker.props.lat,
-      lng: marker.props.lng
+      lat: marker.geo.latitude,
+      lng: marker.geo.longitude
     }));
     return soFar.concat(eventsWithCoor);
   }, []);
