@@ -43,9 +43,20 @@
   ],
   "devDependencies": {
     "babel-jest": "^24.8.0",
+    "babel-plugin-transform-export-extensions": "^6.22.0",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.14.0",
     "fetch-mock": "^7.3.6",
+    "identity-obj-proxy": "^3.0.0",
     "jest": "^24.8.0",
+    "jest-cli": "^24.8.0",
     "node-fetch": "^2.6.0",
+    "react-test-renderer": "^16.8.6",
     "redux-mock-store": "^1.5.3"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "\\.(css|less)$": "identity-obj-proxy"
+    }
   }
 }
