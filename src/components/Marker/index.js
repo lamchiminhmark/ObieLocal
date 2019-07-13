@@ -58,7 +58,7 @@ const MarkerWrap = styled.div`
   animation-iteration-count: infinite;
 `;
 
-class Marker extends React.Component {
+export class Marker extends React.Component {
   constructor(props) {
     super(props);
     this.displayData = this.getDisplayData();
