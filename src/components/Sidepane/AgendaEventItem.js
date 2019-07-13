@@ -2,25 +2,8 @@
 
 import React from 'react';
 import '../../styles/AgendaEventItem.css';
-import styled from 'styled-components';
 import ReactHtmlParser from 'react-html-parser';
-
-const SeeMoreButton = styled.button`
-  outline: none;
-  border: none;
-  padding: 10px 10px;
-  right: 0px;
-  margin: 5px;
-  background-color: #cedd0e;
-  color: #555;
-  font-weight: bold;
-  font-family: 'Varela Round', sans-serif;
-
-  :hover {
-    background-color: #303030;
-    color: #ededed;
-  }
-`;
+import { StyledSeeMoreButton } from './styles';
 
 const timeFormatter = (start, end) => {
   let startTime = 'Time unknown.';
@@ -105,9 +88,9 @@ const AgendaEventItem = props => {
             <span className="date_time_title">When? - </span>
             <span>{timeFormatter(start_time, end_time)}</span>
           </div>
-          <SeeMoreButton onClick={() => props.handleAgendaClick()}>
+          <StyledSeeMoreButton onClick={() => props.handleAgendaClick()}>
             See details >>
-          </SeeMoreButton>
+          </StyledSeeMoreButton>
         </section>
       </div>
     </li>

@@ -4,6 +4,17 @@ import GoogleMapReact from 'google-map-react';
 import mapStyle from './mapStyle';
 import styledMapCanvas from './styledMapCanvas.js';
 import config from '../../shared/config';
+import Marker from '../Marker'
+
+const toMarkerElement = markerObj => {
+  return (
+    <Marker
+      lat={markerObj.geo.latitude}
+      lng={markerObj.geo.longitude}
+      eventArray={markerObj.events}
+    />
+  );
+}
 
 const MapContainer = props => {
   return (
@@ -19,7 +30,7 @@ const MapContainer = props => {
       >
         {/*TECH_DEBT(KN): Clean this shit up */}
         {Children.toArray(
-          props.markers.filter(marker => marker.props.lat || marker.props.lng)
+          props.markers.map(obj => toMarkerElement(obj)).filter(marker => marker.props.lat || marker.props.lng)
         )}
       </GoogleMapReact>
     </div>
