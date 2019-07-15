@@ -72,7 +72,7 @@ export const StyledPaneBody = styled.div`
   }
 `;
 
-export const EventSwitchButtons = styled.div`
+export const EventSwitchButtonsWrapper = styled.div`
   position: relative;
   width: var(--pane-min-width);
   button {

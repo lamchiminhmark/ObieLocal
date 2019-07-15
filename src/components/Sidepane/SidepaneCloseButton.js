@@ -4,7 +4,7 @@ import { StyledCloseDiv } from './styles';
 const SidepaneCloseButton = props => {
   return (
     <StyledCloseDiv>
-      <button onClick={props.handleSidepaneClick}>
+      <button onClick={props.onClick}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"

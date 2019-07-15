@@ -1,4 +1,8 @@
+/* Container */
+
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { toggleSidepane } from '../../actions/sidepaneActions';
 import Popup from './Popup';
 import MenuButton from './MenuButton';
 import { StyledNavContainer, StyledNav } from './styles';
@@ -41,7 +45,7 @@ class NavBar extends Component {
     return (
       <StyledNavContainer id="interface">
         <StyledNav id="navbar">
-          <MenuButton handleMenuClick={this.props.handleMenuClick} />
+          <MenuButton handleMenuClick={this.props.toggleSidepane} />
           <h2>ObieLocal</h2>
           <ul>
             <li key="1">
@@ -62,4 +66,10 @@ class NavBar extends Component {
   }
 }
 
-export default NavBar;
+const mapDispatchToProps = dispatch => {
+  return {
+    toggleSidepane: () => dispatch(toggleSidepane())
+  }
+}
+
+export default connect(undefined, mapDispatchToProps)(NavBar);

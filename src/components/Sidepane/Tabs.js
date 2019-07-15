@@ -1,5 +1,9 @@
+/* Container */
+
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { changeTab } from '../../actions/sidepaneActions';
 import Tab from './Tab';
 import '../../styles/tabs.css';
 
@@ -8,28 +12,8 @@ class Tabs extends Component {
     children: PropTypes.instanceOf(Array).isRequired
   };
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      activeTab: this.props.activeTab
-    };
-  }
-
-  onClickTabItem = tab => {
-    this.setState({ activeTab: tab });
-  };
-
-  componentWillReceiveProps() {
-    this.setState({ activeTab: this.props.activeTab });
-  }
-
   render() {
-    const {
-      onClickTabItem,
-      props: { children },
-      state: { activeTab }
-    } = this;
+    const { children, activeTab } = this.props;
     return (
       <div className="tabs">
         <ol className="tab-list">
@@ -41,7 +25,7 @@ class Tabs extends Component {
                 activeTab={activeTab}
                 key={label}
                 label={label}
-                onClick={onClickTabItem}
+                onClick={this.props.changeTab}
               />
             );
           })}
@@ -49,7 +33,7 @@ class Tabs extends Component {
         <div className="tab-content">
           {children.map(child => {
             if (child.props.label !== activeTab) return undefined;
-            return child.props.children;
+            return child;
           })}
         </div>
       </div>
@@ -57,4 +41,19 @@ class Tabs extends Component {
   }
 }
 
-export default Tabs;
+const mapStateToProps = ({ sidepane }) => {
+  return {
+    activeTab: sidepane.activeTab
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    changeTab: tab => dispatch(changeTab(tab))
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Tabs);
