@@ -5,7 +5,7 @@ import '../../styles/AgendaEventItem.css';
 import styled from 'styled-components';
 import ReactHtmlParser from 'react-html-parser';
 
-const SeeMoreButton = styled.button`
+export const SeeMoreButton = styled.button`
   outline: none;
   border: none;
   padding: 10px 10px;

@@ -16,11 +16,11 @@ export const fetchData = () => dispatch => {
     .catch(error => console.error('Loading markers failed! ', error));
 };
 
-export const setSelectedEvents = selectedEventsArray => dispatch => {
-  return dispatch({
+export const setSelectedEvents = selectedEventsArray => {
+  return {
     type: SET_SELECTED_EVENTS,
     selectedEventsArray,
-  });
+  };
 };
 
 export const toggleEvent = direction => dispatch => {

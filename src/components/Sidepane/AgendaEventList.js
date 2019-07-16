@@ -7,7 +7,7 @@ import { recenterMap } from '../../actions/mapActions';
 import ReactGA from 'react-ga';
 import AgendaEventItem from './AgendaEventItem';
 
-class AgendaEventList extends React.Component {
+export class AgendaEventList extends React.Component {
   handleAgendaClick = event => () => {
     ReactGA.event({
       category: 'User',
