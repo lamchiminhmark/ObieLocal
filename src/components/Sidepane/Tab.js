@@ -5,11 +5,6 @@ import PropTypes from 'prop-types';
 import '../../styles/tabs.css';
 
 const Tab = props => {
-  const onClick = () => {
-    const { label, onClick } = props;
-    onClick(label);
-  };
-
   const { activeTab, label } = props;
 
   let className = 'tab-list-item';
@@ -19,7 +14,7 @@ const Tab = props => {
   }
 
   return (
-    <li className={className} onClick={onClick}>
+    <li className={className} onClick={props.onClick}>
       {label}
     </li>
   );

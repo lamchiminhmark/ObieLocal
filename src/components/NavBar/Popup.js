@@ -1,50 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
-
-const StyledPopup = styled.div`
-  .popup {
-    position: fixed;
-    width: 60%;
-    height: 60%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    margin: auto;
-    color: rgba(255, 255, 255, 0.8);
-    background: linear-gradient(
-      rgba(55, 55, 55, 0.95),
-      rgba(30, 30, 30, 0.95) 65%
-    );
-    border: 2px solid rgba(35, 35, 35, 0.7);
-    border-radius: 14px;
-    box-shadow: 0px 3px 2px rgba(0, 0, 0, 0.27);
-  }
-
-  h1 {
-    background-color: #cedd0e;
-    color: black;
-    border-radius:14px;
-    font-family: 'Varela Round', sans-serif;
-  }
-
-  #x {
-    position: relative;
-    float: right;
-    color: #ffffff;
-    width: 42px;
-    height: 42px;
-    cursor: pointer;
-    border: none;
-    border-radius: 20%;
-    background-color: rgb(166, 38, 38);
-    text-align: center;
-  }
-
-  p {
-    padding: 20px 20px 10px 10px;
-  }
-`;
+import { StyledPopup } from './styles';
 
 const bodyTexts = {
   contact: `Comments, questions, or suggestions for how we can make ObieLocal 

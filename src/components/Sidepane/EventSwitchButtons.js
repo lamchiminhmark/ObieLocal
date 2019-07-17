@@ -1,53 +1,15 @@
 /* Presentational components */
 
 import React from 'react';
-import styled from 'styled-components';
+import {
+  EventSwitchButtonsWrapper as Wrapper,
+  PrevButton,
+  NextButton,
+  EventNumber
+} from './styles';
 
 const PREV = 'PREV';
 const NEXT = 'NEXT';
-
-const Wrapper = styled.div`
-  position: relative;
-  width: var(--pane-min-width);
-  button {
-    position: relative;
-    margin: auto;
-    width: 80px;
-    height: 23px;
-    border: none;
-    font-weight: bolder;
-    transition: background-color 0.3s ease, opacity 0.2s ease,
-      box-shadow 0.2s ease;
-  }
-`;
-
-const PrevButton = styled.button`
-  left: 0;
-  margin-left: 16%;
-  background-color: ${props => props.bgColor};
-  box-shadow: ${props => props.boxShadow};
-  opacity: ${props => props.opacity};
-  cursor: ${props => props.cursor};
-  :hover {
-    background-color: ${props => props.bgHighlight};
-  }
-`;
-
-const EventNumber = styled.span`
-  padding: 20px;
-`;
-
-const NextButton = styled.button`
-  right: 0;
-  margin-right: 16%;
-  background-color: ${props => props.bgColor};
-  box-shadow: ${props => props.boxShadow};
-  opacity: ${props => props.opacity};
-  cursor: ${props => props.cursor};
-  :hover {
-    background-color: ${props => props.bgHighlight};
-  }
-`;
 
 /**
  * Determines whether there are multiple events at the current location and

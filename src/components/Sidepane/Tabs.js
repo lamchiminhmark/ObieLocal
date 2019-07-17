@@ -1,5 +1,6 @@
 /* Container */
 
+import ReactGA from 'react-ga';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -25,7 +26,7 @@ class Tabs extends Component {
                 activeTab={activeTab}
                 key={label}
                 label={label}
-                onClick={this.props.changeTab}
+                onClick={this.props.changeTab(label)}
               />
             );
           })}
@@ -49,7 +50,14 @@ const mapStateToProps = ({ sidepane }) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    changeTab: tab => dispatch(changeTab(tab))
+    changeTab: tab => () => {
+      ReactGA.event({
+        category: 'User',
+        action: 'Tab Click',
+        label: tab
+      });
+      dispatch(changeTab(tab));
+    }
   };
 };
 
