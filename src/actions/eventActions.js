@@ -1,7 +1,7 @@
 import { FETCH_DATA, SET_SELECTED_EVENTS, TOGGLE_EVENT } from './types';
 
 export const fetchData = () => dispatch => {
-  fetch('https://obielocal-1541269219020.appspot.com/query')
+  return fetch('https://obielocal-1541269219020.appspot.com/query')
     // fetch("http://localhost:3001/query")
     .then(response => response.json())
     .then(arr => {
@@ -16,22 +16,22 @@ export const fetchData = () => dispatch => {
     .catch(error => console.error('Loading markers failed! ', error));
 };
 
-export const setSelectedEvents = selectedEventsArray => dispatch => {
-  dispatch({
+export const setSelectedEvents = selectedEventsArray => {
+  return {
     type: SET_SELECTED_EVENTS,
     selectedEventsArray,
-  });
+  };
 };
 
 export const toggleEvent = direction => dispatch => {
-  dispatch({
+  return dispatch({
     type: TOGGLE_EVENT,
     direction,
   });
 };
 
 
-function toMarkerArray(result, rawEvent) {
+export function toMarkerArray(result, rawEvent) {
   const { latitude, longitude, ...event } = rawEvent;
   const markerIdx = result.findIndex(markerObj => {
     return (

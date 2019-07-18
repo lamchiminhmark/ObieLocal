@@ -25,7 +25,7 @@ const getMinutesUntilStart = eventObj => {
   return Math.ceil((hoursUntilStart * 60) / 5) * 5; //round to the nearest multiple of 5
 };
 
-class Marker extends React.Component {
+export class Marker extends React.Component {
   constructor(props) {
     super(props);
     this.displayData = this.getDisplayData();

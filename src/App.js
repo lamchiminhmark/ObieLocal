@@ -10,7 +10,7 @@ import config from './shared/config';
 import { connect } from 'react-redux';
 import { fetchData } from './actions/eventActions';
 
-class App extends Component {
+export class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
