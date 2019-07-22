@@ -6,7 +6,7 @@ import { TOGGLE_SIDE_PANE, CHANGE_TAB } from './types';
 export const toggleSidepane = payload => dispatch => {
   dispatch({
     type: TOGGLE_SIDE_PANE,
-    payload
+    payload: payload || {}
   });
 };
 
