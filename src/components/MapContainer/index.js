@@ -16,17 +16,19 @@ const toMarkerElement = markerObj => {
   );
 };
 
+/** Filter out events that don't happen [filterDay] from today */
 const filterEventByDay = (marker, filterDay) => {
-  var newEvents = marker.events.filter(event => {
-    let date = new Date(event.start_time);
-    const realDate = date.setDate(date.getDate() - filterDay);
+  let newEvents = marker.events.filter(event => {
     const now = new Date();
-    return now.getDate() === realDate;
+    let date = new Date(event.start_time);
+    date.setDate(date.getDate() - filterDay);
+    return now.getDate() === date.getDate();
   });
   marker.events = newEvents;
   return marker;
 };
 
+/** Filter out markers that doesn't have lat/lng or any event */
 const filterMarker = marker => {
   if (!marker.props.lat && !marker.props.lng) return false;
   if (marker.props.eventArray.length === 0) return false;
@@ -48,7 +50,7 @@ const MapContainer = props => {
         {/*TECH_DEBT(KN): Clean this shit up */}
         {Children.toArray(
           props.markers
-          .map(marker => filterEventByDay(marker, props.filterDay)) //filter out events that are not in the specified date
+            .map(marker => filterEventByDay(marker, props.filterDay)) //filter out events that are not in the specified date
             .map(obj => toMarkerElement(obj))
             .filter(filterMarker) // filter out markers that have empty eventArray or no lat/lng
         )}
