@@ -20,6 +20,7 @@
     "react-html-parser": "^2.0.2",
     "react-redux": "^7.0.3",
     "react-scripts": "^2.1.8",
+    "react-select": "^3.0.4",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
     "styled-components": "^4.2.0"

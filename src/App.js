@@ -9,6 +9,7 @@ import ReactGA from 'react-ga';
 import config from './shared/config';
 import { connect } from 'react-redux';
 import { fetchData } from './actions/eventActions';
+import FilterByDayButton from  './components/FilterEvents/filterDayButton'
 
 export class App extends Component {
   constructor(props) {
@@ -39,6 +40,7 @@ export class App extends Component {
         <NavBar />
         <MapContainer />
         <Sidepane />
+        <FilterByDayButton />
       </div>
     );
   }

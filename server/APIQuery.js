@@ -58,7 +58,7 @@ async function getEvents(maxPages, connection) {
     let pagesRemaining = maxPages;
     for (let page = 1; page <= maxPages; page++) {
       request(
-        `https://calendar.oberlin.edu/api/2/events?page=${page}`,
+        `https://calendar.oberlin.edu/api/2/events?days=8&page=${page}`,
         { json: true, timeout: 1500 },
         async (err, res, body) => {
           /* Upon request error, log the error and kill the process immediately.

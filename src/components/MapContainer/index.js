@@ -24,8 +24,7 @@ const filterEventByDay = (marker, filterDay) => {
     date.setDate(date.getDate() - filterDay);
     return now.getDate() === date.getDate();
   });
-  marker.events = newEvents;
-  return marker;
+  return {...marker, events: newEvents};
 };
 
 /** Filter out markers that doesn't have lat/lng or any event */
