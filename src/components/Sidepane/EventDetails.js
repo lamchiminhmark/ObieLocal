@@ -18,18 +18,24 @@ class EventDetails extends React.Component {
     const dateTime = require('node-datetime');
     // TODO(CP): Do we actually need to check for start time in the event
     // object here? Also see AgendaEventItem.timeFormatter.
-    if (this.props.event.start_time) {
-      /* Note that the Date constructor automatically adjusts for timezone */
-      const startTimeUTC = new Date(this.props.event.start_time);
-      /*format times to display hour, minute, and period in 12 hour time*/
-      startTime = dateTime.create(startTimeUTC, 'I:M p').format();
+    if (!this.props.event.start_time) {
+      return startTime;
     }
+    /* Note that the Date constructor automatically adjusts for timezone */
+    startTime = new Date(this.props.event.start_time)
+    /*format times to display hour, minute, and period in 12 hour time*/
+    const startHour = dateTime.create(startTime, 'I:M p').format();
+
     if (this.props.event.end_time) {
       const endTimeUTC = new Date(this.props.event.end_time);
       endTime = dateTime.create(endTimeUTC, 'I:M p').format();
     }
     endTime = endTime ? ` - ${endTime}` : ``;
-    return `${startTime}${endTime}`;
+    
+    
+    const dayInWeek = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    const date = dayInWeek[startTime.getDay()] + " " + startTime.getMonth() + "/" + startTime.getDate();
+    return `${date}, ${startHour}${endTime}`;
   }
 
   render() {
@@ -53,7 +59,7 @@ class EventDetails extends React.Component {
           <br />
           {`${locationString}`}
           <br />
-          {`Today! ${timeString}`}
+          {`${timeString}`}
         </p>
         <img className="event-img" src={event.photo_url} alt="" />
         {ReactHtmlParser(event.description)}

@@ -37,10 +37,11 @@ export class App extends Component {
     initializeReactGA();
     return (
       <div className="App">
+        <FilterByDayButton />
         <NavBar />
         <MapContainer />
         <Sidepane />
-        <FilterByDayButton />
+        
       </div>
     );
   }

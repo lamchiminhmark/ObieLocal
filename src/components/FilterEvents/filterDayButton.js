@@ -15,7 +15,7 @@ const options = [0, 1, 2, 3, 4, 5, 6, 7].map(day => {
 });
 
 const FilterDayButton = props => (
-    <Select options={options} onChange={day => props.filterByDay(day.value)} placeholder="Today"/>
+    <Select className='react-select-container' options={options} onChange={day => props.filterByDay(day.value)} placeholder="Today"/>
   )
 
 const mapDispatchToProps = dispatch => ({
