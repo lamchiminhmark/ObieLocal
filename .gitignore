@@ -13,6 +13,9 @@
 # production
 /build
 
+# Firebase
+.firebaserc
+
 # API keys, passwords
 /src/shared/config.js
 /src/shared/config
