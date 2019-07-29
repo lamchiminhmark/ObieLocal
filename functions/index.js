@@ -6,10 +6,6 @@ admin.initializeApp(functions.config().firebase);
 let db = admin.firestore();
 
 exports.events = functions.https.onRequest((req, res) => {
-  const origin = req.get('origin');
-  res.header('Access-Control-Allow-Origin', origin);
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-
   const query = database
     .getAllEvents(db)
     .then(arr => {
