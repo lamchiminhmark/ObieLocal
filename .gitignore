@@ -15,6 +15,7 @@
 
 # Firebase
 .firebaserc
+/.firebase
 
 # API keys, passwords
 /src/shared/config.js
