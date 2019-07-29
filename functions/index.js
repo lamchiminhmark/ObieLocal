@@ -10,7 +10,7 @@ exports.events = functions.https.onRequest((req, res) => {
     .getAllEvents(db)
     .then(arr => {
       res.status(200).send(JSON.stringify(arr));
-      console.log('Successfully returned event array.');
+      console.log(`Successfully returned array with ${arr.length} events.`);
       return arr;
     })
     .catch(err => {

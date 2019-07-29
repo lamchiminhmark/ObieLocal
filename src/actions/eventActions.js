@@ -6,7 +6,7 @@ export const fetchData = () => dispatch => {
     .then(arr => {
       const markers = arr
         //.filter(checkEventTimes)
-        .reduce(toMarkerArray, [])
+        .reduce(toMarkerArray, []);
       dispatch({
         type: FETCH_DATA,
         payload: markers
@@ -18,17 +18,16 @@ export const fetchData = () => dispatch => {
 export const setSelectedEvents = selectedEventsArray => {
   return {
     type: SET_SELECTED_EVENTS,
-    selectedEventsArray,
+    selectedEventsArray
   };
 };
 
 export const toggleEvent = direction => dispatch => {
   return dispatch({
     type: TOGGLE_EVENT,
-    direction,
+    direction
   });
 };
-
 
 export function toMarkerArray(result, rawEvent) {
   const { latitude, longitude, ...event } = rawEvent;
