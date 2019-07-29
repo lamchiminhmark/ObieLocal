@@ -1,8 +1,9 @@
 import { FETCH_DATA, SET_SELECTED_EVENTS, TOGGLE_EVENT } from './types';
 
 export const fetchData = () => dispatch => {
-  return fetch('https://obielocal-1541269219020.appspot.com/query')
-    // fetch("http://localhost:3001/query")
+  return fetch(
+    'https://us-central1-obielocal-1541269219020.cloudfunctions.net/events'
+  )
     .then(response => response.json())
     .then(arr => {
       const markers = arr
