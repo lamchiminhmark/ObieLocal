@@ -108,9 +108,7 @@ describe("fetch data and returns marker array", () => {
   });
 
   it("fetches from API and dispatch action", () => {
-    fetchMock
-      .getOnce("https://obielocal-1541269219020.appspot.com/query", mockEvents)
-      .catch(unmatchedUrl => {
+    fetchMock.getOnce('/events', mockEvents).catch(unmatchedUrl => {
         // fallover call original fetch, because fetch-mock treats
         // any unmatched call as an error - its target is testing
         console.log("Unmatched " + unmatchedUrl);
