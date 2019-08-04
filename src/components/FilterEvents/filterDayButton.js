@@ -10,7 +10,7 @@ const options = [0, 1, 2, 3, 4, 5, 6, 7].map(day => {
   let date = new Date();
   const dayInWeek = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
   date.setDate(date.getDate() + day);
-  const label = dayInWeek[date.getDay()] + " " + date.getMonth() + "/" + date.getDate();
+  const label = dayInWeek[date.getDay()] + " " + (date.getMonth()+1) + "/" + date.getDate();
   return { value, label };
 });
 
