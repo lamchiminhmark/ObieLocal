@@ -119,8 +119,8 @@ describe("AgendaEventList with multi-day filter", () => {
     expect(wrapper.find(AgendaEventItem).get(0).key).toEqual("7");
   });
   it("Should only render events happening in 7 days", () => {
-    const stateTomorrow = { ...state, filter: { filterDay: 7 } };
-    const { wrapper } = deepRender(stateTomorrow);
+    const state7days = { ...state, filter: { filterDay: 7 } };
+    const { wrapper } = deepRender(state7days);
     expect(wrapper.find(AgendaEventItem)).toHaveLength(1);
     expect(wrapper.find(AgendaEventItem).get(0).key).toEqual("6");
   });
