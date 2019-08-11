@@ -1,13 +1,12 @@
 import { FETCH_DATA, SET_SELECTED_EVENTS, TOGGLE_EVENT } from './types';
 
 export const fetchData = () => dispatch => {
-  return fetch('https://obielocal-1541269219020.appspot.com/query')
-    // fetch("http://localhost:3001/query")
+  return fetch('/events')
     .then(response => response.json())
     .then(arr => {
       const markers = arr
         //.filter(checkEventTimes)
-        .reduce(toMarkerArray, [])
+        .reduce(toMarkerArray, []);
       dispatch({
         type: FETCH_DATA,
         payload: markers
@@ -19,17 +18,16 @@ export const fetchData = () => dispatch => {
 export const setSelectedEvents = selectedEventsArray => {
   return {
     type: SET_SELECTED_EVENTS,
-    selectedEventsArray,
+    selectedEventsArray
   };
 };
 
 export const toggleEvent = direction => dispatch => {
   return dispatch({
     type: TOGGLE_EVENT,
-    direction,
+    direction
   });
 };
-
 
 export function toMarkerArray(result, rawEvent) {
   const { latitude, longitude, ...event } = rawEvent;
