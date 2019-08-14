@@ -111,7 +111,7 @@ async function insertAPIEventsToDatabase(maxPages, db) {
   };
 
   for (let page = 1; page <= maxPages; page++) {
-    options.uri = `https://calendar.oberlin.edu/api/2/events?page=${page}`;
+    options.uri = `https://calendar.oberlin.edu/api/2/events?days=8&page=${page}`;
     let body;
 
     try {
