@@ -20,12 +20,19 @@ export class AgendaEventList extends React.Component {
   };
 
   render() {
+    const filteredEvents = [...this.props.events].filter(event => {
+      const now = new Date();
+      let date = new Date(event.start_time);
+      date.setDate(date.getDate() - this.props.filterDay);
+      return now.getDate() === date.getDate();
+    });
     // Sort events by not-verified first
-    const sortedEvents = [...this.props.events].sort((event1, event2) =>
+    const sortedEvents = filteredEvents.sort((event1, event2) =>
       event1.verified === event2.verified
         ? new Date(event1.start_time) - new Date(event2.start_time)
         : event1.verified - event2.verified
     );
+
 
     return (
       <div>
@@ -45,7 +52,7 @@ export class AgendaEventList extends React.Component {
   }
 }
 
-const mapStateToProps = ({ events }) => {
+const mapStateToProps = ({ events, filter }) => {
   // Flatten each marker
   const allEvents = events.allMarkers.reduce((soFar, marker) => {
     // Add coordinates to the 1 or more events in a marker
@@ -56,8 +63,9 @@ const mapStateToProps = ({ events }) => {
     }));
     return soFar.concat(eventsWithCoor);
   }, []);
-
+  const {filterDay} = filter
   return {
+    filterDay,
     events: allEvents
   };
 };

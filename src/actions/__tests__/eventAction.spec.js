@@ -104,26 +104,24 @@ describe("fetch data and returns marker array", () => {
     fetchMock.restore();
   });
   it("toMarkerElement returns correctly", () => {
-    expect(mockEvents.reduce(toMarkerArray,[])).toEqual(expectedMarkerArray);
+    expect(mockEvents.reduce(toMarkerArray, [])).toEqual(expectedMarkerArray);
   });
 
   it("fetches from API and dispatch action", () => {
-    fetchMock.getOnce('/events', mockEvents).catch(unmatchedUrl => {
-        // fallover call original fetch, because fetch-mock treats
-        // any unmatched call as an error - its target is testing
-        console.log("Unmatched " + unmatchedUrl);
-      });
+    fetchMock.getOnce("/events", mockEvents).catch(unmatchedUrl => {
+      // fallover call original fetch, because fetch-mock treats
+      // any unmatched call as an error - its target is testing
+      console.log("Unmatched " + unmatchedUrl);
+    });
 
     const expectedReturn = {
       type: FETCH_DATA,
       payload: expectedMarkerArray
     };
-    const store = mockStore({allMarkers: []});
+    const store = mockStore({ allMarkers: [] });
 
     return store.dispatch(fetchData()).then(() => {
       expect(store.getActions()).toEqual([expectedReturn]);
     });
   });
 });
-
-
