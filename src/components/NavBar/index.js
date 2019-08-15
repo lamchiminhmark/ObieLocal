@@ -1,44 +1,63 @@
 /* Container */
 
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { toggleSidepane } from '../../actions/sidepaneActions';
-import Popup from './Popup';
-import MenuButton from './MenuButton';
-import { StyledNavContainer, StyledNav } from './styles';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { toggleSidepane } from "../../actions/sidepaneActions";
+import Popup from "./popup";
+import MenuButton from "./menuButton";
+import { StyledNavContainer, StyledNav } from "./styles";
+import {signOut} from '../../actions/authActions';
 
 class NavBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      show: 'none'
+      show: "none"
     };
 
     this.togglePopup = this.togglePopup.bind(this);
   }
 
   togglePopup(e) {
-    const name = e.target.getAttribute('id');
+    const name = e.target.getAttribute("id");
     switch (name) {
-      case 'aboutBtn':
-        this.setState({ show: 'about' });
+      case "aboutBtn":
+        this.setState({ show: "about" });
         break;
-      case 'contactBtn':
-        this.setState({ show: 'contact' });
+      case "contactBtn":
+        this.setState({ show: "contact" });
         break;
-      case 'useBtn':
-        this.setState({ show: 'use' });
+      case "useBtn":
+        this.setState({ show: "use" });
+        break;
+      case "signUp":
+        this.setState({ show: "signUp" });
         break;
       default:
-        this.setState({ show: 'none' });
+        this.setState({ show: "none" });
     }
   }
 
   render() {
     let popupElement = null;
-    if (this.state.show !== 'none') {
+    if (this.state.show !== "none") {
       popupElement = (
         <Popup type={this.state.show} handleClose={this.togglePopup} />
+      );
+    }
+    const { loggedIn } = this.props;
+    let authButton;
+    if (loggedIn) {
+      authButton = (
+        <button id="logOut" onClick={this.props.signOut}>
+          Log Out
+        </button>
+      );
+    } else {
+      authButton = (
+        <button id="signUp" onClick={this.togglePopup}>
+          Sign Up
+        </button>
       );
     }
 
@@ -58,6 +77,9 @@ class NavBar extends Component {
                 Contact
               </button>
             </li>
+            <li key="3">
+              {authButton}
+            </li>
           </ul>
           {popupElement}
         </StyledNav>
@@ -68,8 +90,19 @@ class NavBar extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    toggleSidepane: () => dispatch(toggleSidepane())
-  }
-}
+    toggleSidepane: () => dispatch(toggleSidepane()),
+    signOut: () => dispatch(signOut())
+  };
+};
 
-export default connect(undefined, mapDispatchToProps)(NavBar);
+const mapStateToProps = ({ firebase, auth }) => {
+  return {
+    loggedIn: firebase.auth.uid ? true : false,
+    err: auth.err || ""
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(NavBar);

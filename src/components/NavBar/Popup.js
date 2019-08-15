@@ -1,5 +1,7 @@
-import React from 'react';
-import { StyledPopup } from './styles';
+import React from "react";
+import { StyledPopup } from "./styles";
+import LogIn from "./auth/logIn";
+import SignUp from "./auth/signUp";
 
 const bodyTexts = {
   contact: `Comments, questions, or suggestions for how we can make ObieLocal 
@@ -8,17 +10,19 @@ const bodyTexts = {
     students find out what's happening on campus through a visual interface.
     The first version of ObieLocal was developed by Colton Potter, Minh Lam,
     Thomas Nemeh, and Lukas Griffin for their 'Systems Programming' final
-    project. It continues to be developed by Colton, Minh, and Khang Nguyen.`
+    project. It continues to be developed by Colton Potter, Minh Lam, and Khang Nguyen.`,
+  signUp: <div><SignUp /><LogIn /></div>,
 };
 
 const titles = {
   contact: `Contact`,
-  about: `About`
+  about: `About`,
+  signUp: `Sign Up`,
 };
 
 class Popup extends React.Component {
   handleClick = e => {
-    const navbar = document.getElementById('navbar');
+    const navbar = document.getElementById("navbar");
     if (this.node.contains(e.target) || navbar.contains(e.target)) {
       return;
     } else {
@@ -27,11 +31,11 @@ class Popup extends React.Component {
   };
 
   componentWillMount() {
-    document.addEventListener('mousedown', this.handleClick, false);
+    document.addEventListener("mousedown", this.handleClick, false);
   }
 
   componentWillUnmount() {
-    document.removeEventListener('mousedown', this.handleClick, false);
+    document.removeEventListener("mousedown", this.handleClick, false);
   }
 
   render() {
