@@ -37,3 +37,13 @@ button {
     opacity: 1;
   }
 }
+
+.react-select-container {
+  position: fixed !important;
+  display: inline-block;
+  top: 43px;
+  right: 10px;
+  z-index: 2;
+  width: 130px;
+  flex-direction: row;
+}

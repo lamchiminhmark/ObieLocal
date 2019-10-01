@@ -3,28 +3,34 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.18",
-    "@fortawesome/free-solid-svg-icons": "^5.8.2",
-    "@fortawesome/react-fontawesome": "^0.1.4",
-    "ajv": "^6.10.0",
+    "@fortawesome/fontawesome-svg-core": "^1.2.25",
+    "@fortawesome/free-solid-svg-icons": "^5.11.2",
+    "@fortawesome/react-fontawesome": "^0.1.5",
+    "ajv": "^6.10.2",
+    "expect": "^24.9.0",
     "express": "^4.17.0",
-    "google-map-react": "^1.1.4",
+    "google-map-react": "^1.1.5",
     "mariadb": "2.0.0-alpha",
     "mysql-client": "^0.3.0",
     "node-datetime": "^2.1.2",
     "prop-types": "^15.7.2",
-    "react": "^16.8.6",
+    "react": "^16.10.1",
     "react-awesome-modal": "^2.0.5",
-    "react-dom": "^16.8.6",
+    "react-dom": "^16.10.1",
     "react-ga": "^2.5.7",
     "react-html-parser": "^2.0.2",
-    "react-scripts": "^2.1.8",
-    "styled-components": "^4.2.0"
+    "react-redux": "^7.1.1",
+    "react-scripts": "^3.1.2",
+    "react-select": "^3.0.4",
+    "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0",
+    "styled-components": "^4.4.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "jest",
+    "test:watch": "npm test -- --watch",
     "eject": "react-scripts eject"
   },
   "proxy": "http://localhost:3001",
@@ -36,5 +42,21 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "babel-plugin-transform-export-extensions": "^6.22.0",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.14.0",
+    "fetch-mock": "^7.4.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest-cli": "^24.9.0",
+    "node-fetch": "^2.6.0",
+    "react-test-renderer": "^16.10.1",
+    "redux-mock-store": "^1.5.3"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "\\.(css|less)$": "identity-obj-proxy"
+    }
+  }
 }
