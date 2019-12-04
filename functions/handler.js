@@ -210,6 +210,7 @@ function formatEvent(body) {
   } else {
     formattedEvent.price = parseFloat(body.event.price.replace('$', ''));
   }
+  formattedEvent.verified = body.event.verified;
   if (!body.event['venue_id']) {
     formattedEvent.venue_id = 0;
   }
