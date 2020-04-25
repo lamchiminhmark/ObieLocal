@@ -15,6 +15,7 @@
   "dependencies": {
     "firebase-admin": "^8.0.0",
     "firebase-functions": "^3.1.0",
+    "raccoon": "^0.2.8",
     "request": "^2.88.0",
     "request-promise": "^4.2.4"
   },
