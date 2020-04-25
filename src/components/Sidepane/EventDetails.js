@@ -4,7 +4,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import ReactHtmlParser from 'react-html-parser';
 import { toggleEvent } from '../../actions/eventActions';
+import { likeEvent} from '../../actions/recommenderActions'
 import EventSwitchButtons from './EventSwitchButtons';
+import {StyledSeeMoreButton} from './styles';
 
 class EventDetails extends React.Component {
   /**
@@ -48,6 +50,8 @@ class EventDetails extends React.Component {
     const timeString = this.getEventTimeString();
     const locationName = event.location_name || '';
     const locationString = event.address || 'Location unknown.';
+    //TODO: Get real userId
+    const userId = 1;
 
     return (
       <div>
@@ -68,6 +72,8 @@ class EventDetails extends React.Component {
         </p>
         <img className="event-img" src={event.photo_url} alt="" />
         {ReactHtmlParser(event.description)}
+        <StyledSeeMoreButton onClick={() => this.props.likeEvent(userId, event.filters.event_types)}>I'm interested</StyledSeeMoreButton>
+
       </div>
     );
   }
@@ -84,6 +90,7 @@ const mapStateToProps = ({ events }) => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    likeEvent: event => () => dispatch(likeEvent(event)),
     toggleEvent: direction => () => dispatch(toggleEvent(direction))
   };
 };
