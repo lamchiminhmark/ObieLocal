@@ -11,8 +11,8 @@ const raccoon = require('raccoon');
 
 /**
  * Update the raccoon redis with a like
- * @param {number} userId the ID of the user who liked
- * @param {number} itemId the ID of the item that was liked
+ * @param {string} userId the ID of the user who liked
+ * @param {string} itemId the ID of the item that was liked
  */
 module.exports.liked = async function(userId, itemId) {
   await raccoon.liked(userId, itemId);
@@ -20,11 +20,51 @@ module.exports.liked = async function(userId, itemId) {
 };
 
 /**
+ * Remove a like from the raccoon redis
+ * @param {string} userId the ID of the user who liked
+ * @param {string} itemId the ID of the item that was liked
+ */
+module.exports.unliked = async function(userId, itemId) {
+  await raccoon.unliked(userId, itemId);
+  return;
+};
+
+/**
  * Update the raccoon redis with a like
- * @param {number} userId the ID of the user who disliked
- * @param {number} itemId the ID of the item that was disliked
+ * @param {string} userId the ID of the user who disliked
+ * @param {string} itemId the ID of the item that was disliked
  */
 module.exports.disliked = async function(userId, itemId) {
   await raccoon.disliked(userId, itemId);
   return;
+};
+
+/**
+ * Remove a dislike from the raccoon redis
+ * @param {string} userId the ID of the user who liked
+ * @param {string} itemId the ID of the item that was liked
+ */
+module.exports.undisliked = async function(userId, itemId) {
+  await raccoon.unliked(userId, itemId);
+  return;
+};
+
+/**
+ * For testing: check the userId who liked an event
+ * @param {string} itemId the ID of the item that was liked
+ */
+module.exports.likedBy = async function(itemId) {
+  return await raccoon.likedBy(itemId);
+};
+
+/**
+ * For testing: check the userId who disliked an event
+ * @param {string} itemId the ID of the item that was liked
+ */
+module.exports.dislikedBy = async function(itemId) {
+  return await raccoon.dislikedBy(itemId);
+};
+
+module.exports.testTest = function(testWord) {
+  return testWord;
 };
