@@ -23,7 +23,7 @@ module.exports.likeEvent = async function(req, res) {
     case 'PUT':
       res.status(403).send('Forbidden!');
       break;
-    case 'POST':
+    case 'POST': {
       let userId = req.body.userId;
       let items = req.body.items;
       if (userId && items) {
@@ -40,6 +40,7 @@ module.exports.likeEvent = async function(req, res) {
         res.status(405).send({ error: 'userId and items cannot be empty' });
       }
       break;
+    }
     default:
       res.status(405).send({ error: 'Only POST request is allowed!' });
   }
