@@ -15,10 +15,11 @@ const raccoonWrapper = require('./raccoon-wrapper');
     headers: {
         'Content-Type': 'application/json',
         },
-    body: {userId: 1703, items: ['Lecture', 'Computer Science']}}
+    body: {type: 'like', userId: 1703, items: ['Lecture', 'Computer Science']}}
+ * body.type can be 'like', 'dislike', 'unlike' and 'undislike'
  * @param {Object} res Cloud Function response context.
  */
-module.exports.likeEvent = async function(req, res) {
+module.exports.rateEvent = async function(req, res) {
   switch (req.method) {
     case 'PUT':
       res.status(403).send('Forbidden!');
@@ -26,18 +27,23 @@ module.exports.likeEvent = async function(req, res) {
     case 'POST': {
       let userId = req.body.userId;
       let items = req.body.items;
-      if (userId && items) {
+      let type = req.body.type;
+      if (userId && items && type) {
         try {
           //Create an array of async functions
-          const asyncLikeFunctions = items.map(item => sendLike(userId, item));
+          const asyncLikeFunctions = items.map(item =>
+            rateItem(userId, item, type)
+          );
           //Run all the send likes concurrently
           await Promise.all(asyncLikeFunctions);
-          res.status(200).send('All likes sent!');
+          res.status(200).send('All ratings sent!');
         } catch (err) {
-          console.error('Error sending likes!', err);
+          console.error('Error sending ratings!', err);
         }
       } else {
-        res.status(405).send({ error: 'userId and items cannot be empty' });
+        res
+          .status(405)
+          .send({ error: 'userId, items and type cannot be empty' });
       }
       break;
     }
@@ -48,10 +54,15 @@ module.exports.likeEvent = async function(req, res) {
 
 /**
  * Call the Like API with the userId and itemId
- * @param {number} userId the ID of the user who liked
- * @param {number} itemId the list of the items that were liked
+ * @param {string} userId the ID of the user who liked
+ * @param {string} itemId the list of the items that were liked
+ * @param {string} ratingType can be 'like' 'dislike' 'unlike' and 'undislike'
  */
-sendLike = async function(userId, itemId) {
-  await raccoonWrapper.liked(userId, itemId);
+rateItem = async function(userId, itemId, ratingType) {
+  try {
+    await raccoonWrapper.rate(userId, itemId, ratingType);
+  } catch (e) {
+    console.error(e);
+  }
   return;
 };

@@ -1,7 +1,7 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 var database = require('./handler');
-const { likeEvent } = require('./like-event');
+const { rateEvent } = require('./rate-event');
 admin.initializeApp(functions.config().firebase);
 let db = admin.firestore();
 
@@ -35,4 +35,4 @@ exports.refreshEvents = functions.pubsub
     return update;
   });
 
-exports.likeEvent = functions.https.onRequest(likeEvent);
+exports.rateEvent = functions.https.onRequest(rateEvent);

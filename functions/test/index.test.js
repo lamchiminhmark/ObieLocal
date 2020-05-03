@@ -10,12 +10,12 @@ const raccoonWrapper = require('../raccoon-wrapper');
 // Wrapping functions in a wrap method that
 async function asyncWrap() {
   try {
-    await raccoonWrapper.liked(USER_ID_1, EVENT_ID_1);
-    await raccoonWrapper.disliked(USER_ID_1, EVENT_ID_2);
+    await raccoonWrapper.rate(USER_ID_1, EVENT_ID_1, 'like');
+    await raccoonWrapper.rate(USER_ID_1, EVENT_ID_2, 'dislike');
     assert.deepEqual(await raccoonWrapper.likedBy(EVENT_ID_1), [USER_ID_1]);
     assert.deepEqual(await raccoonWrapper.dislikedBy(EVENT_ID_2), [USER_ID_1]);
-    await raccoonWrapper.unliked(USER_ID_1, EVENT_ID_1);
-    await raccoonWrapper.undisliked(USER_ID_1, EVENT_ID_2);
+    await raccoonWrapper.rate(USER_ID_1, EVENT_ID_1, 'unlike');
+    await raccoonWrapper.rate(USER_ID_1, EVENT_ID_2, 'undislike');
   } catch (e) {
     console.log(e);
   }
