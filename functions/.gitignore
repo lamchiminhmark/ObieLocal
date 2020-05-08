@@ -2,3 +2,5 @@ node_modules/
 
 # Firebase debug file
 firebase-debug.log
+
+test/test-twine-12451-69359364facf.json
