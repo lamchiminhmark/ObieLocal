@@ -7,6 +7,7 @@
  */
 
 const raccoonWrapper = require('./raccoon-wrapper');
+const functions = require('firebase-functions');
 
 /**
  * Responds to a POST request to 'Like' a list of items
@@ -19,7 +20,7 @@ const raccoonWrapper = require('./raccoon-wrapper');
  * body.type can be 'like', 'dislike', 'unlike' and 'undislike'
  * @param {Object} res Cloud Function response context.
  */
-module.exports.rateEvent = async function(req, res) {
+module.exports.rateEvent = functions.https.onRequest(async (req, res) => {
   switch (req.method) {
     case 'PUT':
       res.status(403).send('Forbidden!');
@@ -50,7 +51,7 @@ module.exports.rateEvent = async function(req, res) {
     default:
       res.status(405).send({ error: 'Only POST request is allowed!' });
   }
-};
+});
 
 /**
  * Call the Like API with the userId and itemId

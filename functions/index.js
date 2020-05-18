@@ -35,4 +35,4 @@ exports.refreshEvents = functions.pubsub
     return update;
   });
 
-exports.rateEvent = functions.https.onRequest(rateEvent);
+exports.rateEvent = rateEvent;
