@@ -1,29 +1,45 @@
 import { Timestamp } from "@google-cloud/firestore";
 
-type eventId = number;
-type userId = number;
-
-interface Department {
+interface Entity {
     id: number;
     name: string;
+    email: string;
 }
 
-interface EventType {
+interface Department extends Entity {
+}
+
+interface StudentOrganization extends Entity {
+}
+
+interface User extends Entity {
+    interests: EventTag[];
+    eventsInterested: Event["id"][];
+}
+
+interface EventTag {
     id: number;
     name: string;
 }
 
 interface EventOrder {
-    userId: userId;
-    events: eventId[];
+    userId: User["id"];
+    events: Event["id"][];
+}
+
+interface EventTime {
+    start: Timestamp; 
+    end?: Timestamp;
+    recurringList: Event["id"][];
+    length: number;
 }
 
 interface Event {
-    eventId: eventId;
+    id: number;
     title: string;
     created_at: string;
     updated_at: string; 
-    location_name: string;
+    location_name?: string;
     created_by: string; 
     recurring: number; 
     free: number; 
@@ -33,31 +49,30 @@ interface Event {
     venue_url: string;
     filters: {
         departments: Department[];
-        event_types: EventType[];
+        event_types: EventTag[];
     }
     description: string;
     photo_url: string;
     address: string;
     latitude: number;
     longitude: number;
-    start_time: Timestamp;
-    end_time: Timestamp;
+    time: EventTime;
 
-    interested: userId[];
-    going: userId[]
-}
+    interestedUsers: User["id"];
+    goingUsers: User["id"];
 
-
-
-interface User {
-    userId: userId;
-    email: string;
-    name: string;
-    interests: EventType[];
-    eventsInterested: eventId[];
+    organizer: Entity["id"];
 }
 
 interface UserFollows {
-    followees: userId[];
-    requests: userId[];
+    followees: Entity["id"][];
+    followers: Entity["id"][];
+    requests: User["id"][];
 }
+
+interface Meta {
+    eventTags: EventTag[];
+
+}
+
+
