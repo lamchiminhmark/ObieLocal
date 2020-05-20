@@ -65,6 +65,7 @@ interface Event {
 }
 
 interface UserFollows {
+    requestOn: boolean;
     followees: Entity["id"][];
     followers: Entity["id"][];
     requests: User["id"][];
