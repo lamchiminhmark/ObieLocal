@@ -1,30 +1,93 @@
-import { Timestamp } from "@google-cloud/firestore";
+import { Timestamp, GeoPoint } from "@google-cloud/firestore";
 
 interface Entity {
-    id: number;
-    name: string;
-    email: string;
-}
-
-interface Department extends Entity {
-}
-
-interface StudentOrganization extends Entity {
+    id: string;
 }
 
 interface User extends Entity {
+    firstName: string;
+    lastName: string;
+    email: string;
+    photo: string;
     interests: EventTag[];
-    eventsInterested: Event["id"][];
+    events: {
+        interested: Event["id"][];
+        going: Event["id"][];
+        owned: Event["id"][];
+        recommended: Event["id"][];
+    }[];
+    follows: {
+        followees: User["id"][];
+        followers: User["id"][];
+        followeeRequests: User["id"][];
+    }
 }
 
-interface EventTag {
-    id: number;
+interface Organization extends Entity {
     name: string;
+    description: string;
+    contact: {
+        name: string;
+        email: string;
+    };
+    attributes: string[];
+    events: {
+        owned: {
+            id: Event["id"];
+            title: Event["title"];
+            description: Event["description"];
+            photo: Event["photo"];
+        }[];
+        affiliated: {
+            id: Event["id"];
+            title: Event["title"];
+            description: Event["description"];
+            photo: Event["photo"];
+        }[];
+    }
 }
 
-interface EventOrder {
-    userId: User["id"];
-    events: Event["id"][];
+interface Department extends Organization {
+}
+
+interface StudentOrganization extends Organization {
+}
+
+
+interface Event {
+    id: string;
+    title: string;
+    created: Timestamp;
+    lastUpdated: Timestamp; 
+    location: Location;
+    owner: {
+        id: Entity["id"];
+        type: string;
+        name: string;
+        photo?: string;
+        tags?: string[];
+    };
+    cost: number
+    filters: {
+        attributes: string[];
+        departments: Department[];
+    }
+    description: string;
+    photo: string;
+    time: EventTime;
+    
+    interestedUsers: {
+        id: User["id"];
+        firstName: User["firstName"];
+        lastName: User["lastName"];
+        photo: User["photo"];
+    }[];
+    goingUsers: {
+        id: User["id"];
+        firstName: User["firstName"];
+        lastName: User["lastName"];
+        photo: User["photo"];
+    }[];
 }
 
 interface EventTime {
@@ -34,46 +97,21 @@ interface EventTime {
     length: number;
 }
 
-interface Event {
+interface Location {
     id: number;
-    title: string;
-    created_at: string;
-    updated_at: string; 
-    location_name?: string;
-    created_by: string; 
-    recurring: number; 
-    free: number; 
-    price: number;
-    verified: boolean; 
-    venue_id: number;
-    venue_url: string;
-    filters: {
-        departments: Department[];
-        event_types: EventTag[];
-    }
-    description: string;
-    photo_url: string;
-    address: string;
-    latitude: number;
-    longitude: number;
-    time: EventTime;
-
-    interestedUsers: User["id"];
-    goingUsers: User["id"];
-
-    organizer: Entity["id"];
+    name: string;
 }
 
-interface UserFollows {
-    requestOn: boolean;
-    followees: Entity["id"][];
-    followers: Entity["id"][];
-    requests: User["id"][];
+interface PlaceLocation extends Location {
+    address: string;
+    geo: GeoPoint;
+}
+
+interface WebLocation extends Location {
+    url: string;
+    password: string;
 }
 
 interface Meta {
-    eventTags: EventTag[];
-
+    content: any;
 }
-
-
