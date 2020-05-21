@@ -58,7 +58,6 @@ async function getSocialRecList(userId) {
         `Looking for "following" document ${userId}, which doesn't exist.`
       );
     } else following = doc.data().following;
-    console.log('HEYYYYYYYYY');
     // Generate list of relevant events
     const followingSet = new Set(following);
     eventsSnapshot.forEach(doc => {
