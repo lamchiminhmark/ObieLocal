@@ -35,7 +35,7 @@ async function getBehaviorRecList(userId) {
       throw new Error(
         `Looking for rec document ${userId}, which doesn't exist.`
       );
-    } else return doc.data().rec;
+    } else return doc.data().events;
   } catch (e) {
     throw new Error(e);
   }
@@ -58,7 +58,7 @@ async function getSocialRecList(userId) {
         `Looking for "following" document ${userId}, which doesn't exist.`
       );
     } else following = doc.data().following;
-
+    console.log('HEYYYYYYYYY');
     // Generate list of relevant events
     const followingSet = new Set(following);
     eventsSnapshot.forEach(doc => {
@@ -76,4 +76,4 @@ async function getSocialRecList(userId) {
   }
 }
 
-mod9ule.exports.getRecommendation = getRecommendation;
+module.exports = { getRecommendation, getBehaviorRecList, getSocialRecList };
