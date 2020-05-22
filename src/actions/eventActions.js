@@ -1,19 +1,12 @@
-import { FETCH_DATA, SET_SELECTED_EVENTS, TOGGLE_EVENT } from './types';
+import { SET_ALL_EVENTS, SET_SELECTED_EVENTS, TOGGLE_EVENT } from './types';
 
-export const fetchData = () => dispatch => {
-  return fetch('/events')
-    .then(response => response.json())
-    .then(arr => {
-      const markers = arr
-        //.filter(checkEventTimes)
-        .reduce(toMarkerArray, []);
-      dispatch({
-        type: FETCH_DATA,
-        payload: markers
-      });
-    })
-    .catch(error => console.error('Loading markers failed! ', error));
-};
+export const setAllEvents = events => {
+  const markers = events.reduce(toMarkerArray, []);
+  return {
+    type: SET_ALL_EVENTS,
+    payload: markers
+  }
+}
 
 export const setSelectedEvents = selectedEventsArray => {
   return {

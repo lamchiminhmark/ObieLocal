@@ -7,15 +7,17 @@ import './styles/App.css';
 import Sidepane from './components/Sidepane';
 import ReactGA from 'react-ga';
 import config from './shared/config';
+import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { fetchData } from './actions/eventActions';
-import FilterByDayButton from  './components/FilterEvents/filterDayButton'
+import { setAllEvents } from './actions/eventActions';
+import FilterByDayButton from './components/FilterEvents/filterDayButton';
+import { firestoreConnect } from 'react-redux-firebase';
 
 export class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      createEventContainerOpen: false
+      createEventContainerOpen: false,
     };
 
     this.toggleCreateEventContainer = this.toggleCreateEventContainer.bind(
@@ -25,7 +27,7 @@ export class App extends Component {
 
   componentDidMount() {
     initializeReactGA();
-    this.props.fetchData();
+    this.props.setAllEvents(this.props.events);
   }
 
   /* If show is true, CreateEventContainer is opened, otherwise it is closed*/
@@ -41,7 +43,6 @@ export class App extends Component {
         <NavBar />
         <MapContainer />
         <Sidepane />
-        
       </div>
     );
   }
@@ -55,17 +56,22 @@ function initializeReactGA() {
   ReactGA.pageview('/');
 }
 
-const mapStateToProps = undefined;
+const mapStateToProps = (state) => ({
+  events: state.firestore.ordered.events,
+});
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   // What to return? The action you want the component to have access to
   return {
-    // a fetchData function that will dispatch a FETCH_DATA action when called
-    fetchData: () => dispatch(fetchData())
+    setAllEvents: () => dispatch(setAllEvents())
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+export default compose(
+  firestoreConnect(() => [
+    {
+      collection: 'events',
+    },
+  ]),
+  connect(mapStateToProps, mapDispatchToProps)
 )(App);
