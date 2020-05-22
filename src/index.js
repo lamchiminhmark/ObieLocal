@@ -16,6 +16,7 @@ const rrfConfig = {
 };
 
 firebase.initializeApp(fbConfig);
+firebase.firestore();
 
 const rrfProps = {
   firebase,
