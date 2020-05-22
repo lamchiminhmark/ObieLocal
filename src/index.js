@@ -16,7 +16,6 @@ const rrfConfig = {
 };
 
 firebase.initializeApp(fbConfig);
-firebase.firestore().settings({ timestampsInSnapshots: true });
 
 const rrfProps = {
   firebase,
