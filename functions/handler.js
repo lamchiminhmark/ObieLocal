@@ -32,9 +32,6 @@ module.exports.getAllEvents = async function(db) {
   return response;
 };
 
-/* Assuming there are always 2 pages of events on the API */
-const NUM_PAGES = 2;
-
 /**
  * Deletes all events in the database and then
  * inserts all events from the API into the database.
@@ -44,7 +41,7 @@ const NUM_PAGES = 2;
 module.exports.updateDatabase = async function(db) {
   try {
     await clearDatabase(db);
-    return insertAPIEventsToDatabase(NUM_PAGES, db);
+    return insertAPIEventsToDatabase(db);
   } catch (e) {
     return e;
   }
@@ -92,27 +89,30 @@ async function clearDatabase(db) {
 /**
  * Uses the request module to send a request to the API and retrieve the JSON event
  * objects that are stored on each page. Then, it inserts the events into the database.
- * This should eventually be refactored into smaller, more manageable functions.
- * TODO: Find a way to implement *future* events using the following API:
+ * TODO: Refactor into smaller, more manageable functions.
  * 'https://calendar.oberlin.edu/api/2/events?start=2018-12-15&end=2018-12-19&page=1'
- * @param {Number} maxPages Number of pages to get from the events API
  * @param {FirebaseFirestore.Firestore} db Firestore instance
  * @returns {Promise<Promise<FirebaseFirestore.DocumentReference>[]>}
  */
-async function insertAPIEventsToDatabase(maxPages, db) {
-  let pagesRemaining = maxPages;
+async function insertAPIEventsToDatabase(db) {
   let promises = [];
   let options = {
     json: true,
     timeout: 1500,
     headers: {
       'User-Agent': 'Request-Promise'
-    }
+    },
+    uri: 'https://calendar.oberlin.edu/api/2/events?days=8'
   };
 
-  for (let page = 1; page <= maxPages; page++) {
-    options.uri = `https://calendar.oberlin.edu/api/2/events?page=${page}`;
-    let body;
+  let body = await rp(options).catch(err => {
+    console.log(err);
+    return null;
+  });
+  let numPages = (pagesRemaining = body ? body.page.total : 10);
+
+  for (let page = 1; page <= numPages; page++) {
+    options.uri = `https://calendar.oberlin.edu/api/2/events?days=8&page=${page}`;
 
     try {
       body = await rp(options);
@@ -210,6 +210,7 @@ function formatEvent(body) {
   } else {
     formattedEvent.price = parseFloat(body.event.price.replace('$', ''));
   }
+  formattedEvent.verified = body.event.verified;
   if (!body.event['venue_id']) {
     formattedEvent.venue_id = 0;
   }

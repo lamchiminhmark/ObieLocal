@@ -22,7 +22,7 @@ class EventDetails extends React.Component {
       return startTime;
     }
     /* Note that the Date constructor automatically adjusts for timezone */
-    startTime = new Date(this.props.event.start_time)
+    startTime = new Date(this.props.event.start_time);
     /*format times to display hour, minute, and period in 12 hour time*/
     const startHour = dateTime.create(startTime, 'I:M p').format();
 
@@ -31,10 +31,15 @@ class EventDetails extends React.Component {
       endTime = dateTime.create(endTimeUTC, 'I:M p').format();
     }
     endTime = endTime ? ` - ${endTime}` : ``;
-    
-    
-    const dayInWeek = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-    const date = dayInWeek[startTime.getDay()] + " " + startTime.getMonth() + "/" + startTime.getDate();
+
+    const dayInWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const date =
+      dayInWeek[startTime.getDay()] +
+      ' ' +
+      (startTime.getMonth() + 1) +
+      '/' +
+      startTime.getDate();
+    console.log(startTime);
     return `${date}, ${startHour}${endTime}`;
   }
 
@@ -83,7 +88,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EventDetails);
+export default connect(mapStateToProps, mapDispatchToProps)(EventDetails);
