@@ -27,6 +27,9 @@ export class App extends Component {
 
   componentDidMount() {
     initializeReactGA();
+  }
+
+  componentDidUpdate() {
     this.props.setAllEvents(this.props.events);
   }
 
@@ -63,15 +66,11 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => {
   // What to return? The action you want the component to have access to
   return {
-    setAllEvents: () => dispatch(setAllEvents())
+    setAllEvents: (events) => dispatch(setAllEvents(events)),
   };
 };
 
 export default compose(
-  firestoreConnect(() => [
-    {
-      collection: 'events',
-    },
-  ]),
+  firestoreConnect(() => [{ collection: 'events' }]),
   connect(mapStateToProps, mapDispatchToProps)
 )(App);
