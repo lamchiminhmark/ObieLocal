@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { signIn } from '../../../actions/authActions';
 import styled from 'styled-components';
@@ -12,48 +12,39 @@ const Wrapper = styled.div`
   */
 `
 
-class LogIn extends Component {
-  state = {
-    email: '',  
-    password: ''
-  };
+const LogIn = props => {
 
-  handleChange = e => {
-    this.setState({
-      [e.target.id]: e.target.value
-    });
-  };
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  handleSubmit = e => {
+  const handleSubmit = e => {
     e.preventDefault();
-    this.props.dispatch(signIn(this.state));
+    props.dispatch(signIn({email, password}));
   };
 
-  render() {
-    const { err } = this.props;
+  const { err } = props;
 
-    return (
-      <Wrapper>
-        <form onSubmit={this.handleSubmit}>
-          <h4>Already have an account?</h4> 
-          <div className="input-field">
-            <label htmlFor="email">Email</label>
-            <input type="email" id="email" onChange={this.handleChange} />
-          </div>
-          <div className="input-field">
-            <label htmlFor="password">Password</label>
-            <input type="password" id="password" onChange={this.handleChange} />
-          </div>
-          <div className="input-field">
-            <button>Log In</button>
-          </div>
-          <div className="red-text">
-            {err ? <p>Log in failed</p> : undefined}
-          </div>
-        </form>
-      </Wrapper>
-    );
-  }
+  return (
+    <Wrapper>
+      <form onSubmit={handleSubmit}>
+        <h4>Already have an account?</h4> 
+        <div className="input-field">
+          <label htmlFor="email">Email</label>
+          <input type="email" id="email" onChange={(e) => setEmail(e.target.value)} />
+        </div>
+        <div className="input-field">
+          <label htmlFor="password">Password</label>
+          <input type="password" id="password" onChange={(e) => setPassword(e.target.value)} />
+        </div>
+        <div className="input-field">
+          <button>Log In</button>
+        </div>
+        <div className="red-text">
+          {err ? <p>Log in failed</p> : undefined}
+        </div>
+      </form>
+    </Wrapper>
+  );
 }
 
 const mapStateToProps = ({auth}) => {
@@ -61,4 +52,5 @@ const mapStateToProps = ({auth}) => {
     err: auth.err,
   }
 }
+
 export default connect(mapStateToProps)(LogIn);
