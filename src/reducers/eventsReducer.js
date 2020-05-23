@@ -1,5 +1,5 @@
 import {
-  SET_ALL_EVENTS,
+  GET_ALL_EVENTS,
   SET_SELECTED_EVENTS,
   TOGGLE_EVENT
 } from '../actions/types';
@@ -12,7 +12,7 @@ const initialState = {
 
 const eventsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case SET_ALL_EVENTS:
+    case GET_ALL_EVENTS:
       return {...state, allMarkers: [...action.payload]}
     case SET_SELECTED_EVENTS:
       return {

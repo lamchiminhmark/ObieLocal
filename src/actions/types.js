@@ -3,7 +3,7 @@
 /** Redux action: Change sidepane tabs */
 export const CHANGE_TAB = 'CHANGE_TAB';
 /** Redux action: Sets events from database */
-export const SET_ALL_EVENTS = 'SET_ALL_EVENTS';
+export const GET_ALL_EVENTS = 'GET_ALL_EVENTS';
 /** Redux action: Set the selected events to the clicked marker */
 export const SET_SELECTED_EVENTS = 'SET_SELECTED_EVENTS';
 /** Redux action: Pop in and out sidepane */

@@ -9,7 +9,7 @@ import ReactGA from 'react-ga';
 import config from './shared/config';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { setAllEvents } from './actions/eventActions';
+import { getAllEvents } from './actions/eventActions';
 import FilterByDayButton from './components/FilterEvents/filterDayButton';
 import { firestoreConnect } from 'react-redux-firebase';
 
@@ -30,7 +30,7 @@ export class App extends Component {
   }
 
   componentDidUpdate() {
-    this.props.setAllEvents(this.props.events);
+    this.props.getAllEvents(this.props.events);
   }
 
   /* If show is true, CreateEventContainer is opened, otherwise it is closed*/
@@ -66,7 +66,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => {
   // What to return? The action you want the component to have access to
   return {
-    setAllEvents: (events) => dispatch(setAllEvents(events)),
+    getAllEvents: (events) => dispatch(getAllEvents(events)),
   };
 };
 
