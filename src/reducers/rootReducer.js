@@ -13,6 +13,6 @@ export default combineReducers({
   map: mapReducer,
   filter: filterReducer,
   firebase: firebaseReducer,
-  firestore: firestoreReducer
+  firestore: firestoreReducer,
   auth: authReducer,
 });

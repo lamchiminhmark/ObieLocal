@@ -32,7 +32,7 @@ ReactDOM.render(
     </ReactReduxFirebaseProvider>
   </Provider>,
   document.getElementById('root')
-);
+  );
 //store.firebaseAuthIsReady.then(() => {
 //  ReactDOM.render(
 //    <Provider store={store}>
@@ -45,4 +45,3 @@ ReactDOM.render(
   // unregister() to register() below. Note this comes with some pitfalls.
   // Learn more about service workers: http://bit.ly/CRA-PWA
   serviceWorker.unregister();
-});

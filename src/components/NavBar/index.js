@@ -3,8 +3,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { toggleSidepane } from "../../actions/sidepaneActions";
-import Popup from "./popup";
-import MenuButton from "./menuButton";
+import Popup from "./Popup";
+import MenuButton from "./MenuButton";
 import { StyledNavContainer, StyledNav } from "./styles";
 import {signOut} from '../../actions/authActions';
 
