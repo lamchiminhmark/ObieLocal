@@ -1,12 +1,16 @@
-import { combineReducers } from "redux";
-import eventsReducer from "./eventsReducer.js";
-import sidepaneReducer from "./sidepaneReducer.js";
+import { combineReducers } from 'redux';
+import { firebaseReducer } from 'react-redux-firebase';
+import { firestoreReducer } from 'redux-firestore';
+import eventsReducer from './eventsReducer.js';
+import sidepaneReducer from './sidepaneReducer.js';
 import mapReducer from './mapReducer.js';
-import filterReducer from  './filterReducer';
+import filterReducer from './filterReducer';
 
 export default combineReducers({
   events: eventsReducer,
   sidepane: sidepaneReducer,
   map: mapReducer,
-  filter: filterReducer
+  filter: filterReducer,
+  firebase: firebaseReducer,
+  firestore: firestoreReducer
 });
