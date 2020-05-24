@@ -20,9 +20,19 @@ const LogIn = props => {
 
   const firebase = useFirebase();
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    firebase.auth().signInWithEmailAndPassword(email, password).then(() => console.log('you logged in!'));
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(({ user: { uid, displayName } }) =>
+        console.log(`Signed in user ${uid} with display name ${displayName}`)
+      )
+      .catch((error) => {
+        console.log(
+          `Login failed with error code ${error.code}: ${error.message}`
+        );
+      });
   };
 
   const { err } = props;
