@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { signIn } from '../../../actions/authActions';
 import styled from 'styled-components';
 import { useFirebase } from 'react-redux-firebase';
 
@@ -25,9 +24,11 @@ const LogIn = props => {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then(({ user: { uid, displayName } }) =>
-        console.log(`Signed in user ${uid} with display name ${displayName}`)
-      )
+      .then(({ user: { uid, displayName, email } }) => {
+        console.log(
+          `Signed in user ${uid} with email ${email} and display name ${displayName}`
+        );
+      })
       .catch((error) => {
         console.log(
           `Login failed with error code ${error.code}: ${error.message}`
@@ -60,5 +61,7 @@ const LogIn = props => {
   );
 }
 
-export default connect(({ firebase: { auth } }) => ({ err: auth.err }))(LogIn);
+const mapStateToProps = ({ firebase: { auth } }) => ({ err: auth.err });
+
+export default connect(mapStateToProps)(LogIn);
 

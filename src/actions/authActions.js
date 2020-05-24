@@ -1,31 +1,5 @@
 import 'firebase/firestore';
 
-export const signIn = credentials => {
-  return async (dispatch, getState, { getFirebase }) => {
-    const firebase = getFirebase();
-    try {
-      await firebase
-        .auth()
-        .signInWithEmailAndPassword(credentials.email, credentials.password);
-      dispatch({ type: 'SIGN_IN_SUCCESS' });
-    } catch (err) {
-      dispatch({ type: 'SIGN_IN_ERROR', err });
-    }
-  };
-};
-
-export const signOut = () => {
-  return async (dispatch, getState, { getFirebase }) => {
-    const firebase = getFirebase();
-    try {
-      await firebase.auth().signOut();
-      dispatch({ type: 'SIGN_OUT_SUCCESS' });
-    } catch (err) {
-      dispatch({ type: 'SIGN_OUT_ERROR' });
-    }
-  };
-};
-
 export const signUp = newUser => {
   const { email, password, firstName, lastName } = newUser;
   return async (dispatch, getState, { getFirebase, getFirestore }) => {

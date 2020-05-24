@@ -14,8 +14,8 @@ const NavBar = (props) => {
   const firebase = useFirebase();
 
   const signOut = () => {
-    firebase.auth().signOut().then(console.log('Signed out!'))
-  }
+    firebase.auth().signOut().then(console.log('User signed out.'));
+  };
 
   const togglePopup = (e) => {
     const name = e.target.getAttribute('id');
@@ -81,12 +81,6 @@ const NavBar = (props) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    toggleSidepane: () => dispatch(toggleSidepane()),
-  };
-};
-
 const mapStateToProps = ({ firebase, auth }) => {
   return {
     loggedIn: firebase.auth.uid ? true : false,
@@ -94,4 +88,4 @@ const mapStateToProps = ({ firebase, auth }) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(NavBar);
+export default connect(mapStateToProps, { toggleSidepane })(NavBar);
