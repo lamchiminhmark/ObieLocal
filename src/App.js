@@ -10,6 +10,7 @@ import config from './shared/config';
 import { connect } from 'react-redux';
 import { fetchData } from './actions/eventActions';
 import FilterByDayButton from  './components/FilterEvents/filterDayButton'
+import FollowButton from './components/FollowButton';
 
 export class App extends Component {
   constructor(props) {
@@ -25,7 +26,7 @@ export class App extends Component {
 
   componentDidMount() {
     initializeReactGA();
-    this.props.fetchData();
+    //this.props.fetchData();
   }
 
   /* If show is true, CreateEventContainer is opened, otherwise it is closed*/
@@ -37,10 +38,7 @@ export class App extends Component {
     initializeReactGA();
     return (
       <div className="App">
-        <FilterByDayButton />
-        <NavBar />
-        <MapContainer />
-        <Sidepane />
+        <FollowButton userId = '1FX9PWN8H4TreVGKEwoxxrXLWCc2' followeeId = '0IUvyqgSjeEdSZFK2tuS'/>
         
       </div>
     );

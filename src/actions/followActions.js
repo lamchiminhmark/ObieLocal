@@ -1,9 +1,9 @@
 import { FOLLOW_REQUEST_SENT, FOLLOWING, FOLLOW_ERROR } from "./types";
 
-export const onFollowButtonClick = ({ userId, followeeId }) => {
+export const onFollowButtonClick = ({ userId, followeeId, firestore }) => {
   return async (dispatch, getState, { getFirebase, getFirestore }) => {
     //async call to firestore
-    const firestore = getFirestore();
+    //const firestore = getFirestore();
     const userRef = firestore.collection("users").doc(userId);
     const followeeRef = firestore.collection("users").doc(followeeId);
 
