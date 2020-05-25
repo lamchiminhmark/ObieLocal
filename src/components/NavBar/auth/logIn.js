@@ -55,14 +55,14 @@ const LogIn = props => {
           <button>Log In</button>
         </div>
         <div className="red-text">
-          {err ? <p>Log in failed</p> : undefined}
+          {err ? <p>{err.message}</p> : undefined}
         </div>
       </form>
     </Wrapper>
   );
 }
 
-const mapStateToProps = ({ firebase: { auth } }) => ({ err: auth.err });
+const mapStateToProps = ({ firebase }) => ({ err: firebase.authError || '' });
 
 export default connect(mapStateToProps)(LogIn);
 

@@ -32,7 +32,7 @@ const SignUp = (props) => {
         }
       )
       .then((user) => console.log(user))
-      .catch((err) => console.log(err));
+      .catch((err) => console.error(`ERROR: Account Creation\n ${err.message}`));
   };
   // if (loggedIn) return <Redirect to="/" />;
 
@@ -59,7 +59,7 @@ const SignUp = (props) => {
           <button className="btn pink lighten z-depth-0">Sign Up</button>
         </div>
         <div className="red-text">
-          {props.err ? <p>{props.err}</p> : undefined}
+          {props.err ? <p>{props.err.message}</p> : undefined}
         </div>
       </form>
     </div>
@@ -67,10 +67,9 @@ const SignUp = (props) => {
 };
 
 // TODO(CP): Deal with access to error messages
-const mapStateToProps = ({ firebase, auth }) => {
+const mapStateToProps = ({ firebase }) => {
   return {
-    loggedIn: firebase.auth.uid ? true : false,
-    err: auth.err || '',
+    err: firebase.authError || '',
   };
 };
 
