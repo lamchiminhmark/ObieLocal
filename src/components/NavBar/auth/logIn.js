@@ -12,6 +12,7 @@ const Wrapper = styled.div`
   */
 `
 
+// TODO(CP): If logging in and there is no profile found, create a profile.
 const LogIn = props => {
 
   const [email, setEmail] = useState('');

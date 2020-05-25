@@ -1,72 +1,77 @@
-import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { signUp } from '../../../actions/authActions';
+import { getFirebase } from 'react-redux-firebase';
 
-class SignUp extends Component {
-  state = {
+const SignUp = (props) => {
+  const [formState, setFormState] = useState({
     email: '',
     password: '',
     firstName: '',
-    lastName: ''
-  };
+    lastName: '',
+  });
 
-  handleChange = e => {
-    this.setState({
-      [e.target.id]: e.target.value
+  const handleChange = (e) => {
+    setFormState({
+      ...formState,
+      [e.target.id]: e.target.value,
     });
   };
 
-  handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    this.props.signUp(this.state);
+    const firebase = getFirebase();
+    const { firstName, lastName, email, password } = formState;
+    firebase
+      .createUser(
+        { email, password },
+        {
+          email,
+          firstName,
+          lastName,
+          initials: firstName[0] + lastName[0],
+        }
+      )
+      .then((user) => console.log(user))
+      .catch((err) => console.log(err));
   };
+  // if (loggedIn) return <Redirect to="/" />;
 
-  render() {
-    const { loggedIn, err } = this.props;
-    if (loggedIn) return <Redirect to="/" />;
+  return (
+    <div className="container">
+      <form onSubmit={handleSubmit} className="white">
+        <div className="input-field">
+          <label htmlFor="email">Email</label>
+          <input type="email" id="email" onChange={handleChange} />
+        </div>
+        <div className="input-field">
+          <label htmlFor="password">Password</label>
+          <input type="password" id="password" onChange={handleChange} />
+        </div>
+        <div className="input-field">
+          <label htmlFor="firstName">First name</label>
+          <input type="text" id="firstName" onChange={handleChange} />
+        </div>
+        <div className="input-field">
+          <label htmlFor="lastName">Last Name</label>
+          <input type="text" id="lastName" onChange={handleChange} />
+        </div>
+        <div className="input-field">
+          <button className="btn pink lighten z-depth-0">Sign Up</button>
+        </div>
+        <div className="red-text">
+          {props.err ? <p>{props.err}</p> : undefined}
+        </div>
+      </form>
+    </div>
+  );
+};
 
-    return (
-      <div className="container">
-        <form onSubmit={this.handleSubmit} className="white">
-          <div className="input-field">
-            <label htmlFor="email">Email</label>
-            <input type="email" id="email" onChange={this.handleChange} />
-          </div>
-          <div className="input-field">
-            <label htmlFor="password">Password</label>
-            <input type="password" id="password" onChange={this.handleChange} />
-          </div>
-          <div className="input-field">
-            <label htmlFor="firstName">First name</label>
-            <input type="text" id="firstName" onChange={this.handleChange} />
-          </div>
-          <div className="input-field">
-            <label htmlFor="lastName">Last Name</label>
-            <input type="text" id="lastName" onChange={this.handleChange} />
-          </div>
-          <div className="input-field">
-            <button className="btn pink lighten z-depth-0">Sign Up</button>
-          </div>
-          <div className="red-text">
-            {err? <p>{err}</p>: undefined}
-          </div>
-        </form>
-      </div>
-    );
-  }
-}
-
+// TODO(CP): Deal with access to error messages
 const mapStateToProps = ({ firebase, auth }) => {
   return {
     loggedIn: firebase.auth.uid ? true : false,
-    err: auth.err || ''
+    err: auth.err || '',
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    signUp: newUser => dispatch(signUp(newUser))
-  };
-};
-export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
+export default connect(mapStateToProps)(SignUp);
