@@ -1,19 +1,19 @@
 import {
-  GET_ALL_EVENTS,
+  GET_ALL_MARKERS,
   SET_SELECTED_EVENTS,
   TOGGLE_EVENT
 } from '../actions/types';
 
 const initialState = {
-  allMarkers: [],
+  arr: [],
   selectedEventsArray: [{ID: 0}],
   activeEventIdx: 0
 };
 
-const eventsReducer = (state = initialState, action) => {
+const markersReducer = (state = initialState, action) => {
   switch (action.type) {
-    case GET_ALL_EVENTS:
-      return {...state, allMarkers: [...action.payload]}
+    case GET_ALL_MARKERS:
+      return {...state, arr: [...action.payload]}
     case SET_SELECTED_EVENTS:
       return {
         ...state,
@@ -33,4 +33,4 @@ const eventsReducer = (state = initialState, action) => {
   }
 };
 
-export default eventsReducer;
+export default markersReducer;

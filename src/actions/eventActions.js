@@ -1,9 +1,9 @@
-import { GET_ALL_EVENTS, SET_SELECTED_EVENTS, TOGGLE_EVENT } from './types';
+import { GET_ALL_MARKERS, SET_SELECTED_EVENTS, TOGGLE_EVENT } from './types';
 
 export const getAllEvents = events => {
   const markers = events.reduce(toMarkerArray, []);
   return {
-    type: GET_ALL_EVENTS,
+    type: GET_ALL_MARKERS,
     payload: markers
   }
 }

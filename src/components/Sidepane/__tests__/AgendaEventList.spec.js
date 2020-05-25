@@ -40,8 +40,8 @@ const state = {
   filter: {
     filterDay: 0
   },
-  events: {
-    allMarkers: [
+  markers: {
+    arr: [
       {
         geo: { latitude: 5, longitude: 5 },
         events: [
