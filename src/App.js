@@ -28,17 +28,16 @@ export class App extends Component {
   componentDidMount() {
     initializeReactGA();
   }
-
-  componentDidUpdate() {
-    this.props.getAllEvents(this.props.events);
-  }
-
+  
   /* If show is true, CreateEventContainer is opened, otherwise it is closed*/
   toggleCreateEventContainer(show) {
     this.setState({ createEventContainerOpen: show });
   }
-
+  
   render() {
+    if (this.props.events) {
+      this.props.getAllEvents(this.props.events);
+    }
     initializeReactGA();
     return (
       <div className="App">
