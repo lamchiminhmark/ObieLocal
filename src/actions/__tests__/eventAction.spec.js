@@ -2,7 +2,7 @@ import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
 import fetchMock from "fetch-mock";
 import expect from "expect";
-import { FETCH_DATA } from "../types";
+import { GET_ALL_MARKERS } from "../types";
 import { fetchData, toMarkerArray } from "../eventActions";
 
 const middlewares = [thunk];
@@ -115,10 +115,10 @@ describe("fetch data and returns marker array", () => {
     });
 
     const expectedReturn = {
-      type: FETCH_DATA,
+      type: GET_ALL_MARKERS,
       payload: expectedMarkerArray
     };
-    const store = mockStore({ allMarkers: [] });
+    const store = mockStore({ arr: [] });
 
     return store.dispatch(fetchData()).then(() => {
       expect(store.getActions()).toEqual([expectedReturn]);

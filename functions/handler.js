@@ -4,35 +4,6 @@ const rp = require('request-promise');
 const admin = require('firebase-admin');
 
 /**
- * Retrieve all events from the database collection 'events'
- * @param {FirebaseFirestore.Firestore} db database instance from Functions
- * @returns {Promise<JSON[]>} all events in the database
- */
-module.exports.getAllEvents = async function(db) {
-  let response = db
-    .collection('events')
-    .get()
-    .then(snapshot => {
-      let events = [];
-      snapshot.forEach(doc => {
-        let event = doc.data();
-        if (event.start_time)
-          event.start_time = event.start_time.toDate().toISOString();
-        if (event.end_time)
-          event.end_time = event.end_time.toDate().toISOString();
-        events.push(event);
-      });
-      return events;
-    })
-    .catch(err => {
-      console.error('Error retrieving events');
-      console.log(err);
-      throw new Error('Error retrieving events from the database');
-    });
-  return response;
-};
-
-/**
  * Deletes all events in the database and then
  * inserts all events from the API into the database.
  * @param {FirebaseFirestore.Firestore} db a database instance

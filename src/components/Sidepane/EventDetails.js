@@ -79,8 +79,8 @@ class EventDetails extends React.Component {
   }
 }
 
-const mapStateToProps = ({ events }) => {
-  const { selectedEventsArray, activeEventIdx } = events;
+const mapStateToProps = ({ markers }) => {
+  const { selectedEventsArray, activeEventIdx } = markers;
   return {
     event: selectedEventsArray[activeEventIdx],
     totalEvents: selectedEventsArray.length,

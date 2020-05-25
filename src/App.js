@@ -7,16 +7,19 @@ import './styles/App.css';
 import Sidepane from './components/Sidepane';
 import ReactGA from 'react-ga';
 import config from './shared/config';
+import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { fetchData } from './actions/eventActions';
 import FilterByDayButton from  './components/FilterEvents/filterDayButton'
 import FollowButton from './components/FollowButton';
+import { getAllEvents } from './actions/eventActions';
+import { firestoreConnect } from 'react-redux-firebase';
 
 export class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      createEventContainerOpen: false
+      createEventContainerOpen: false,
     };
 
     this.toggleCreateEventContainer = this.toggleCreateEventContainer.bind(
@@ -26,20 +29,26 @@ export class App extends Component {
 
   componentDidMount() {
     initializeReactGA();
-    //this.props.fetchData();
   }
-
+  
   /* If show is true, CreateEventContainer is opened, otherwise it is closed*/
   toggleCreateEventContainer(show) {
     this.setState({ createEventContainerOpen: show });
   }
-
+  
   render() {
+    if (this.props.events) {
+      this.props.getAllEvents(this.props.events);
+    }
     initializeReactGA();
     return (
       <div className="App">
         <FollowButton userId = '1FX9PWN8H4TreVGKEwoxxrXLWCc2' followeeId = '0IUvyqgSjeEdSZFK2tuS'/>
         
+        {/* <FilterByDayButton />
+        <NavBar />
+        <MapContainer />
+        <Sidepane /> */}
       </div>
     );
   }
@@ -53,17 +62,18 @@ function initializeReactGA() {
   ReactGA.pageview('/');
 }
 
-const mapStateToProps = undefined;
+const mapStateToProps = (state) => ({
+  events: state.firestore.ordered.events,
+});
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   // What to return? The action you want the component to have access to
   return {
-    // a fetchData function that will dispatch a FETCH_DATA action when called
-    fetchData: () => dispatch(fetchData())
+    getAllEvents: (events) => dispatch(getAllEvents(events)),
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+export default compose(
+  firestoreConnect(() => [{ collection: 'events' }]),
+  connect(mapStateToProps, mapDispatchToProps)
 )(App);
