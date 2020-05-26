@@ -22,12 +22,13 @@ const Recommender = props => {
 
         // Generate social recommendations
         const socialRec = getSocialRec(props.followees, props.users);
-        console.log(socialRec);
+        // console.log(socialRec);
+
+        // Generate interest recommendations
+        const interestRec = getInterestRec(props.user.interests, props.events);
+        console.log(interestRec);
     }
 
-    // I need to do array-contains-any query through the events database until 
-
-    // Generate interest recommendations
 
     // Combine the recommendations
     return (<div>hi</div>)
@@ -36,8 +37,8 @@ const Recommender = props => {
 /**
  * Returns an Object of {event: n} where each event have n interested followees
  * Note: If the followee's records cannot be found, she does not impact the recommendation 
- * @param {uid[]} followees 
- * @param {User[]} users 
+ * @param {uid[]} followees array of uids
+ * @param {User[]} users array of Users
  */
 const getSocialRec = (followees, users) => {
     const toReturn = {};
@@ -54,6 +55,29 @@ const getSocialRec = (followees, users) => {
             .going
             .map(event => event.trim())                 // Remove white spaces on the edges
             .forEach(event => toReturn[event] ? toReturn[event]++ : toReturn[event] = 1);
+    });
+    return toReturn;
+}
+
+/**
+ * returns an array of event IDs with attributes that match are in the inputted interests
+ * @param {string[]} interests 
+ * @param {Object} events a hashmap of Events
+ */
+const getInterestRec = (interests, events) => {
+    const toReturn = [];
+    Object.entries(events).forEach(([id, event]) => {
+        const eventTypes = event.filters.event_types || [];
+        const departments = event.filters.departments || [];
+        const attributes = eventTypes
+            .concat(departments)
+            .map(attr => attr.name);
+        for (const attr of attributes) {
+            if (interests.includes(attr)) {
+                toReturn.push(id);
+                return;
+            }
+        }
     });
     return toReturn;
 }
