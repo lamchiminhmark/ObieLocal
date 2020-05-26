@@ -12,7 +12,8 @@ jest.mock("react-ga") //mock the react-ga module
 
 function setup() {
   const props = {
-    fetchData: jest.fn()
+    getAllMarkers: jest.fn(),
+    events: [{id: 'event1'}, {id: 'event2'}, {id: 'event3]'}],
   };
 
   const enzymeWrapper = shallow(<App {...props} />);
@@ -34,8 +35,8 @@ describe("App component", () => {
     expect(enzymeWrapper.find("div").contains(<Sidepane/>)).toBe(true);
   });
 
-  it("Should call fetchData when component is mounted", () => {
+  it("Should call getAllMarkers when component is mounted", () => {
     const { props } = setup();
-    expect(props.fetchData.mock.calls.length).toBe(1);
+    expect(props.getAllMarkers.mock.calls.length).toBe(1);
   });
 });

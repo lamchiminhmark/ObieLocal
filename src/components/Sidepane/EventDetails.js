@@ -3,7 +3,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import ReactHtmlParser from 'react-html-parser';
-import { toggleEvent } from '../../actions/eventActions';
+import { toggleEvent } from '../../actions/markerActions';
 import EventSwitchButtons from './EventSwitchButtons';
 
 class EventDetails extends React.Component {

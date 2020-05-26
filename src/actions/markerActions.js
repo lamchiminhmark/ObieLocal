@@ -1,6 +1,6 @@
 import { GET_ALL_MARKERS, SET_SELECTED_EVENTS, TOGGLE_EVENT } from './types';
 
-export const getAllEvents = events => {
+export const getAllMarkers = events => {
   const markers = events.reduce(toMarkerArray, []);
   return {
     type: GET_ALL_MARKERS,

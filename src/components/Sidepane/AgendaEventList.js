@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { setSelectedEvents } from '../../actions/eventActions';
+import { setSelectedEvents } from '../../actions/markerActions';
 import { recenterMap } from '../../actions/mapActions';
 import ReactGA from 'react-ga';
 import AgendaEventItem from './AgendaEventItem';

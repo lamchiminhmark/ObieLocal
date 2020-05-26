@@ -9,7 +9,7 @@ import ReactGA from 'react-ga';
 import config from './shared/config';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { getAllEvents } from './actions/eventActions';
+import { getAllMarkers } from './actions/markerActions';
 import FilterByDayButton from './components/FilterEvents/filterDayButton';
 import { firestoreConnect } from 'react-redux-firebase';
 
@@ -36,7 +36,7 @@ export class App extends Component {
   
   render() {
     if (this.props.events) {
-      this.props.getAllEvents(this.props.events);
+      this.props.getAllMarkers(this.props.events);
     }
     initializeReactGA();
     return (
@@ -65,7 +65,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => {
   // What to return? The action you want the component to have access to
   return {
-    getAllEvents: (events) => dispatch(getAllEvents(events)),
+    getAllMarkers: (events) => dispatch(getAllMarkers(events)),
   };
 };
 
