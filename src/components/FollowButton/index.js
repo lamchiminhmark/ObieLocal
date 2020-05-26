@@ -4,43 +4,47 @@ import { compose } from "redux";
 import { withHandlers } from "recompose";
 import { withFirestore } from "react-redux-firebase";
 
-const followHandler = (props) => () => {
+const followOnClick = (props) => () => {
+  followHandler(props);
+};
+
+const followHandler = async (props) => {
   const { firestore, userId, followeeId } = props;
   const userRef = { collection: "users", doc: userId };
   const followeeRef = { collection: "users", doc: followeeId };
-  firestore
-    .get(userRef)
-    .then((user) =>
-      firestore.get(followeeRef).then((followee) => {
-        const userData = user.data();
-        const followeeData = followee.data();
-        if (!followeeData.follow.requestOn) {
-          return Promise.all([
-            firestore.update(followeeRef, {
-              "follow.followers": [...followeeData.follow.followers, userId],
-            }),
-            firestore.update(userRef, {
-              "follow.followees": [...userData.follow.followees, followeeId],
-            }),
-          ]).then(console.log("Follow written successfully"));
-        }
-      })
-    )
-    .catch((err) => console.log("Error send follow", err));
+  try {
+    const user = await firestore.get(userRef);
+    const followee = await firestore.get(followeeRef);
+    const userData = user.data();
+    const followeeData = followee.data();
+    if (!followeeData.follow.requestOn) {
+      await Promise.all([
+        firestore.update(followeeRef, {
+          "follow.followers": [...followeeData.follow.followers, userId],
+        }),
+        firestore.update(userRef, {
+          "follow.followees": [...userData.follow.followees, followeeId],
+        }),
+      ]);
+      console.log("Dispatch successful write");
+    }
+  } catch (err) {
+    console.log("Dispatch error: ", err);
+  }
 };
 
 const FollowButton = (props) => {
-  return <button onClick={props.followHandler}>Follow</button>;
+  return <button onClick={props.followOnClick}>Follow</button>;
 };
 
 const mapStateToProps = (state) => ({
-    users: state.firestore.ordered.users,
+  users: state.firestore.ordered.users,
 });
 
 export default compose(
   withFirestore,
   withHandlers({
-    followHandler: followHandler,
+    followOnClick: followOnClick,
   }),
   connect(mapStateToProps)
 )(FollowButton);

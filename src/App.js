@@ -9,7 +9,6 @@ import ReactGA from 'react-ga';
 import config from './shared/config';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { fetchData } from './actions/eventActions';
 import FilterByDayButton from  './components/FilterEvents/filterDayButton'
 import FollowButton from './components/FollowButton';
 import { getAllEvents } from './actions/eventActions';
@@ -44,7 +43,6 @@ export class App extends Component {
     return (
       <div className="App">
         <FollowButton userId = '1FX9PWN8H4TreVGKEwoxxrXLWCc2' followeeId = '0IUvyqgSjeEdSZFK2tuS'/>
-        
         {/* <FilterByDayButton />
         <NavBar />
         <MapContainer />
