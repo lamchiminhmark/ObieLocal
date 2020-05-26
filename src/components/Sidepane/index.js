@@ -39,8 +39,8 @@ class Sidepane extends Component {
   }
 }
 
-const mapStateToProps = ({ sidepane, events }) => {
-  const { selectedEventsArray, activeEventIdx: eventIdx } = events;
+const mapStateToProps = ({ sidepane, markers }) => {
+  const { selectedEventsArray, activeEventIdx: eventIdx } = markers;
   const { sidepaneOpen: active } = sidepane;
   return { active, selectedEventsArray, eventIdx };
 };

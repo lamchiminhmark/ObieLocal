@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { setSelectedEvents } from '../../actions/eventActions';
+import { setSelectedEvents } from '../../actions/markerActions';
 import { recenterMap } from '../../actions/mapActions';
 import ReactGA from 'react-ga';
 import AgendaEventItem from './AgendaEventItem';
@@ -52,9 +52,9 @@ export class AgendaEventList extends React.Component {
   }
 }
 
-const mapStateToProps = ({ events, filter }) => {
+const mapStateToProps = ({ markers, filter }) => {
   // Flatten each marker
-  const allEvents = events.allMarkers.reduce((soFar, marker) => {
+  const allEvents = markers.arr.reduce((soFar, marker) => {
     // Add coordinates to the 1 or more events in a marker
     const eventsWithCoor = marker.events.map(event => ({
       ...event,
@@ -63,7 +63,7 @@ const mapStateToProps = ({ events, filter }) => {
     }));
     return soFar.concat(eventsWithCoor);
   }, []);
-  const {filterDay} = filter
+  const {filterDay} = filter;
   return {
     filterDay,
     events: allEvents

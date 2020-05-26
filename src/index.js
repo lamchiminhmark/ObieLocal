@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import firebase from 'firebase/app';
+import 'firebase/firestore';
 import { createFirestoreInstance } from 'redux-firestore';
 import './styles/index.css';
 import App from './App';

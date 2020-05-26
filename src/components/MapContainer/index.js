@@ -48,7 +48,7 @@ const MapContainer = props => {
       >
         {/*TECH_DEBT(KN): Clean this shit up */}
         {Children.toArray(
-          props.markers
+          props.allMarkers
             .map(marker => filterEventByDay(marker, props.filterDay)) //filter out events that are not in the specified date
             .map(obj => toMarkerElement(obj))
             .filter(filterMarker) // filter out markers that have empty eventArray or no lat/lng
@@ -58,11 +58,11 @@ const MapContainer = props => {
   );
 };
 
-const mapStateToProps = ({ events, map, filter }) => {
+const mapStateToProps = ({ markers, map, filter }) => {
   const { lat, lng, zoom } = map;
-  const { allMarkers: markers } = events;
+  const { arr: allMarkers } = markers;
   const { filterDay } = filter;
-  return { lat, lng, zoom, markers, filterDay };
+  return { lat, lng, zoom, allMarkers, filterDay };
 };
 
 export default connect(mapStateToProps)(MapContainer);
