@@ -17,6 +17,32 @@ const SignUp = (props) => {
     });
   };
 
+  const handleGoogleSignin = (e) => {
+    e.preventDefault();
+    const firebase = getFirebase();
+    const provider = new firebase.auth.GoogleAuthProvider();
+    // set custom parameters here
+    firebase
+      .auth()
+      .signInWithPopup(provider)
+      .then((result) => {
+        const token = result.credential.accessToken;
+        const user = result.user;
+        console.log(user);
+      })
+      .catch((error) => {
+        const code = error.code;
+        const message = error.message;
+        const email = error.email;
+        const credential = error.credential;
+      });
+  };
+
+  const placeholderGoogleSignin = (e) => {
+    e.preventDefault();
+    console.log('Sign In with Google is disabled');
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const firebase = getFirebase();
@@ -62,6 +88,9 @@ const SignUp = (props) => {
           {props.err ? <p>{props.err.message}</p> : undefined}
         </div>
       </form>
+      <div id="signUp-Google">
+        <button onClick={placeholderGoogleSignin}>Sign In with Google</button>
+      </div>
     </div>
   );
 };
