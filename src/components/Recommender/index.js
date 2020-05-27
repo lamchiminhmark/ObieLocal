@@ -15,22 +15,25 @@ import { firestoreConnect } from 'react-redux-firebase';
 const Recommender = props => {
     // console.log(props.behaviorRec)
 
+    const getRec = () => {
+        if (props.users) {
+            // Generate behaviour rec 
+            const behaviorRec = props.user && props.user.events.recommended;
 
-    if (props.users) {
-        // Generate behaviour rec 
-        const behaviorRec = props.user && props.user.events.recommended;
+            // Generate social recommendations
+            const socialRec = getSocialRec(props.followees, props.users);
+            // console.log(socialRec);
 
-        // Generate social recommendations
-        const socialRec = getSocialRec(props.followees, props.users);
-        // console.log(socialRec);
+            // Generate interest recommendations
+            const interestRec = getInterestRec(props.user.interests, props.events);
 
-        // Generate interest recommendations
-        const interestRec = getInterestRec(props.user.interests, props.events);
-        console.log(interestRec);
+            // TODO(ML): Benchmark the combination step alone
+            // Combine the recommendations
+            return combineRec(behaviorRec, socialRec, interestRec);
+        }
     }
+    console.log(getRec());
 
-
-    // Combine the recommendations
     return (<div>hi</div>)
 }
 
@@ -82,6 +85,34 @@ const getInterestRec = (interests, events) => {
     if (toReturn.length > 30)
         console.error(`Interest Rec is not supposed to be longer than 30 items. There's ${toReturn} recs`);
     return toReturn;
+}
+
+/**
+ * Returns the combined recommendation array
+ * @param {string[]} behaviorRec 
+ * @param {Object} socialRec {eventId: interestedFollowees} 
+ * @param {string[]} interestRec 
+ */
+const combineRec = (behaviorRec, socialRec, interestRec) => {
+    let nonSocialRec = [...behaviorRec, ...interestRec]
+    nonSocialRec = nonSocialRec.filter((rec, i) => nonSocialRec.indexOf(rec) === i); // Remove duplicates
+    const topRecs = [] // topRecs is an array of tuples [id, followeesCount] and
+    // will contain recs that are in both social and non-social
+    Object.entries(socialRec).forEach(([id, count]) => {
+        if (nonSocialRec.includes(id)) {
+            topRecs.push([id, count]);
+            delete socialRec[id];
+            nonSocialRec.splice(nonSocialRec.indexOf(id), 1);
+        }
+    });
+    topRecs.sort((rec1, rec2) => rec2[1] - rec1[1]);
+
+    const socialRecArr = Object.entries(socialRec);
+    socialRecArr.sort((rec1, rec2) => rec2[1] - rec1[1]);
+
+    return topRecs
+        .concat(socialRecArr)
+        .concat(nonSocialRec.map(rec => [rec, 0]));
 }
 
 const mapStateToProps = ({ firebase: { auth }, firestore: { data } }) => {
