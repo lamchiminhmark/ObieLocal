@@ -79,6 +79,8 @@ const getInterestRec = (interests, events) => {
             }
         }
     });
+    if (toReturn.length > 30)
+        console.error(`Interest Rec is not supposed to be longer than 30 items. There's ${toReturn} recs`);
     return toReturn;
 }
 
