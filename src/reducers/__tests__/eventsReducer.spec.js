@@ -1,29 +1,29 @@
 import expect from "expect";
 import {
-  FETCH_DATA,
+  GET_ALL_MARKERS,
   SET_SELECTED_EVENTS,
-  TOGGLE_EVENT
+  TOGGLE_EVENT,
 } from "../../actions/types";
-import eventsReducer from "../eventsReducer";
+import markersReducer from "../markersReducer";
 
-describe("events reducer", () => {
+describe("markers reducer", () => {
   it("return initial state", () => {
-    expect(eventsReducer(undefined, {})).toEqual({
-        allMarkers: [],
+    expect(markersReducer(undefined, {})).toEqual({
+        arr: [],
         selectedEventsArray: [{ ID: 0 }],
         activeEventIdx: 0
       });
   });
 
-  it("shoud handle FETCH_DATA", () => {
+  it("shoud handle GET_ALL_MARKERS", () => {
     expect(
-      eventsReducer(
+      markersReducer(
         {
           activeEventIdx: 10,
-          allMarkers: [{ someStuff: "someStuff" }, { someStuff: "otherStuff" }]
+          arr: [{ someStuff: "someStuff" }, { someStuff: "otherStuff" }]
         },
         {
-          type: FETCH_DATA,
+          type: GET_ALL_MARKERS,
           payload: [
             {
               geo: { longitude: 1, latitude: 1 },
@@ -38,7 +38,7 @@ describe("events reducer", () => {
       )
     ).toEqual({
       activeEventIdx: 10,
-      allMarkers: [
+      arr: [
         {
           geo: { longitude: 1, latitude: 1 },
           events: [{ a: "a", b: "b", c: "c" }, { a: "a", b: "b", c: "c" }]
@@ -52,7 +52,7 @@ describe("events reducer", () => {
   });
 
   it("should handle SET_SELECTED_EVENT", () => {
-    expect(eventsReducer( {
+    expect(markersReducer( {
         activeEventIdx: 10,
         selectedEventsArray: [{ someStuff: "someStuff" }, { someStuff: "otherStuff" }]
       },
@@ -66,7 +66,7 @@ describe("events reducer", () => {
   });
 
   it("should handle TOGGLE_EVENT",() => {
-      expect(eventsReducer({
+      expect(markersReducer({
         activeEventIdx: 5,
         selectedEventsArray: [{ a: "a", b: "b", c: "c" }, { a: "a", b: "b", c: "c" }]
       },
@@ -77,7 +77,7 @@ describe("events reducer", () => {
           activeEventIdx: 6,
           selectedEventsArray: [{ a: "a", b: "b", c: "c" }, { a: "a", b: "b", c: "c" }]
       });
-      expect(eventsReducer({
+      expect(markersReducer({
         activeEventIdx: 5,
         selectedEventsArray: [{ a: "a", b: "b", c: "c" }, { a: "a", b: "b", c: "c" }]
       },
