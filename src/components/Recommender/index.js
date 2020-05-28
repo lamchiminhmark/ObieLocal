@@ -93,8 +93,9 @@ const getInterestRec = (interests, events) => {
  * @param {Object} socialRec {eventId: interestedFollowees} 
  * @param {string[]} interestRec 
  */
-const combineRec = (behaviorRec, socialRec, interestRec) => {
+export const combineRec = (behaviorRec = [], socialRec = {}, interestRec = []) => {
     let nonSocialRec = [...behaviorRec, ...interestRec]
+    socialRec = { ...socialRec } // Creating a shallow copy
     nonSocialRec = nonSocialRec.filter((rec, i) => nonSocialRec.indexOf(rec) === i); // Remove duplicates
     const topRecs = [] // topRecs is an array of tuples [id, followeesCount] and
     // will contain recs that are in both social and non-social
