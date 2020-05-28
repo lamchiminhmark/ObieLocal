@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 import { getAllMarkers } from './actions/markerActions';
 import FilterByDayButton from './components/FilterEvents/filterDayButton';
 import { firestoreConnect } from 'react-redux-firebase';
+import OrganizationDirectory from './components/OrganizationDirectory';
 
 export class App extends Component {
   constructor(props) {
@@ -45,6 +46,9 @@ export class App extends Component {
         <NavBar />
         <MapContainer />
         <Sidepane />
+        <div>
+          <OrganizationDirectory />
+        </div>
       </div>
     );
   }
