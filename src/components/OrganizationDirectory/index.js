@@ -2,6 +2,23 @@ import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { firestoreConnect } from 'react-redux-firebase';
+import styled from 'styled-components';
+
+const Div = styled.div`
+  display: block;
+  color: black;
+  background: lightgray;
+  text-align: left;
+
+  ul {
+    display: block;
+  }
+`;
+
+const StyledSearchDiv = styled.div`
+  background: coral;
+  text-align: center;
+`;
 
 const OrganizationDirectory = (props) => {
   if (!props.organizationList) return null;
@@ -15,9 +32,12 @@ const OrganizationDirectory = (props) => {
   });
 
   return (
-    <div id="organization-directory">
+    <Div id="orgdir">
+      <StyledSearchDiv id="orgdir-search">
+        <input id="orgdir-searchbox" type="text" />
+      </StyledSearchDiv>
       <ul>{orgList}</ul>
-    </div>
+    </Div>
   );
 };
 
