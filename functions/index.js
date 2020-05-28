@@ -3,7 +3,6 @@ const admin = require('firebase-admin');
 var database = require('./handler');
 const { rateEvent } = require('./rate-event');
 admin.initializeApp(functions.config().firebase);
-const { getRecommendation } = require('./get-recommendation');
 let db = admin.firestore();
 
 exports.events = functions.https.onRequest((req, res) => {
@@ -37,4 +36,3 @@ exports.refreshEvents = functions.pubsub
   });
 
 exports.rateEvent = rateEvent;
-exports.getRecommendation = getRecommendation;

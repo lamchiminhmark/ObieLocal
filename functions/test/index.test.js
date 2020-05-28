@@ -6,14 +6,12 @@ const test = require('firebase-functions-test')(
 );
 const assert = require('chai').assert;
 const redis = require('redis');
-const admin = require('firebase-admin');
 
 // Importing functions
 const raccoonWrapper = require('../raccoon-wrapper');
 
 // whole app is loaded so that admin is already initialized
 const app = require('../index.js');
-const getRecommendation = require('../get-recommendation.js');
 
 const USER_ID_1 = '10';
 const ITEM_ID_1 = 'Lecture';
@@ -78,16 +76,6 @@ describe('rateEvent', () => {
     asyncWrap()
       .then(() => done())
       .catch(e => assert.fail(e));
-  });
-});
-
-describe('getRecommendation', () => {
-  describe('getBehaviorRec', () => {
-    it('should return the rec in the event-orders collections', async () => {
-      const uid = 'hML7hHfzuhPmPSCjcpRkocPnzq92';
-      const rec = await getRecommendation.getBehaviorRecList(uid);
-      assert.deepEqual(rec, ['eventsId1', 'eventsid2']);
-    }).timeout(10000);
   });
 });
 
