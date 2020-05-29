@@ -13,10 +13,19 @@ const Div = styled.div`
   ul {
     display: block;
   }
+
+  li {
+    list-style-type: none;
+    padding: 3px;
+    margin: 5px 0px;
+    background: palevioletred;
+    border: 2px solid black;
+    cursor: pointer;
+  }
 `;
 
 const DetailsDiv = styled.div`
-  /* display: ${(props) => (props.displayMe ? 'block' : 'none')}; */
+  display: ${(props) => (props.displayMe ? 'block' : 'none')};
   background: green;
 `;
 
