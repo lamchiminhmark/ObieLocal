@@ -20,12 +20,23 @@ const StyledSearchDiv = styled.div`
   text-align: center;
 `;
 
+const handleOrgClick = (e) => {
+  e.preventDefault();
+  const oid = e.target.dataset.orgid;
+  console.log(`This org has id ${oid}`);
+};
+
 const OrganizationDirectory = (props) => {
   if (!props.organizationList) return null;
   const orgList = props.organizationList.map((org) => {
     const attrList = org.attributes.join(', ');
+    const liProps = {
+      'data-orgid': org.id,
+      key: org.id,
+      onClick: handleOrgClick,
+    };
     return (
-      <li>
+      <li {...liProps}>
         {org.name} has attributes {attrList}.
       </li>
     );
