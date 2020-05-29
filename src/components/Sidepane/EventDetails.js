@@ -5,7 +5,8 @@ import { connect } from 'react-redux';
 import ReactHtmlParser from 'react-html-parser';
 import { toggleEvent } from '../../actions/markerActions';
 import EventSwitchButtons from './EventSwitchButtons';
-import {StyledSeeMoreButton} from './styles';
+import { StyledSeeMoreButton } from './styles';
+import { rateEvent } from '../../actions/recommenderActions';
 
 class EventDetails extends React.Component {
   /**
@@ -70,7 +71,7 @@ class EventDetails extends React.Component {
         </p>
         <img className="event-img" src={event.photo_url} alt="" />
         {ReactHtmlParser(event.description)}
-        <StyledSeeMoreButton onClick={() => this.props.likeEvent(userId, event.filters.event_types)}>I'm interested</StyledSeeMoreButton>
+        <StyledSeeMoreButton onClick={() => this.props.rateEvent(userId, event.filters.event_types, 'like')}>I'm interested</StyledSeeMoreButton>
 
       </div>
     );
@@ -88,7 +89,7 @@ const mapStateToProps = ({ markers }) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    likeEvent: event => () => dispatch(likeEvent(event)),
+    rateEvent: event => () => dispatch(rateEvent(event)),
     toggleEvent: direction => () => dispatch(toggleEvent(direction))
   };
 };
