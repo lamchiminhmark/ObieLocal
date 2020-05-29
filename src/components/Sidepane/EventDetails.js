@@ -49,7 +49,6 @@ class EventDetails extends React.Component {
     const timeString = this.getEventTimeString();
     const locationName = event.location_name || '';
     const locationString = event.address || 'Location unknown.';
-    //TODO: Get real userId
     const userId = 1;
 
     return (
