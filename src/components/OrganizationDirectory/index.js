@@ -22,6 +22,10 @@ const Div = styled.div`
     border: 2px solid black;
     cursor: pointer;
   }
+
+  li div {
+    cursor: auto;
+  }
 `;
 
 const DetailsDiv = styled.div`
@@ -42,6 +46,7 @@ const OrganizationDirectory = (props) => {
   const handleOrgClick = (e) => {
     e.preventDefault();
     const oid = e.target.dataset.orgid;
+    if (!oid) return;
     console.log(`You clicked org with id ${oid}`);
     if (orgsListDisplay[oid] && orgsListDisplay[oid] === true) {
       // Close the div
