@@ -48,12 +48,16 @@ const OrganizationDirectory = (props) => {
     const oid = e.target.dataset.orgid;
     if (!oid) return;
     console.log(`You clicked org with id ${oid}`);
-    if (orgsListDisplay[oid] && orgsListDisplay[oid] === true) {
-      // Close the div
+    if (orgsListContent[oid] && orgsListDisplay[oid] === true) {
+      // Close the information box if it's being displayed
       setOrgsListDisplay({ ...orgsListDisplay, [oid]: false });
       return;
+    } else if (orgsListContent[oid]) {
+      // If org information already has been loaded, just display it
+      setOrgsListDisplay({ ...orgsListDisplay, [oid]: true });
+      return;
     }
-    // Else, get current org information and open the div
+    // Else, retrieve current org information and display it
     firestore
       .collection('organizations')
       .doc(oid)
@@ -61,16 +65,12 @@ const OrganizationDirectory = (props) => {
       .then((doc) => {
         if (!doc.exists) {
           console.error(`Organization with id ${oid} does not exist`);
-          return doc;
         }
-        const data = doc.data();
-        console.log(
-          `Contact this org at: ${data.contact && data.contact.email}`
-        );
+        const data = doc.data() || {
+          err: 'There is no data for this organization. Sorry about that!',
+        };
         setOrgsListContent({ ...orgsListContent, [oid]: data });
         setOrgsListDisplay({ ...orgsListDisplay, [oid]: true });
-        console.log(orgsListDisplay);
-        console.log(orgsListContent);
       })
       .catch((err) => console.error(err));
   };
