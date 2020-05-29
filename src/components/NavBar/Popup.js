@@ -1,7 +1,7 @@
-import React from "react";
-import { StyledPopup } from "./styles";
-import LogIn from "./auth/logIn";
-import SignUp from "./auth/signUp";
+import React from 'react';
+import { StyledPopup } from './styles';
+import LogIn from './auth/logIn';
+import SignUp from './auth/signUp';
 
 const bodyTexts = {
   contact: `Comments, questions, or suggestions for how we can make ObieLocal 
@@ -11,7 +11,12 @@ const bodyTexts = {
     The first version of ObieLocal was developed by Colton Potter, Minh Lam,
     Thomas Nemeh, and Lukas Griffin for their 'Systems Programming' final
     project. It continues to be developed by Colton Potter, Minh Lam, and Khang Nguyen.`,
-  signUp: <div><SignUp /><LogIn /></div>,
+  signUp: (
+    <div>
+      <SignUp />
+      <LogIn />
+    </div>
+  ),
 };
 
 const titles = {
@@ -21,8 +26,8 @@ const titles = {
 };
 
 class Popup extends React.Component {
-  handleClick = e => {
-    const navbar = document.getElementById("navbar");
+  handleClick = (e) => {
+    const navbar = document.getElementById('navbar');
     if (this.node.contains(e.target) || navbar.contains(e.target)) {
       return;
     } else {
@@ -31,11 +36,11 @@ class Popup extends React.Component {
   };
 
   componentWillMount() {
-    document.addEventListener("mousedown", this.handleClick, false);
+    document.addEventListener('mousedown', this.handleClick, false);
   }
 
   componentWillUnmount() {
-    document.removeEventListener("mousedown", this.handleClick, false);
+    document.removeEventListener('mousedown', this.handleClick, false);
   }
 
   render() {
@@ -44,7 +49,7 @@ class Popup extends React.Component {
 
     return (
       <StyledPopup>
-        <div className="popup" ref={node => (this.node = node)}>
+        <div className="popup" ref={(node) => (this.node = node)}>
           <button onClick={this.props.handleClose} id="x">
             X
           </button>

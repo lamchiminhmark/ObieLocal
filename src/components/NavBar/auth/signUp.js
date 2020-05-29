@@ -58,7 +58,9 @@ const SignUp = (props) => {
         }
       )
       .then((user) => console.log(user))
-      .catch((err) => console.error(`ERROR: Account Creation\n ${err.message}`));
+      .catch((err) =>
+        console.error(`ERROR: Account Creation\n ${err.message}`)
+      );
   };
   // if (loggedIn) return <Redirect to="/" />;
 
