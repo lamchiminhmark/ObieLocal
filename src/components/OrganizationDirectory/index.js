@@ -38,41 +38,50 @@ const StyledSearchDiv = styled.div`
   text-align: center;
 `;
 
+/**
+ * Retrieves the data from a document in the organizations collection.
+ * @param {ExtendedFirestoreInstance} fsRef Firestore reference from rrf React Hook
+ * @param {string} oid Organization id string
+ */
+const getOrgInformation = async (fsRef, oid) => {
+  let doc;
+  try {
+    doc = await fsRef.collection('organizations').doc(oid).get();
+  } catch (err) {
+    console.error(err);
+    return err;
+  }
+
+  if (!doc.exists) {
+    console.error(
+      `Organization with id ${oid} does not exist in the collection.`
+    );
+  }
+  return (
+    doc.data() || {
+      err: 'There is no data for this organization. Sorry about that!',
+    }
+  );
+};
+
 const OrganizationDirectory = (props) => {
   const firestore = useFirestore();
   const [orgsListDisplay, setOrgsListDisplay] = useState({});
   const [orgsListContent, setOrgsListContent] = useState({});
 
-  const handleOrgClick = (e) => {
-    e.preventDefault();
+  const handleOrgClick = async (e) => {
     const oid = e.target.dataset.orgid;
     if (!oid) return;
-    console.log(`You clicked org with id ${oid}`);
-    if (orgsListContent[oid] && orgsListDisplay[oid] === true) {
-      // Close the information box if it's being displayed
-      setOrgsListDisplay({ ...orgsListDisplay, [oid]: false });
-      return;
-    } else if (orgsListContent[oid]) {
-      // If org information already has been loaded, just display it
+
+    if (orgsListContent[oid]) {
+      // Org information already exists in state; switch the display mode
+      setOrgsListDisplay({ ...orgsListDisplay, [oid]: !orgsListDisplay[oid] });
+    } else {
+      // Else, retrieve current org information and display it
+      const data = await getOrgInformation(firestore, oid);
+      setOrgsListContent({ ...orgsListContent, [oid]: data });
       setOrgsListDisplay({ ...orgsListDisplay, [oid]: true });
-      return;
     }
-    // Else, retrieve current org information and display it
-    firestore
-      .collection('organizations')
-      .doc(oid)
-      .get()
-      .then((doc) => {
-        if (!doc.exists) {
-          console.error(`Organization with id ${oid} does not exist`);
-        }
-        const data = doc.data() || {
-          err: 'There is no data for this organization. Sorry about that!',
-        };
-        setOrgsListContent({ ...orgsListContent, [oid]: data });
-        setOrgsListDisplay({ ...orgsListDisplay, [oid]: true });
-      })
-      .catch((err) => console.error(err));
   };
 
   if (!props.organizationList) return null;
@@ -86,7 +95,6 @@ const OrganizationDirectory = (props) => {
       onClick: handleOrgClick,
     };
 
-    // TODO(CP): Fix onClick inheritance
     return (
       <li {...liProps}>
         {org.name} has attributes {attrList}.
