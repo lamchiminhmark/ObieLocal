@@ -29,6 +29,9 @@ class NavBar extends Component {
       case 'useBtn':
         this.setState({ show: 'use' });
         break;
+      case 'orgdirBtn': 
+        this.setState({show: 'orgdir'})
+        break;
       default:
         this.setState({ show: 'none' });
     }
@@ -56,6 +59,11 @@ class NavBar extends Component {
             <li key="2">
               <button id="contactBtn" onClick={this.togglePopup}>
                 Contact
+              </button>
+            </li>
+            <li key="3">
+              <button id="orgdirBtn" onClick={this.togglePopup}>
+                OrgDir
               </button>
             </li>
           </ul>
