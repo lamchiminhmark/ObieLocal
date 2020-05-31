@@ -1,5 +1,4 @@
 /* Container */
-
 import React, { Component } from 'react';
 import MapContainer from './components/MapContainer';
 import NavBar from './components/NavBar';
