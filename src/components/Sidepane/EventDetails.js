@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import ReactHtmlParser from 'react-html-parser';
 import { toggleEvent } from '../../actions/markerActions';
 import EventSwitchButtons from './EventSwitchButtons';
+import { StyledSeeMoreButton } from './styles';
+import { rateEvent } from '../../actions/recommenderActions';
 
 class EventDetails extends React.Component {
   /**
@@ -48,6 +50,7 @@ class EventDetails extends React.Component {
     const timeString = this.getEventTimeString();
     const locationName = event.location_name || '';
     const locationString = event.address || 'Location unknown.';
+    const userId = 1;
 
     return (
       <div>
@@ -68,6 +71,8 @@ class EventDetails extends React.Component {
         </p>
         <img className="event-img" src={event.photo_url} alt="" />
         {ReactHtmlParser(event.description)}
+        <StyledSeeMoreButton onClick={() => this.props.rateEvent(userId, event.filters.event_types, 'like')}>I'm interested</StyledSeeMoreButton>
+
       </div>
     );
   }
@@ -84,6 +89,7 @@ const mapStateToProps = ({ markers }) => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    rateEvent: event => () => dispatch(rateEvent(event)),
     toggleEvent: direction => () => dispatch(toggleEvent(direction))
   };
 };

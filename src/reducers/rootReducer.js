@@ -5,6 +5,7 @@ import markersReducer from './markersReducer.js';
 import sidepaneReducer from './sidepaneReducer.js';
 import mapReducer from './mapReducer.js';
 import filterReducer from './filterReducer';
+import recommenderReducer from './recommenderReducer';
 
 export default combineReducers({
   markers: markersReducer,
@@ -13,4 +14,5 @@ export default combineReducers({
   filter: filterReducer,
   firebase: firebaseReducer,
   firestore: firestoreReducer,
+  recommender: recommenderReducer,
 });
