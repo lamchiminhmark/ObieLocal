@@ -5,7 +5,6 @@ import markersReducer from './markersReducer.js';
 import sidepaneReducer from './sidepaneReducer.js';
 import mapReducer from './mapReducer.js';
 import filterReducer from './filterReducer';
-import { authReducer } from './authReducer';
 
 export default combineReducers({
   markers: markersReducer,
@@ -14,5 +13,4 @@ export default combineReducers({
   filter: filterReducer,
   firebase: firebaseReducer,
   firestore: firestoreReducer,
-  auth: authReducer,
 });
