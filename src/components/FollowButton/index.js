@@ -3,9 +3,15 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { withHandlers } from "recompose";
 import { withFirestore } from "react-redux-firebase";
+import {
+  following,
+  followRequestSent,
+  followError,
+} from "../../actions/followActions";
 
 const followOnClick = (props) => () => {
   followHandler(props);
+  console.log(props);
 };
 
 const followHandler = async (props) => {
@@ -26,10 +32,24 @@ const followHandler = async (props) => {
           "follow.followees": [...userData.follow.followees, followeeId],
         }),
       ]);
-      console.log("Dispatch successful write");
+      props.following(followeeId);
+    } else {
+      await Promise.all([
+        firestore.update(followeeRef, {
+          "follow.followRequests": [
+            ...followeeData.follow.followRequests,
+            userId,
+          ],
+        }),
+        firestore.update(userRef, {
+          "follow.sentRequests": [...userData.follow.sentRequests, followeeId],
+        }),
+      ]);
+      props.followRequestSent(followeeId);
     }
   } catch (err) {
-    console.log("Dispatch error: ", err);
+    //props.followError(err);
+    console.log(err);
   }
 };
 
@@ -37,8 +57,10 @@ const FollowButton = (props) => {
   return <button onClick={props.followOnClick}>Follow</button>;
 };
 
-const mapStateToProps = (state) => ({
-  users: state.firestore.ordered.users,
+const mapDispatchToProps = dispatch => ({
+  following: (followeeId) => dispatch(following(followeeId)),
+  followRequestSent: (followeeId) => dispatch(followRequestSent(followeeId)),
+  followError: (error) => dispatch(followError(error)),
 });
 
 export default compose(
@@ -46,5 +68,5 @@ export default compose(
   withHandlers({
     followOnClick: followOnClick,
   }),
-  connect(mapStateToProps)
+  connect(undefined, mapDispatchToProps)
 )(FollowButton);
