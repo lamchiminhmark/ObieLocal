@@ -109,6 +109,7 @@ export const StyledPopup = styled.div`
     border: 2px solid rgba(35, 35, 35, 0.7);
     border-radius: 14px;
     box-shadow: 0px 3px 2px rgba(0, 0, 0, 0.27);
+    overflow: auto;
   }
 
   h1 {

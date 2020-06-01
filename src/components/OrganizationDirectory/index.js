@@ -10,17 +10,15 @@ const Div = styled.div`
   background: lightgray;
   text-align: left;
 
-  ul {
-    display: block;
-  }
-
-  li {
+  .orglist-item {
     list-style-type: none;
     padding: 3px;
-    margin: 5px 0px;
+    margin: auto;
     background: palevioletred;
     border: 2px solid black;
     cursor: pointer;
+    width: 60%;
+    text-align: center;
   }
 
   li div {
@@ -64,6 +62,30 @@ const getOrgInformation = async (fsRef, oid) => {
   );
 };
 
+// TODO(CP): Order these attributes correctly.
+const makeOrgContentDiv = (data) => {
+  const contentAttributes = ['name', 'description', 'attributes'];
+  if (data.err)
+    return (
+      <div>
+        <h3>Error</h3>
+        <p>{data.err}</p>
+      </div>
+    );
+  let children = [];
+  for (const attr in data) {
+    if (contentAttributes.includes(attr)) {
+      children.push(<p>{`${attr.toUpperCase()}: ${data[attr]}`}</p>);
+    }
+  }
+  return (
+    <div>
+      <h3>Org Details</h3>
+      {children}
+    </div>
+  );
+};
+
 const OrganizationDirectory = (props) => {
   const firestore = useFirestore();
   const [orgsListDisplay, setOrgsListDisplay] = useState({});
@@ -79,7 +101,8 @@ const OrganizationDirectory = (props) => {
     } else {
       // Else, retrieve current org information and display it
       const data = await getOrgInformation(firestore, oid);
-      setOrgsListContent({ ...orgsListContent, [oid]: data });
+      const orgContentDiv = makeOrgContentDiv(data);
+      setOrgsListContent({ ...orgsListContent, [oid]: orgContentDiv });
       setOrgsListDisplay({ ...orgsListDisplay, [oid]: true });
     }
   };
@@ -96,10 +119,10 @@ const OrganizationDirectory = (props) => {
     };
 
     return (
-      <li {...liProps}>
-        {org.name} has attributes {attrList}.
+      <li {...liProps} className="orglist-item">
+        {org.name} [{attrList}].
         <DetailsDiv displayMe={orgsListDisplay[oid]}>
-          {orgsListContent[oid] ? JSON.stringify(orgsListContent[oid]) : null}
+          {orgsListContent[oid] || null}
         </DetailsDiv>
       </li>
     );
