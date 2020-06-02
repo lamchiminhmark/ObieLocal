@@ -131,7 +131,12 @@ const OrganizationDirectory = (props) => {
 
   const regex = new RegExp(searchText, 'ig');
   const orgList = props.organizationList
-    .filter((org) => org.name.match(regex))
+    .filter((org) => org.name.match(regex) || org.attributes.join(' ').match(regex))
+    .sort((a, b) => {
+      if (!!a.name.match(regex) === !!b.name.match(regex)) return 0;
+      else if (a.name.match(regex)) return -1;
+      else return 1;
+    })
     .map((org) => {
       const display = orgsListDisplay[org.id];
       const content = orgsListContent[org.id];
