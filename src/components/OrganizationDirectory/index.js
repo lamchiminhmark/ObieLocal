@@ -90,6 +90,7 @@ const OrganizationDirectory = (props) => {
   const firestore = useFirestore();
   const [orgsListDisplay, setOrgsListDisplay] = useState({});
   const [orgsListContent, setOrgsListContent] = useState({});
+  const [searchText, setSearchText] = useState();
 
   const handleOrgClick = async (e) => {
     const oid = e.target.dataset.orgid;
@@ -109,29 +110,37 @@ const OrganizationDirectory = (props) => {
 
   if (!props.organizationList) return null;
 
-  const orgList = props.organizationList.map((org) => {
-    const attrList = org.attributes.join(', ');
-    const oid = org.id;
-    const liProps = {
-      'data-orgid': oid,
-      key: oid,
-      onClick: handleOrgClick,
-    };
+  const regex = new RegExp(searchText, 'ig');
+  const orgList = props.organizationList
+    .filter((org) => org.name.match(regex))
+    .map((org) => {
+      console.log(org);
+      const attrList = org.attributes.join(', ');
+      const oid = org.id;
+      const liProps = {
+        'data-orgid': oid,
+        key: oid,
+        onClick: handleOrgClick,
+      };
 
-    return (
-      <li {...liProps} className="orglist-item">
-        {org.name} [{attrList}].
-        <DetailsDiv displayMe={orgsListDisplay[oid]}>
-          {orgsListContent[oid] || null}
-        </DetailsDiv>
-      </li>
-    );
-  });
+      return (
+        <li {...liProps} className="orglist-item">
+          {org.name} [{attrList}].
+          <DetailsDiv displayMe={orgsListDisplay[oid]}>
+            {orgsListContent[oid] || null}
+          </DetailsDiv>
+        </li>
+      );
+    });
 
   return (
     <Div id="orgdir">
       <StyledSearchDiv id="orgdir-search">
-        <input id="orgdir-searchbox" type="text" />
+        <input
+          id="orgdir-searchbox"
+          type="text"
+          onChange={(e) => setSearchText(e.target.value)}
+        />
       </StyledSearchDiv>
       <ul>{orgList}</ul>
     </Div>
@@ -142,5 +151,6 @@ export default compose(
   firestoreConnect(() => [{ collection: 'meta' }]),
   connect(({ firestore: { data } }) => ({
     organizationList: data.meta && data.meta.organizations.all,
+    attributesList: data.meta && data.meta.attributes.all,
   }))
 )(OrganizationDirectory);
