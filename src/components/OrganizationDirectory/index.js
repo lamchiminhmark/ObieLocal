@@ -63,6 +63,7 @@ const getOrgInformation = async (fsRef, oid) => {
 };
 
 // TODO(CP): Order these attributes correctly.
+// TODO(CP): Add key props
 const makeOrgContentDiv = (data) => {
   const contentAttributes = ['name', 'description', 'attributes'];
   if (data.err)
@@ -83,6 +84,24 @@ const makeOrgContentDiv = (data) => {
       <h3>Org Details</h3>
       {children}
     </div>
+  );
+};
+
+const toOrgListItem = ({ id, name, attributes }, display, content, handler) => {
+  content = content || null;
+  const attrList = attributes.join(', ');
+  const oid = id;
+  const liProps = {
+    'data-orgid': oid,
+    key: oid,
+    onClick: handler,
+  };
+
+  return (
+    <li {...liProps} className="orglist-item">
+      {name} [{attrList}].
+      <DetailsDiv displayMe={display}>{content}</DetailsDiv>
+    </li>
   );
 };
 
@@ -114,23 +133,9 @@ const OrganizationDirectory = (props) => {
   const orgList = props.organizationList
     .filter((org) => org.name.match(regex))
     .map((org) => {
-      console.log(org);
-      const attrList = org.attributes.join(', ');
-      const oid = org.id;
-      const liProps = {
-        'data-orgid': oid,
-        key: oid,
-        onClick: handleOrgClick,
-      };
-
-      return (
-        <li {...liProps} className="orglist-item">
-          {org.name} [{attrList}].
-          <DetailsDiv displayMe={orgsListDisplay[oid]}>
-            {orgsListContent[oid] || null}
-          </DetailsDiv>
-        </li>
-      );
+      const display = orgsListDisplay[org.id];
+      const content = orgsListContent[org.id];
+      return toOrgListItem(org, display, content, handleOrgClick);
     });
 
   return (
