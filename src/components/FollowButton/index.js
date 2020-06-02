@@ -64,9 +64,9 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default compose(
+  connect(undefined, mapDispatchToProps),
   withFirestore,
   withHandlers({
     followOnClick: followOnClick,
   }),
-  connect(undefined, mapDispatchToProps)
 )(FollowButton);

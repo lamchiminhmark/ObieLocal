@@ -43,10 +43,10 @@ export class App extends Component {
     return (
       <div className="App">
         <FollowButton userId = '1FX9PWN8H4TreVGKEwoxxrXLWCc2' followeeId = '0IUvyqgSjeEdSZFK2tuS'/>
-        {/* <FilterByDayButton />
+        <FilterByDayButton />
         <NavBar />
         <MapContainer />
-        <Sidepane /> */}
+        <Sidepane />
       </div>
     );
   }
