@@ -31,7 +31,7 @@ const DetailsDiv = styled.div`
   background: green;
 `;
 
-const StyledSearchDiv = styled.div`
+export const StyledSearchDiv = styled.div`
   background: coral;
   text-align: center;
 `;
@@ -105,7 +105,7 @@ const toOrgListItem = ({ id, name, attributes }, display, content, handler) => {
   );
 };
 
-const OrganizationDirectory = (props) => {
+export const OrganizationDirectory = (props) => {
   const firestore = useFirestore();
   const [orgsListDisplay, setOrgsListDisplay] = useState({});
   const [orgsListContent, setOrgsListContent] = useState({});
