@@ -81,10 +81,10 @@ const NavBar = (props) => {
   );
 };
 
-const mapStateToProps = ({ firebase, auth }) => {
+const mapStateToProps = ({ firebase }) => {
   return {
     loggedIn: firebase.auth.uid ? true : false,
-    err: auth.err || '',
+    err: firebase.authError || '',
   };
 };
 
