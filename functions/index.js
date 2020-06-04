@@ -1,4 +1,5 @@
 const functions = require('firebase-functions');
+const raccoonWrapper = require('./raccoon-wrapper');
 const admin = require('firebase-admin');
 var database = require('./handler');
 const { rateEvent } = require('./rate-event');
@@ -22,17 +23,12 @@ exports.refreshEvents = functions.pubsub
 
 exports.rateEvent = rateEvent;
 
-async function updateRecommendations() {
-  const LIMIT = 10;
-  const RECOMMENDATION = [
-    'Conservatory of Music',
-    'Composition',
-    'Undergraduate Research'
-  ];
+async function updateRecommendations(userId) {
+  const recommendation = raccoonWrapper.recommend(userId);
   const attrScore = {};
   const relevanceScore = {};
   const eventIds = []
-  RECOMMENDATION.forEach((attr, i, arr) => {
+  recommendation.forEach((attr, i, arr) => {
     attrScore[attr] = length(arr) - i    // 1st attr in length-3 array scores 3, 
   })                                     // 2nd scores 2 and 3rd scores 1
   const querySnapshot = await db.collection('events').get();
@@ -51,6 +47,7 @@ async function updateRecommendations() {
       0
     );
   })
-  eventId.sort((id1, id2) => relevanceScore[id2] - relevanceScore[id1]);
-  // TODO(ML): Write top 10 to person's events.recommendation
+  eventIds.sort((id1, id2) => relevanceScore[id2] - relevanceScore[id1]);
+  const res = await db.collection('users').doc(userId).update({ events: { recommended: eventIds.slice(0, 10) } });
+  console.log(res);
 }
