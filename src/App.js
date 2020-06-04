@@ -11,6 +11,8 @@ import { connect } from 'react-redux';
 import { getAllMarkers } from './actions/markerActions';
 import FilterByDayButton from './components/FilterEvents/filterDayButton';
 import { firestoreConnect } from 'react-redux-firebase';
+import { Switch, Route } from 'react-router-dom';
+import EventDetails from './components/EventDetails';
 
 export class App extends Component {
   constructor(props) {
@@ -27,12 +29,12 @@ export class App extends Component {
   componentDidMount() {
     initializeReactGA();
   }
-  
+
   /* If show is true, CreateEventContainer is opened, otherwise it is closed*/
   toggleCreateEventContainer(show) {
     this.setState({ createEventContainerOpen: show });
   }
-  
+
   render() {
     if (this.props.events) {
       this.props.getAllMarkers(this.props.events);
@@ -40,10 +42,17 @@ export class App extends Component {
     initializeReactGA();
     return (
       <div className="App">
-        <FilterByDayButton />
-        <NavBar />
-        <MapContainer />
-        <Sidepane />
+        <Switch>
+          <Route path="/events">
+            <EventDetails />
+          </Route>
+          <Route path="/">
+            <FilterByDayButton />
+            <NavBar />
+            <MapContainer />
+            <Sidepane />
+          </Route>
+        </Switch>
       </div>
     );
   }
