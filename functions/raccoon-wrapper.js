@@ -32,6 +32,9 @@ module.exports.rate = async function (userId, itemId, type) {
   return;
 };
 
+module.exports.recommend = async function (userId, numberOfRecs = 10) {
+  return await raccoon.recommendFor(userId, numberOfRecs);
+}
 
 /**
  * For testing: check the userId who liked an event
