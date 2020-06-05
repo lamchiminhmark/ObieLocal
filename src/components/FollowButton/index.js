@@ -11,7 +11,6 @@ import {
 
 const followOnClick = (props) => () => {
   followHandler(props);
-  console.log(props);
 };
 
 const followHandler = async (props) => {
@@ -48,8 +47,7 @@ const followHandler = async (props) => {
       props.followRequestSent(followeeId);
     }
   } catch (err) {
-    //props.followError(err);
-    console.log(err);
+    props.followError(err);
   }
 };
 

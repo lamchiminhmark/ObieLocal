@@ -42,7 +42,6 @@ export class App extends Component {
     initializeReactGA();
     return (
       <div className="App">
-        <FollowButton userId = '1FX9PWN8H4TreVGKEwoxxrXLWCc2' followeeId = '0IUvyqgSjeEdSZFK2tuS'/>
         <FilterByDayButton />
         <NavBar />
         <MapContainer />
