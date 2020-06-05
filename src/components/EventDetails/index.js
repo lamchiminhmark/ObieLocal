@@ -22,7 +22,7 @@ const StyledEventsDiv = styled.div`
   }
 `;
 
-const EventDetails = (props) => {
+const EventDetailsWrapper = (props) => {
   let match = useRouteMatch();
 
   let allEvents;
@@ -49,7 +49,7 @@ const EventDetails = (props) => {
     <StyledEventsDiv id="event-details-div">
       <Switch>
         <Route path={`${match.path}/:eventId`}>
-          <Event {...props} />
+          <EventDetails {...props} />
         </Route>
         <Route path={match.path}>
           <h1>All Events</h1>
@@ -60,7 +60,7 @@ const EventDetails = (props) => {
   );
 };
 
-const Event = (props) => {
+const EventDetails = (props) => {
   let { eventId } = useParams();
   const event = props.events ? props.events[eventId] : null;
 
@@ -74,4 +74,4 @@ const Event = (props) => {
 
 export default connect(({ firestore }) => ({
   events: firestore.data && firestore.data.events,
-}))(EventDetails);
+}))(EventDetailsWrapper);

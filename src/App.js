@@ -12,7 +12,7 @@ import { getAllMarkers } from './actions/markerActions';
 import FilterByDayButton from './components/FilterEvents/filterDayButton';
 import { firestoreConnect } from 'react-redux-firebase';
 import { Switch, Route } from 'react-router-dom';
-import EventDetails from './components/EventDetails';
+import EventDetailsWrapper from './components/EventDetails';
 
 export class App extends Component {
   constructor(props) {
@@ -44,7 +44,7 @@ export class App extends Component {
       <div className="App">
         <Switch>
           <Route path="/events">
-            <EventDetails />
+            <EventDetailsWrapper />
           </Route>
           <Route path="/">
             <FilterByDayButton />
