@@ -5,6 +5,7 @@ import {
   useParams,
   useRouteMatch,
   Link,
+  useHistory,
 } from 'react-router-dom';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
@@ -19,6 +20,10 @@ const StyledEventsDiv = styled.div`
   a:visited {
     text-decoration: none;
     color: inherit;
+  }
+
+  button {
+    margin: auto;
   }
 `;
 
@@ -63,11 +68,17 @@ const EventDetailsWrapper = (props) => {
 const EventDetails = (props) => {
   let { eventId } = useParams();
   const event = props.events ? props.events[eventId] : null;
+  const history = useHistory();
 
   return (
     <div>
       <h1>{event ? event['title'] : 'Loading...'}</h1>
       <p>{JSON.stringify(event)}</p>
+      <button
+        onClick={history.goBack}
+      >
+        Click to go back!
+      </button>
     </div>
   );
 };
