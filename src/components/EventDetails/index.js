@@ -27,12 +27,25 @@ const StyledEventsDiv = styled.div`
   }
 `;
 
+// TODO(CP): Only show nav button(s) that are needed based on browser history
 const BrowserNavButtons = () => {
   const history = useHistory();
   return (
     <div>
       <button onClick={history.goBack}>{'<<<'}</button>
       <button onClick={history.goForward}>{'>>>'}</button>
+    </div>
+  );
+};
+
+const EventDetails = (props) => {
+  let { eventId } = useParams();
+  const event = props.events ? props.events[eventId] : null;
+
+  return (
+    <div>
+      <h1>{event ? event['title'] : 'Loading...'}</h1>
+      <p>{JSON.stringify(event)}</p>
     </div>
   );
 };
@@ -45,7 +58,7 @@ const EventDetailsWrapper = (props) => {
     allEvents = [];
     for (const event in props.events) {
       allEvents.push(
-        <Link to={`${match.path}/${event}`}>
+        <Link key={event} to={`${match.path}/${event}`}>
           <li>
             <span style={{ fontWeight: 'bold' }}>
               {props.events[event].title}
@@ -73,18 +86,6 @@ const EventDetailsWrapper = (props) => {
       </Switch>
       <BrowserNavButtons />
     </StyledEventsDiv>
-  );
-};
-
-const EventDetails = (props) => {
-  let { eventId } = useParams();
-  const event = props.events ? props.events[eventId] : null;
-
-  return (
-    <div>
-      <h1>{event ? event['title'] : 'Loading...'}</h1>
-      <p>{JSON.stringify(event)}</p>
-    </div>
   );
 };
 
