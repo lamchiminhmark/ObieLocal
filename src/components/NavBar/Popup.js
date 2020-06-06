@@ -1,5 +1,7 @@
 import React from 'react';
 import { StyledPopup } from './styles';
+import LogIn from './auth/logIn';
+import SignUp from './auth/signUp';
 
 const bodyTexts = {
   contact: `Comments, questions, or suggestions for how we can make ObieLocal 
@@ -8,16 +10,23 @@ const bodyTexts = {
     students find out what's happening on campus through a visual interface.
     The first version of ObieLocal was developed by Colton Potter, Minh Lam,
     Thomas Nemeh, and Lukas Griffin for their 'Systems Programming' final
-    project. It continues to be developed by Colton, Minh, and Khang Nguyen.`
+    project. It continues to be developed by Colton Potter, Minh Lam, and Khang Nguyen.`,
+  signUp: (
+    <div>
+      <SignUp />
+      <LogIn />
+    </div>
+  ),
 };
 
 const titles = {
   contact: `Contact`,
-  about: `About`
+  about: `About`,
+  signUp: `Sign Up`,
 };
 
 class Popup extends React.Component {
-  handleClick = e => {
+  handleClick = (e) => {
     const navbar = document.getElementById('navbar');
     if (this.node.contains(e.target) || navbar.contains(e.target)) {
       return;
@@ -40,7 +49,7 @@ class Popup extends React.Component {
 
     return (
       <StyledPopup>
-        <div className="popup" ref={node => (this.node = node)}>
+        <div className="popup" ref={(node) => (this.node = node)}>
           <button onClick={this.props.handleClose} id="x">
             X
           </button>

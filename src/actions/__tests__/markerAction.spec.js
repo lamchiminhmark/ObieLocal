@@ -1,9 +1,10 @@
 import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
-import fetchMock from "fetch-mock";
 import expect from "expect";
+import { mockFirebase } from "firestore-jest-mock";
+import { mockCollection } from "firestore-jest-mock/mocks/firestore";
 import { GET_ALL_MARKERS } from "../types";
-import { fetchData, toMarkerArray } from "../eventActions";
+import { getAllMarkers, toMarkerArray } from "../markerActions";
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -99,29 +100,55 @@ const expectedMarkerArray = [
   }
 ];
 
-describe("fetch data and returns marker array", () => {
+
+describe("query firestore collection and return marker array", () => {
+  mockFirebase({
+    database: {
+      events: [
+        {
+          id: 'SeGwEBzwuINtq59napzF',
+          title: 'Oberlin College Undergraduate Research Symposium ',
+          description: '<p>The&nbsp;Undergraduate&nbsp;Research&nbsp;Symposium&nbsp;will take place virtually this week.&nbsp;<a href="https://www.oberlin.edu/undergraduate-research/symposia/virtual-presentations">View student presentations&nbsp;on the OUR website</a>, and participate in live Q&amp;A sessions via Blackboard</p>\r\n\r\n<p>Come engage with the wonderful research our students have worked on this year!&nbsp;</p>\r\n',
+        },
+        {
+          id: 'i6vRsX84NVnNL9HxpxwA',
+          title: 'Experience the Gift of Empathy Sundays',
+          description: '<p>Do&nbsp;you have a story to share? Do you want to receive and give empathy?</p>\r\n\r\n<p>Sign in to Yeworkwha Belachew Center for Dialogue&rsquo;s Empathy Caf&eacute; Online via<a href="http:// https://oberlin.zoom.us/j/138195165?pwd=dnBKWjU2WXpMbSs4b2RBSnJLazRQZz09"> Zoom</a>&nbsp;to connect with others in a casual online space for listening and being listened to.</p>\r\n\r\n<p><a href="http://www.facebook.com/OCEmpathyCafe/?modal=admin_todo_tour">Like us on Facebook</a>!</p>\r\n\r\n<p>&nbsp;</p>\r\n',
+        },
+      ],
+    }
+  })
+  const firebase = require('firebase');
+
   afterEach(() => {
-    fetchMock.restore();
+    mockCollection.mockClear();
   });
+
   it("toMarkerElement returns correctly", () => {
     expect(mockEvents.reduce(toMarkerArray, [])).toEqual(expectedMarkerArray);
   });
 
-  it("fetches from API and dispatch action", () => {
-    fetchMock.getOnce("/events", mockEvents).catch(unmatchedUrl => {
-      // fallover call original fetch, because fetch-mock treats
-      // any unmatched call as an error - its target is testing
-      console.log("Unmatched " + unmatchedUrl);
-    });
+  it("retrieves firestore events collection", () => {
+    const db = firebase.firestore();
+
+    return db.collection('events').get().then(() => expect(mockCollection).toHaveBeenCalledWith('events'));
+  });
+  
+  it("retrieves firestore users collection", () => {
+    const db = firebase.firestore();
+    
+    return db.collection('users').get().then(() => expect(mockCollection).toHaveBeenCalledWith('users'));
+  })
+
+  it("dispatches action to return all markers", () => {
 
     const expectedReturn = {
       type: GET_ALL_MARKERS,
       payload: expectedMarkerArray
     };
     const store = mockStore({ arr: [] });
-
-    return store.dispatch(fetchData()).then(() => {
-      expect(store.getActions()).toEqual([expectedReturn]);
-    });
+    store.dispatch(getAllMarkers(mockEvents));
+    return expect(store.getActions()).toEqual([expectedReturn]);
   });
 });
+

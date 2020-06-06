@@ -1,11 +1,12 @@
-import { combineReducers } from "redux";
-import { firebaseReducer } from "react-redux-firebase";
-import { firestoreReducer } from "redux-firestore";
-import markersReducer from "./markersReducer.js";
-import sidepaneReducer from "./sidepaneReducer.js";
-import mapReducer from "./mapReducer.js";
-import filterReducer from "./filterReducer";
-import followReducer from "./followReducer";
+import { combineReducers } from 'redux';
+import { firebaseReducer } from 'react-redux-firebase';
+import { firestoreReducer } from 'redux-firestore';
+import markersReducer from './markersReducer.js';
+import sidepaneReducer from './sidepaneReducer.js';
+import mapReducer from './mapReducer.js';
+import filterReducer from './filterReducer';
+import recommenderReducer from './recommenderReducer';
+import followReducer from './followReducer';
 
 export default combineReducers({
   markers: markersReducer,
@@ -13,6 +14,7 @@ export default combineReducers({
   map: mapReducer,
   filter: filterReducer,
   firebase: firebaseReducer,
-  follow: followReducer,
   firestore: firestoreReducer,
+  recommender: recommenderReducer,
+  follow: followReducer,
 });

@@ -13,7 +13,7 @@ import { ReactReduxFirebaseProvider } from 'react-redux-firebase';
 
 const rrfConfig = {
   userProfile: 'users',
-  userFirestoreForProfile: true
+  useFirestoreForProfile: true,
 };
 
 firebase.initializeApp(fbConfig);
@@ -23,7 +23,7 @@ const rrfProps = {
   firebase,
   config: rrfConfig,
   dispatch: store.dispatch,
-  createFirestoreInstance
+  createFirestoreInstance,
 };
 
 ReactDOM.render(

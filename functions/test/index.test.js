@@ -6,9 +6,11 @@ const test = require('firebase-functions-test')(
 );
 const assert = require('chai').assert;
 const redis = require('redis');
+
 // Importing functions
 const raccoonWrapper = require('../raccoon-wrapper');
 
+// whole app is loaded so that admin is already initialized
 const app = require('../index.js');
 
 const USER_ID_1 = '10';

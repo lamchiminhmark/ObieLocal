@@ -1,5 +1,4 @@
 /* Container */
-
 import React, { Component } from 'react';
 import MapContainer from './components/MapContainer';
 import NavBar from './components/NavBar';
@@ -9,9 +8,9 @@ import ReactGA from 'react-ga';
 import config from './shared/config';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import FilterByDayButton from  './components/FilterEvents/filterDayButton'
+import { getAllMarkers } from './actions/markerActions';
+import FilterByDayButton from './components/FilterEvents/filterDayButton';
 import FollowButton from './components/FollowButton';
-import { getAllEvents } from './actions/eventActions';
 import { firestoreConnect } from 'react-redux-firebase';
 
 export class App extends Component {
@@ -37,7 +36,7 @@ export class App extends Component {
   
   render() {
     if (this.props.events) {
-      this.props.getAllEvents(this.props.events);
+      this.props.getAllMarkers(this.props.events);
     }
     initializeReactGA();
     return (
@@ -66,7 +65,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => {
   // What to return? The action you want the component to have access to
   return {
-    getAllEvents: (events) => dispatch(getAllEvents(events)),
+    getAllMarkers: (events) => dispatch(getAllMarkers(events)),
   };
 };
 
