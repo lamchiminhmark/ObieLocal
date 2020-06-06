@@ -27,15 +27,9 @@ const StyledEventsDiv = styled.div`
   }
 `;
 
-// TODO(CP): Only show nav button(s) that are needed based on browser history
-const BrowserNavButtons = () => {
+const BackButton = () => {
   const history = useHistory();
-  return (
-    <div>
-      <button onClick={history.goBack}>{'<<<'}</button>
-      <button onClick={history.goForward}>{'>>>'}</button>
-    </div>
-  );
+  return <button onClick={history.goBack}>{'<<<'}</button>;
 };
 
 const EventDetails = (props) => {
@@ -78,13 +72,13 @@ const EventDetailsWrapper = (props) => {
       <Switch>
         <Route path={`${match.path}/:eventId`}>
           <EventDetails {...props} />
+          <BackButton />
         </Route>
         <Route path={match.path}>
           <h1>All Events</h1>
           <ul>{allEvents}</ul>
         </Route>
       </Switch>
-      <BrowserNavButtons />
     </StyledEventsDiv>
   );
 };
