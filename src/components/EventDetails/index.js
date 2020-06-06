@@ -27,8 +27,18 @@ const StyledEventsDiv = styled.div`
   }
 `;
 
+const BrowserNavButtons = () => {
+  const history = useHistory();
+  return (
+    <div>
+      <button onClick={history.goBack}>{'<<<'}</button>
+      <button onClick={history.goForward}>{'>>>'}</button>
+    </div>
+  );
+};
+
 const EventDetailsWrapper = (props) => {
-  let match = useRouteMatch();
+  const match = useRouteMatch();
 
   let allEvents;
   if (props.events) {
@@ -61,6 +71,7 @@ const EventDetailsWrapper = (props) => {
           <ul>{allEvents}</ul>
         </Route>
       </Switch>
+      <BrowserNavButtons />
     </StyledEventsDiv>
   );
 };
@@ -68,17 +79,11 @@ const EventDetailsWrapper = (props) => {
 const EventDetails = (props) => {
   let { eventId } = useParams();
   const event = props.events ? props.events[eventId] : null;
-  const history = useHistory();
 
   return (
     <div>
       <h1>{event ? event['title'] : 'Loading...'}</h1>
       <p>{JSON.stringify(event)}</p>
-      <button
-        onClick={history.goBack}
-      >
-        Click to go back!
-      </button>
     </div>
   );
 };
