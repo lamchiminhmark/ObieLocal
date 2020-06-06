@@ -50,6 +50,7 @@ class EventDetails extends React.Component {
     const timeString = this.getEventTimeString();
     const locationName = event.location_name || '';
     const locationString = event.address || 'Location unknown.';
+    //TODO: Get real userId
     const userId = 1;
 
     return (
@@ -72,7 +73,6 @@ class EventDetails extends React.Component {
         <img className="event-img" src={event.photo_url} alt="" />
         {ReactHtmlParser(event.description)}
         <StyledSeeMoreButton onClick={() => this.props.rateEvent(userId, event.filters.event_types, 'like')}>I'm interested</StyledSeeMoreButton>
-
       </div>
     );
   }
