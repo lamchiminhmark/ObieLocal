@@ -6,6 +6,7 @@ const test = require('firebase-functions-test')(
 );
 const assert = require('chai').assert;
 const redis = require('redis');
+const admin = require('firebase-admin');
 
 // Importing functions
 const raccoonWrapper = require('../raccoon-wrapper');
@@ -16,6 +17,10 @@ const app = require('../index.js');
 const USER_ID_1 = '10';
 const ITEM_ID_1 = 'Lecture';
 const ITEM_ID_2 = 'Computer science';
+const MARK_USER_ID = '1FX9PWN8H4TreVGKEwoxxrXLWCc2';
+
+// Global setup
+const db = admin.firestore();
 
 describe('rateEvent', () => {
   afterEach(done => {
@@ -78,6 +83,31 @@ describe('rateEvent', () => {
       .catch(e => assert.fail(e));
   });
 });
+
+// Populate the redis first 
+// Before all: Grab initial data from lamchiminhmark@gmail.com user and store in 
+// Run updateRecommendations and check that results are good
+// After all: Wipe users and events collections
+describe('updateRecommendations', () => {
+  let markInitialData;
+
+  beforeEach(async () => {
+    const docSnapshot = await db.collection('users').doc(MARK_USER_ID).get();
+    markInitialData = docSnapshot.data();
+  });
+
+  afterEach(done => {
+    const client = redis.createClient();
+    client.flushall(async () => {
+      await db.collection('users').doc(MARK_USER_ID).set(markInitialData);
+      done();
+    });
+  })
+
+  it('should update Mark\'s behaviour rec correctly', async () => {
+
+  })
+})
 
 after(() => {
   test.cleanup();
