@@ -32,6 +32,11 @@ module.exports.rate = async function (userId, itemId, type) {
   return;
 };
 
+/**
+ * Returns a list of ordered recommendations, most to least recommended
+ * @param {string} userId 
+ * @param {number} [numberOfRecs] number of recommenders to return, default is 10
+ */
 module.exports.recommend = async function (userId, numberOfRecs = 10) {
   return await raccoon.recommendFor(userId, numberOfRecs);
 }
