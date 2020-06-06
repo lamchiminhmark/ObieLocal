@@ -18,30 +18,25 @@ const followHandler = async (props) => {
   const userRef = { collection: "users", doc: userId };
   const followeeRef = { collection: "users", doc: followeeId };
   try {
-    const user = await firestore.get(userRef);
     const followee = await firestore.get(followeeRef);
-    const userData = user.data();
     const followeeData = followee.data();
     if (!followeeData.follow.requestOn) {
       await Promise.all([
         firestore.update(followeeRef, {
-          "follow.followers": [...followeeData.follow.followers, userId],
+          "follow.followers": firestore.FieldValue.arrayUnion(userId),
         }),
         firestore.update(userRef, {
-          "follow.followees": [...userData.follow.followees, followeeId],
+          "follow.followees": firestore.FieldValue.arrayUnion(followeeId),
         }),
       ]);
       props.following(followeeId);
     } else {
       await Promise.all([
         firestore.update(followeeRef, {
-          "follow.followRequests": [
-            ...followeeData.follow.followRequests,
-            userId,
-          ],
+          "follow.followRequests": firestore.FieldValue.arrayUnion(userId),
         }),
         firestore.update(userRef, {
-          "follow.sentRequests": [...userData.follow.sentRequests, followeeId],
+          "follow.sentRequests": firestore.FieldValue.arrayUnion(followeeId),
         }),
       ]);
       props.followRequestSent(followeeId);
@@ -55,7 +50,7 @@ const FollowButton = (props) => {
   return <button onClick={props.followOnClick}>Follow</button>;
 };
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   following: (followeeId) => dispatch(following(followeeId)),
   followRequestSent: (followeeId) => dispatch(followRequestSent(followeeId)),
   followError: (error) => dispatch(followError(error)),
@@ -66,5 +61,5 @@ export default compose(
   withFirestore,
   withHandlers({
     followOnClick: followOnClick,
-  }),
+  })
 )(FollowButton);
