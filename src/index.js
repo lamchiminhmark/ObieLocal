@@ -10,6 +10,7 @@ import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import store from './store';
 import { ReactReduxFirebaseProvider } from 'react-redux-firebase';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 const rrfConfig = {
   userProfile: 'users',
@@ -29,7 +30,9 @@ const rrfProps = {
 ReactDOM.render(
   <Provider store={store}>
     <ReactReduxFirebaseProvider {...rrfProps}>
-      <App />
+      <Router>
+        <App />
+      </Router>
     </ReactReduxFirebaseProvider>
   </Provider>,
   document.getElementById('root')
