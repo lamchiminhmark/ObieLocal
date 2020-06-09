@@ -1,5 +1,4 @@
 /* Container */
-
 import React, { Component } from 'react';
 import MapContainer from './components/MapContainer';
 import NavBar from './components/NavBar';
@@ -11,6 +10,7 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { getAllMarkers } from './actions/markerActions';
 import FilterByDayButton from './components/FilterEvents/filterDayButton';
+import FollowButton from './components/FollowButton';
 import { firestoreConnect } from 'react-redux-firebase';
 
 export class App extends Component {

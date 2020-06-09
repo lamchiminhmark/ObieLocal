@@ -1,83 +1,99 @@
 /* Container */
 
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { toggleSidepane } from '../../actions/sidepaneActions';
 import Popup from './Popup';
 import MenuButton from './MenuButton';
 import { StyledNavContainer, StyledNav } from './styles';
+import { useFirebase } from 'react-redux-firebase';
 
-class NavBar extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      show: 'none'
-    };
+const NavBar = (props) => {
+  const [show, setShow] = useState('none');
 
-    this.togglePopup = this.togglePopup.bind(this);
-  }
+  const firebase = useFirebase();
 
-  togglePopup(e) {
+  const signOut = () => {
+    firebase.auth().signOut().then(console.log('User signed out.'));
+  };
+
+  const togglePopup = (e) => {
     const name = e.target.getAttribute('id');
     switch (name) {
       case 'aboutBtn':
-        this.setState({ show: 'about' });
+        setShow('about');
         break;
       case 'contactBtn':
-        this.setState({ show: 'contact' });
+        setShow('contact');
         break;
       case 'useBtn':
-        this.setState({ show: 'use' });
+        setShow('use');
+        break;
+      case 'signUp':
+        setShow('signUp');
         break;
       case 'orgdirBtn': 
-        this.setState({show: 'orgdir'})
+        setShow('orgdir');
         break;
       default:
-        this.setState({ show: 'none' });
+        setShow('none');
     }
+  };
+
+  let popupElement = null;
+  if (show !== 'none') {
+    popupElement = <Popup type={show} handleClose={togglePopup} />;
   }
-
-  render() {
-    let popupElement = null;
-    if (this.state.show !== 'none') {
-      popupElement = (
-        <Popup type={this.state.show} handleClose={this.togglePopup} />
-      );
-    }
-
-    return (
-      <StyledNavContainer id="interface">
-        <StyledNav id="navbar">
-          <MenuButton handleMenuClick={this.props.toggleSidepane} />
-          <h2>ObieLocal</h2>
-          <ul>
-            <li key="1">
-              <button id="aboutBtn" onClick={this.togglePopup}>
-                About
-              </button>
-            </li>
-            <li key="2">
-              <button id="contactBtn" onClick={this.togglePopup}>
-                Contact
-              </button>
-            </li>
-            <li key="3">
-              <button id="orgdirBtn" onClick={this.togglePopup}>
-                OrgDir
-              </button>
-            </li>
-          </ul>
-          {popupElement}
-        </StyledNav>
-      </StyledNavContainer>
+  const { loggedIn } = props;
+  let authButton;
+  if (loggedIn) {
+    authButton = (
+      <button id="logOut" onClick={signOut}>
+        Log Out
+      </button>
+    );
+  } else {
+    authButton = (
+      <button id="signUp" onClick={togglePopup}>
+        Sign Up
+      </button>
     );
   }
-}
 
-const mapDispatchToProps = dispatch => {
+  return (
+    <StyledNavContainer id="interface">
+      <StyledNav id="navbar">
+        <MenuButton handleMenuClick={props.toggleSidepane} />
+        <h2>ObieLocal</h2>
+        <ul>
+          <li key="1">
+            <button id="aboutBtn" onClick={togglePopup}>
+              About
+            </button>
+          </li>
+          <li key="2">
+            <button id="contactBtn" onClick={togglePopup}>
+              Contact
+            </button>
+          </li>
+          <li key="3">
+            <button id="orgdirBtn" onClick={togglePopup}>
+                OrgDir
+            </button>
+          </li>
+          <li key="4">{authButton}</li>
+        </ul>
+        {popupElement}
+      </StyledNav>
+    </StyledNavContainer>
+  );
+};
+
+const mapStateToProps = ({ firebase }) => {
   return {
-    toggleSidepane: () => dispatch(toggleSidepane())
-  }
-}
+    loggedIn: firebase.auth.uid ? true : false,
+    err: firebase.authError || '',
+  };
+};
 
-export default connect(undefined, mapDispatchToProps)(NavBar);
+export default connect(mapStateToProps, { toggleSidepane })(NavBar);

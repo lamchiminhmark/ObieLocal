@@ -1,6 +1,8 @@
 import React from 'react';
 import { StyledPopup } from './styles';
 import OrganizationDirectory from '../OrganizationDirectory';
+import LogIn from './auth/logIn';
+import SignUp from './auth/signUp';
 
 const bodyTexts = {
   contact: <p>Comments, questions, or suggestions for how we can make ObieLocal 
@@ -11,15 +13,22 @@ const bodyTexts = {
     Thomas Nemeh, and Lukas Griffin for their 'Systems Programming' final
     project. It continues to be developed by Colton, Minh, and Khang Nguyen.</p>,
   orgdir: <OrganizationDirectory />,
+  signUp: (
+    <div>
+      <SignUp />
+      <LogIn />
+    </div>
+  ),
 };
 
 const titles = {
   contact: `Contact`,
-  about: `About`
+  about: `About`,
+  signUp: `Sign Up`,
 };
 
 class Popup extends React.Component {
-  handleClick = e => {
+  handleClick = (e) => {
     const navbar = document.getElementById('navbar');
     if (this.node.contains(e.target) || navbar.contains(e.target)) {
       return;
@@ -42,7 +51,7 @@ class Popup extends React.Component {
 
     return (
       <StyledPopup>
-        <div className="popup" ref={node => (this.node = node)}>
+        <div className="popup" ref={(node) => (this.node = node)}>
           <button onClick={this.props.handleClose} id="x">
             X
           </button>
