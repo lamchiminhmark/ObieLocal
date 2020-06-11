@@ -23,11 +23,11 @@ exports.refreshEvents = functions.pubsub
 
 exports.rateEvent = rateEvent;
 
-async function updateRecommendations(userId) {
-  const recommendation = raccoonWrapper.recommend(userId);
+exports.updateRecommendations = async function updateRecommendations(userId) {
+  const recommendation = await raccoonWrapper.recommend(userId);
   const attrScore = {};
   const relevanceScore = {};
-  const eventIds = []
+  let eventIds = [];
   recommendation.forEach((attr, i, arr) => {
     attrScore[attr] = length(arr) - i    // 1st attr in length-3 array scores 3, 
   })                                     // 2nd scores 2 and 3rd scores 1
@@ -38,6 +38,8 @@ async function updateRecommendations(userId) {
     // eventFilters: {departments: Array<{id: string, name: string}>, 
     //                event_types: Array<{id: string, name: string}>}
     const eventFilters = documentSnapshot.get('filters');
+    eventFilters.departments = eventFilters.departments || [];
+    eventFilters.event_types = eventFilters.event_types || [];
     const attributes = eventFilters
       .departments
       .concat(eventFilters.event_types)
@@ -47,6 +49,7 @@ async function updateRecommendations(userId) {
       0
     );
   })
+  eventIds = eventIds.filter(id => relevanceScore[id] > 0)
   eventIds.sort((id1, id2) => relevanceScore[id2] - relevanceScore[id1]);
   const res = await db.collection('users').doc(userId).update({ events: { recommended: eventIds.slice(0, 10) } });
   console.log(res);
