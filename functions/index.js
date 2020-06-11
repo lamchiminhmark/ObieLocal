@@ -48,5 +48,4 @@ exports.updateRecommendations = async function updateRecommendations(userId) {
   eventIds = eventIds.filter(id => relevanceScore[id] > 0)
   eventIds.sort((id1, id2) => relevanceScore[id2] - relevanceScore[id1]);
   const res = await db.collection('users').doc(userId).update({ events: { recommended: eventIds.slice(0, 10) } });
-  console.log(res);
 }

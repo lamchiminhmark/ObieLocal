@@ -7,6 +7,7 @@ const test = require('firebase-functions-test')(
 const assert = require('chai').assert;
 const redis = require('redis');
 const admin = require('firebase-admin');
+const raccoon = require('raccoon');
 
 // Importing functions
 const raccoonWrapper = require('../raccoon-wrapper');
@@ -20,18 +21,22 @@ const ITEM_ID_2 = 'Computer science';
 const MARK_USER_ID = '1FX9PWN8H4TreVGKEwoxxrXLWCc2';
 const MUSIC_ID = 'Music';
 const UNDERGRADUATE_RESEARCH_ID = 'Undergraduate Research';
+const REMEMBERS_KENT_STATE_ID = "D164CwoPKT5nrH6bQebO"; // Strings, Music
+const WORLD_MUSICIAN_ID = "32AsLZBQpaloPtbUKCPF" // Music
+const RESEARCH_SYMPOSIUM = "SeGwEBzwuINtq59napzF" // Undergraduate Research
+const ALL_THAT_JAZZ_ID = "t9niWLq9v2mZsRyWNO1a" // Music
 
 // Global setup
 const db = admin.firestore();
 
 describe('raccoon-wrapper', () => {
-  describe('rateEvent', () => {
-    afterEach(done => {
-      const client = redis.createClient();
-      client.flushall(() => {
-        done();
-      });
+  afterEach(done => {
+    const client = redis.createClient();
+    client.flushall(() => {
+      done();
     });
+  });
+  describe('rateEvent', () => {
 
     it('should handle a POST request with a like correctly', done => {
       const req = {
@@ -123,24 +128,21 @@ describe('updateRecommendations', () => {
     });
   })
 
-  it('should work even if there is no data in the redis', () => {
-    assert.fail();
+  it('should work even if there is no data in the redis', async () => {
+    await updateRecommendations(MARK_USER_ID);
+    // The redis is not being flushed bfore the assert statement runs
+    const docSnapshot = await db.collection('users').doc(MARK_USER_ID).get();
+    assert.deepEqual(docSnapshot.get('events.recommended'), []);
   })
 
-  it('should update Mark\'s behaviour rec correctly', async done => {
+  it('should update Mark\'s behaviour rec correctly', async () => {
     await raccoonWrapper.rate(USER_ID_1, MUSIC_ID, 'like');
     await raccoonWrapper.rate(USER_ID_1, 'Strings', 'like');
     await raccoonWrapper.rate(MARK_USER_ID, MUSIC_ID, 'like');
     await raccoonWrapper.rate(MARK_USER_ID, UNDERGRADUATE_RESEARCH_ID, 'like');
-    assert.deepEqual(await raccoonWrapper.recommend(MARK_USER_ID), ['Bananna Pancakes']);
-    // TODO(ML): Prove that the redis has been modified
-    redis.createClient().keys('*', async (err, keys) => {
-      console.log(keys);
-      await updateRecommendations(MARK_USER_ID);
-      const docSnapshot = await db.collection('users').doc(MARK_USER_ID).get();
-      assert.deepEqual(docSnapshot.get('events.recommended'), ['Banana Pancake', 'Claude Debussy']);
-      done();
-    });
+    await updateRecommendations(MARK_USER_ID);
+    const docSnapshot = await db.collection('users').doc(MARK_USER_ID).get();
+    assert.deepEqual(docSnapshot.get('events.recommended'), ['banana pancake']);
   })
 })
 
