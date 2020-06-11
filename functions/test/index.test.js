@@ -12,12 +12,14 @@ const admin = require('firebase-admin');
 const raccoonWrapper = require('../raccoon-wrapper');
 
 // whole app is loaded so that admin is already initialized
-const app = require('../index.js');
+const { rateEvent, updateRecommendations } = require('../index.js');
 
 const USER_ID_1 = '10';
 const ITEM_ID_1 = 'Lecture';
 const ITEM_ID_2 = 'Computer science';
 const MARK_USER_ID = '1FX9PWN8H4TreVGKEwoxxrXLWCc2';
+const MUSIC_ID = 'Music';
+const UNDERGRADUATE_RESEARCH_ID = 'Undergraduate Research';
 
 // Global setup
 const db = admin.firestore();
@@ -58,7 +60,7 @@ describe('rateEvent', () => {
         }
       })
     };
-    app.rateEvent(req, res);
+    rateEvent(req, res);
   });
 
   it('should update the recommender database correctly with like and dislike', done => {
@@ -104,8 +106,24 @@ describe('updateRecommendations', () => {
     });
   })
 
-  it('should update Mark\'s behaviour rec correctly', async () => {
+  it('should work even if there is no data in the redis', () => {
+    assert.fail();
+  })
 
+  it('should update Mark\'s behaviour rec correctly', async done => {
+    await raccoonWrapper.rate(USER_ID_1, MUSIC_ID, 'like');
+    await raccoonWrapper.rate(USER_ID_1, 'Strings', 'like');
+    await raccoonWrapper.rate(MARK_USER_ID, MUSIC_ID, 'like');
+    await raccoonWrapper.rate(MARK_USER_ID, UNDERGRADUATE_RESEARCH_ID, 'like');
+    assert.deepEqual(await raccoonWrapper.recommend(MARK_USER_ID), ['Bananna Pancakes']);
+    // TODO(ML): Prove that the redis has been modified
+    redis.createClient().keys('*', async (err, keys) => {
+      console.log(keys);
+      await updateRecommendations(MARK_USER_ID);
+      const docSnapshot = await db.collection('users').doc(MARK_USER_ID).get();
+      assert.deepEqual(docSnapshot.get('events.recommended'), ['Banana Pancake', 'Claude Debussy']);
+      done();
+    });
   })
 })
 
