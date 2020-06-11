@@ -1,16 +1,18 @@
 import React from 'react';
 import { StyledPopup } from './styles';
+import OrganizationDirectory from '../OrganizationDirectory';
 import LogIn from './auth/logIn';
 import SignUp from './auth/signUp';
 
 const bodyTexts = {
-  contact: `Comments, questions, or suggestions for how we can make ObieLocal 
-    better? Feel free to contact us by emailing Colton.Potter@oberlin.edu.`,
-  about: `ObieLocal is a web service created by Oberlin students to help other 
+  contact: <p>Comments, questions, or suggestions for how we can make ObieLocal 
+    better? Feel free to contact us by emailing Colton.Potter@oberlin.edu.</p>,
+  about: <p>ObieLocal is a web service created by Oberlin students to help other 
     students find out what's happening on campus through a visual interface.
     The first version of ObieLocal was developed by Colton Potter, Minh Lam,
     Thomas Nemeh, and Lukas Griffin for their 'Systems Programming' final
-    project. It continues to be developed by Colton Potter, Minh Lam, and Khang Nguyen.`,
+    project. It continues to be developed by Colton, Minh, and Khang Nguyen.</p>,
+  orgdir: <OrganizationDirectory />,
   signUp: (
     <div>
       <SignUp />
@@ -54,7 +56,7 @@ class Popup extends React.Component {
             X
           </button>
           <h1>{title}</h1>
-          <p>{body}</p>
+          <div>{body}</div>
         </div>
       </StyledPopup>
     );

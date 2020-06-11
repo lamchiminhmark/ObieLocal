@@ -32,6 +32,9 @@ const NavBar = (props) => {
       case 'signUp':
         setShow('signUp');
         break;
+      case 'orgdirBtn': 
+        setShow('orgdir');
+        break;
       default:
         setShow('none');
     }
@@ -73,7 +76,12 @@ const NavBar = (props) => {
               Contact
             </button>
           </li>
-          <li key="3">{authButton}</li>
+          <li key="3">
+            <button id="orgdirBtn" onClick={togglePopup}>
+                OrgDir
+            </button>
+          </li>
+          <li key="4">{authButton}</li>
         </ul>
         {popupElement}
       </StyledNav>
@@ -81,10 +89,10 @@ const NavBar = (props) => {
   );
 };
 
-const mapStateToProps = ({ firebase, auth }) => {
+const mapStateToProps = ({ firebase }) => {
   return {
     loggedIn: firebase.auth.uid ? true : false,
-    err: auth.err || '',
+    err: firebase.authError || '',
   };
 };
 

@@ -16,3 +16,9 @@ export const TOGGLE_EVENT = 'TOGGLE_EVENT';
 export const FILTER_BY_DAY = 'FILTER_BY_DAY';
 /** Redux action: Send userId, event's categories when user likes an event*/
 export const LIKE_EVENT = 'LIKE_EVENT';
+/** Redux action: Follow relationship written */
+export const FOLLOWING = 'FOLLOWING';
+/** Redux action: Follow request sent */
+export const FOLLOW_REQUEST_SENT = 'FOLLOW_REQUEST_SENT';
+/** Redux action: Trouble sending follow request */
+export const FOLLOW_ERROR = 'FOLLOW_ERROR';
