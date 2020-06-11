@@ -33,12 +33,20 @@ module.exports.rate = async function (userId, itemId, type) {
 };
 
 /**
- * Returns a list of ordered recommendations, most to least recommended
+ * Returns an object of recommended attributes and their scores, each entry is {rec: score}
  * @param {string} userId 
  * @param {number} [numberOfRecs] number of recommenders to return, default is 10
  */
 module.exports.recommend = async function (userId, numberOfRecs = 10) {
-  return await raccoon.recommendFor(userId, numberOfRecs);
+  const allLikedAttrs = await raccoon.allLikedFor(userId);
+  const recommendedAttrs = await raccoon.recommendFor(userId, numberOfRecs);
+  const attrScore = {};
+  const likedAttrScore = recommendedAttrs.length + 1; // items that are already liked gets highest score
+  allLikedAttrs.forEach(attr => attrScore[attr] = likedAttrScore);
+  recommendedAttrs.forEach((attr, i, arr) => {
+    attrScore[attr] = arr.length - i    // 1st attr in length-3 array scores 3, 
+  });
+  return attrScore;
 }
 
 /**

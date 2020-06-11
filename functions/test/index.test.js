@@ -24,66 +24,83 @@ const UNDERGRADUATE_RESEARCH_ID = 'Undergraduate Research';
 // Global setup
 const db = admin.firestore();
 
-describe('rateEvent', () => {
-  afterEach(done => {
-    const client = redis.createClient();
-    client.flushall(() => {
-      done();
+describe('raccoon-wrapper', () => {
+  describe('rateEvent', () => {
+    afterEach(done => {
+      const client = redis.createClient();
+      client.flushall(() => {
+        done();
+      });
     });
-  });
 
-  it('should handle a POST request with a like correctly', done => {
-    const req = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: {
-        type: 'like',
-        userId: USER_ID_1,
-        items: [ITEM_ID_1, ITEM_ID_2]
-      }
-    };
-    const res = {
-      status: code => ({
-        send: async () => {
-          assert.equal(code, 200);
-          assert.deepEqual(await raccoonWrapper.likedBy(ITEM_ID_1), [
-            USER_ID_1
-          ]);
-          assert.deepEqual(await raccoonWrapper.likedBy(ITEM_ID_2), [
+    it('should handle a POST request with a like correctly', done => {
+      const req = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: {
+          type: 'like',
+          userId: USER_ID_1,
+          items: [ITEM_ID_1, ITEM_ID_2]
+        }
+      };
+      const res = {
+        status: code => ({
+          send: async () => {
+            assert.equal(code, 200);
+            assert.deepEqual(await raccoonWrapper.likedBy(ITEM_ID_1), [
+              USER_ID_1
+            ]);
+            assert.deepEqual(await raccoonWrapper.likedBy(ITEM_ID_2), [
+              USER_ID_1
+            ]);
+            await raccoonWrapper.rate(USER_ID_1, ITEM_ID_1, 'unlike');
+            await raccoonWrapper.rate(USER_ID_1, ITEM_ID_2, 'undislike');
+            done();
+          }
+        })
+      };
+      rateEvent(req, res);
+    });
+
+    it('should update the recommender database correctly with like and dislike', done => {
+      // Wrapping functions in a wrap method that
+      async function asyncWrap() {
+        try {
+          await raccoonWrapper.rate(USER_ID_1, ITEM_ID_1, 'like');
+          await raccoonWrapper.rate(USER_ID_1, ITEM_ID_2, 'dislike');
+          assert.deepEqual(await raccoonWrapper.likedBy(ITEM_ID_1), [USER_ID_1]);
+          assert.deepEqual(await raccoonWrapper.dislikedBy(ITEM_ID_2), [
             USER_ID_1
           ]);
           await raccoonWrapper.rate(USER_ID_1, ITEM_ID_1, 'unlike');
           await raccoonWrapper.rate(USER_ID_1, ITEM_ID_2, 'undislike');
-          done();
+        } catch (e) {
+          throw e;
         }
-      })
-    };
-    rateEvent(req, res);
-  });
-
-  it('should update the recommender database correctly with like and dislike', done => {
-    // Wrapping functions in a wrap method that
-    async function asyncWrap() {
-      try {
-        await raccoonWrapper.rate(USER_ID_1, ITEM_ID_1, 'like');
-        await raccoonWrapper.rate(USER_ID_1, ITEM_ID_2, 'dislike');
-        assert.deepEqual(await raccoonWrapper.likedBy(ITEM_ID_1), [USER_ID_1]);
-        assert.deepEqual(await raccoonWrapper.dislikedBy(ITEM_ID_2), [
-          USER_ID_1
-        ]);
-        await raccoonWrapper.rate(USER_ID_1, ITEM_ID_1, 'unlike');
-        await raccoonWrapper.rate(USER_ID_1, ITEM_ID_2, 'undislike');
-      } catch (e) {
-        throw e;
       }
-    }
 
-    asyncWrap()
-      .then(() => done())
-      .catch(e => assert.fail(e));
+      asyncWrap()
+        .then(() => done())
+        .catch(e => assert.fail(e));
+    });
   });
+
+  describe('recommend', () => {
+    it('should give the right recommendations', async () => {
+      await raccoonWrapper.rate(USER_ID_1, ITEM_ID_1, 'like');
+      await raccoonWrapper.rate(USER_ID_1, MUSIC_ID, 'like');
+      await raccoonWrapper.rate(MARK_USER_ID, MUSIC_ID, 'like');
+      await raccoonWrapper.rate(MARK_USER_ID, UNDERGRADUATE_RESEARCH_ID, 'like');
+      const EXPECTATION = {
+        [MUSIC_ID]: 2,
+        [UNDERGRADUATE_RESEARCH_ID]: 2,
+        [ITEM_ID_1]: 1,
+      }
+      assert.deepEqual(await raccoonWrapper.recommend(MARK_USER_ID), EXPECTATION);
+    })
+  })
 });
 
 // Populate the redis first 

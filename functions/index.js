@@ -24,13 +24,9 @@ exports.refreshEvents = functions.pubsub
 exports.rateEvent = rateEvent;
 
 exports.updateRecommendations = async function updateRecommendations(userId) {
-  const recommendation = await raccoonWrapper.recommend(userId);
-  const attrScore = {};
+  const attrScore = await raccoonWrapper.recommend(userId);
   const relevanceScore = {};
   let eventIds = [];
-  recommendation.forEach((attr, i, arr) => {
-    attrScore[attr] = length(arr) - i    // 1st attr in length-3 array scores 3, 
-  })                                     // 2nd scores 2 and 3rd scores 1
   const querySnapshot = await db.collection('events').get();
   querySnapshot.forEach(documentSnapshot => {
     const eventId = documentSnapshot.id;
