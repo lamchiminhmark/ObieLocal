@@ -5,10 +5,13 @@ import {
   FOLLOW_ERROR,
 } from './types';
 
-export const following = (followeeId) => {
+export const following = (followerId, followeeId) => {
   return {
     type: FOLLOWING,
-    followeeId,
+    payload: {
+      followerId,
+      followeeId,
+    },
   };
 };
 

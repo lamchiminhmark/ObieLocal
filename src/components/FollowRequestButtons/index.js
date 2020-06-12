@@ -36,7 +36,7 @@ const frHandler = async (props, isAccepted = false) => {
           'follow.sentRequests': firestore.FieldValue.arrayRemove(userId),
         }),
       ]);
-      props.following(userId);
+      props.following(requesterId, userId);
     } else {
       await Promise.all([
         firestore.update(userRef, {
@@ -67,7 +67,8 @@ const FollowRequestButtons = (props) => {
 const mapDispatchToProps = (dispatch) => ({
   followRequestRejected: (followerId) =>
     dispatch(followRequestRejected(followerId)),
-  following: (followeeId) => dispatch(following(followeeId)),
+  following: (followerId, followeeId) =>
+    dispatch(following(followerId, followeeId)),
   followError: (error) => dispatch(followError(error)),
 });
 

@@ -13,6 +13,7 @@ const followOnClick = (props) => () => {
   followHandler(props);
 };
 
+// TODO: Should be illegal to send a follow request to a followee
 const followHandler = async (props) => {
   const { firestore, userId, followeeId } = props;
   const userRef = { collection: "users", doc: userId };
@@ -29,7 +30,7 @@ const followHandler = async (props) => {
           "follow.followees": firestore.FieldValue.arrayUnion(followeeId),
         }),
       ]);
-      props.following(followeeId);
+      props.following(userId, followeeId);
     } else {
       await Promise.all([
         firestore.update(followeeRef, {
@@ -50,9 +51,8 @@ const FollowButton = (props) => {
   return <button onClick={props.followOnClick}>Follow</button>;
 };
 
-// TODO(CP): Follow actions should include both user Ids
 const mapDispatchToProps = (dispatch) => ({
-  following: (followeeId) => dispatch(following(followeeId)),
+  following: (followerId, followeeId) => dispatch(following(followerId, followeeId)),
   followRequestSent: (followeeId) => dispatch(followRequestSent(followeeId)),
   followError: (error) => dispatch(followError(error)),
 });
