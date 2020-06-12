@@ -64,13 +64,7 @@ const FollowRequestButtons = (props) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  followRequestRejected: (followerId) =>
-    dispatch(followRequestRejected(followerId)),
-  following: (followerId, followeeId) =>
-    dispatch(following(followerId, followeeId)),
-  followError: (error) => dispatch(followError(error)),
-});
+const mapDispatchToProps = { followRequestRejected, following, followError };
 
 // TODO(CP): Get userId from state?
 export default compose(
