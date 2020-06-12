@@ -50,6 +50,7 @@ const FollowButton = (props) => {
   return <button onClick={props.followOnClick}>Follow</button>;
 };
 
+// TODO(CP): Follow actions should include both user Ids
 const mapDispatchToProps = (dispatch) => ({
   following: (followeeId) => dispatch(following(followeeId)),
   followRequestSent: (followeeId) => dispatch(followRequestSent(followeeId)),

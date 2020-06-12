@@ -20,5 +20,7 @@ export const LIKE_EVENT = 'LIKE_EVENT';
 export const FOLLOWING = 'FOLLOWING';
 /** Redux action: Follow request sent */
 export const FOLLOW_REQUEST_SENT = 'FOLLOW_REQUEST_SENT';
+/** Redux action: Follow request rejected */
+export const FOLLOW_REQUEST_REJECTED = 'FOLLOW_REQUEST_REJECTED';
 /** Redux action: Trouble sending follow request */
 export const FOLLOW_ERROR = 'FOLLOW_ERROR';

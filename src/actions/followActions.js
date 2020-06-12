@@ -1,4 +1,9 @@
-import { FOLLOW_REQUEST_SENT, FOLLOWING, FOLLOW_ERROR } from './types';
+import {
+  FOLLOW_REQUEST_SENT,
+  FOLLOW_REQUEST_REJECTED,
+  FOLLOWING,
+  FOLLOW_ERROR,
+} from './types';
 
 export const following = (followeeId) => {
   return {
@@ -11,6 +16,13 @@ export const followRequestSent = (followeeId) => {
   return {
     type: FOLLOW_REQUEST_SENT,
     followeeId,
+  };
+};
+
+export const followRequestRejected = (followerId) => {
+  return {
+    type: FOLLOW_REQUEST_REJECTED,
+    followerId,
   };
 };
 
