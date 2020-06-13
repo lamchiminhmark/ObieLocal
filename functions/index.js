@@ -12,6 +12,15 @@ exports.refreshEvents = functions.pubsub
     try {
       const results = await database.updateDatabase(db);
       console.log('No errors; database updated.');
+      // OPT(ML): Might have opportunity for DB read reduction if 
+      // we only read document's ids
+      const allDocRefs = await db.collection('users').listDocuments();
+      console.time('updateRecommendations');
+      allDocRefs.forEach(docRef => {
+        await updateRecommendations(docRef.id);
+      })
+      console.log(`updateRecommendations completed in`);
+      console.timeEnd('updateRecommendations');
       return results;
     } catch (err) {
       console.error(err);
@@ -23,7 +32,6 @@ exports.rateEvent = rateEvent;
 
 /**
  * @param {uid} userId 
- * @return {void}
  * Update the events.recommended field in the user's document with the 
  * current data in raccoon and events collection
  */
