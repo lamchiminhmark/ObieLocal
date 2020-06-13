@@ -48,7 +48,7 @@ const frHandler = async (props, isAccepted = false) => {
           'follow.sentRequests': firestore.FieldValue.arrayRemove(userId),
         }),
       ]);
-      props.followRequestRejected(userId);
+      props.followRequestRejected(requesterId);
     }
   } catch (err) {
     props.followError(err);

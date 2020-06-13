@@ -22,10 +22,10 @@ export const followRequestSent = (followeeId) => {
   };
 };
 
-export const followRequestRejected = (followerId) => {
+export const followRequestRejected = (requesterId) => {
   return {
     type: FOLLOW_REQUEST_REJECTED,
-    followerId,
+    requesterId,
   };
 };
 
