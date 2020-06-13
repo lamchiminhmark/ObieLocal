@@ -9,11 +9,11 @@ import {
   followError,
 } from '../../actions/followActions';
 
-const acceptFollowReqOnClick = (props) => {
+const acceptFollowReqOnClick = (props) => () => {
   frHandler(props, true);
 };
 
-const deleteFollowReqOnClick = (props) => {
+const deleteFollowReqOnClick = (props) => () => {
   frHandler(props, false);
 };
 
