@@ -8,17 +8,15 @@ let db = admin.firestore();
 
 exports.refreshEvents = functions.pubsub
   .schedule('every 6 hours')
-  .onRun(context => {
-    let update = database
-      .updateDatabase(db)
-      .then(results => {
-        console.log('No errors; database updated.');
-        return results;
-      })
-      .catch(err => {
-        console.error(err);
-      });
-    return update;
+  .onRun(async () => {
+    try {
+      const results = await database.updateDatabase(db);
+      console.log('No errors; database updated.');
+      return results;
+    } catch (err) {
+      console.error(err);
+    }
+    return results;
   });
 
 exports.rateEvent = rateEvent;
