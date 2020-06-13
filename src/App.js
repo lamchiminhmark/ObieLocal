@@ -10,11 +10,9 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { getAllMarkers } from './actions/markerActions';
 import FilterByDayButton from './components/FilterEvents/filterDayButton';
-import FollowButton from './components/FollowButton';
 import { firestoreConnect } from 'react-redux-firebase';
 import { Switch, Route } from 'react-router-dom';
 import EventDetailsWrapper from './components/EventDetails';
-import FollowRequestButtons from './components/FollowRequestButtons';
 
 export class App extends Component {
   constructor(props) {
@@ -47,14 +45,6 @@ export class App extends Component {
         <Switch>
           <Route path="/events">
             <EventDetailsWrapper />
-            <FollowButton
-              userId="1FX9PWN8H4TreVGKEwoxxrXLWCc2"
-              followeeId="2eZ2WTDBypeRttg47786E6XpzUu1"
-            />
-            <FollowRequestButtons 
-              userId="2eZ2WTDBypeRttg47786E6XpzUu1"
-              requesterId="1FX9PWN8H4TreVGKEwoxxrXLWCc2"
-            />
           </Route>
           <Route path="/">
             <FilterByDayButton />
