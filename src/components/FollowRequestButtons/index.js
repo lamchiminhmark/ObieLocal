@@ -66,7 +66,6 @@ const FollowRequestButtons = (props) => {
 
 const mapDispatchToProps = { followRequestRejected, following, followError };
 
-// TODO(CP): Get userId from state?
 export default compose(
   connect(undefined, mapDispatchToProps),
   withFirestore,

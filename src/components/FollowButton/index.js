@@ -13,7 +13,6 @@ const followOnClick = (props) => () => {
   followHandler(props);
 };
 
-// TODO: Should be illegal to send a follow request to a followee
 const followHandler = async (props) => {
   const { firestore, userId, followeeId } = props;
   const userRef = { collection: 'users', doc: userId };
@@ -21,7 +20,11 @@ const followHandler = async (props) => {
   try {
     const followee = await firestore.get(followeeRef);
     const followeeData = followee.data();
-    if (!followeeData.follow.requestOn) {
+    if (followeeData.follow && followeeData.follow.followers.includes(userId))
+      throw new Error(
+        `User ${userId} is already following user ${followeeId}.`
+      );
+    if (followeeData.follow && !followeeData.follow.requestOn) {
       await Promise.all([
         firestore.update(followeeRef, {
           'follow.followers': firestore.FieldValue.arrayUnion(userId),
