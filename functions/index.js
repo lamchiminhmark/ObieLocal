@@ -23,7 +23,13 @@ exports.refreshEvents = functions.pubsub
 
 exports.rateEvent = rateEvent;
 
-exports.updateRecommendations = async function updateRecommendations(userId) {
+/**
+ * @param {uid} userId 
+ * @return {void}
+ * Update the events.recommended field in the user's document with the 
+ * current data in raccoon and events collection
+ */
+async function updateRecommendations(userId) {
   const attrScore = await raccoonWrapper.recommend(userId);
   const relevanceScore = {};
   let eventIds = [];
@@ -49,3 +55,5 @@ exports.updateRecommendations = async function updateRecommendations(userId) {
   eventIds.sort((id1, id2) => relevanceScore[id2] - relevanceScore[id1]);
   const res = await db.collection('users').doc(userId).update({ events: { recommended: eventIds.slice(0, 10) } });
 }
+
+exports.updateRecommendations = updateRecommendations;
