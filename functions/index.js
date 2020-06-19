@@ -16,7 +16,7 @@ exports.refreshEvents = functions.pubsub
       // we only read document's ids
       const allDocRefs = await db.collection('users').listDocuments();
       console.time('updateRecommendations');
-      allDocRefs.forEach(docRef => {
+      allDocRefs.forEach(async docRef => {
         await updateRecommendations(docRef.id);
       })
       console.log(`updateRecommendations completed in`);
