@@ -1,6 +1,7 @@
 /* eslint-disable no-loop-func */
 /* eslint-disable no-await-in-loop */
 const admin = require('firebase-admin');
+const axios = require('axios');
 
 /**
  * Deletes all events in the database and then
@@ -86,7 +87,7 @@ async function insertAPIEventsToDatabase(db) {
 
   for (let page = 1; page <= numPages; page++) {
     try {
-      body = await client.get('', { params: { page } }).then((res) => res.data);
+      body = await client.get('', { params: { days: 8, page } }).then((res) => res.data);
     } catch (e) {
       throw new Error('Cannot fetch data from Oberlin API, stack: ' + e.stack);
     }
