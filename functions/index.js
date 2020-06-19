@@ -20,7 +20,6 @@ exports.refreshEvents = functions.pubsub
         return Promise.all(allDocRefs.map(docRef =>
           updateRecommendations(docRef.id)))
       }).then(statusArr => {
-        console.log(`updateRecommendations completed in`);
         console.timeEnd('updateRecommendations');
         return statusArr
       }).catch(err => {
