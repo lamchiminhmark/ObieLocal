@@ -89,7 +89,7 @@ async function insertAPIEventsToDatabase(db) {
       body = await rp(options);
     } catch (e) {
       console.error(e);
-      throw new Error('Error fetching from API.');
+      throw e;
     }
 
     /* If there are no events on the page, then make sure to count it as complete */
