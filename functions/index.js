@@ -8,24 +8,24 @@ let db = admin.firestore();
 
 exports.refreshEvents = functions.pubsub
   .schedule('every 6 hours')
-  .onRun(async () => {
-    try {
-      const results = await database.updateDatabase(db);
+  .onRun(() => {
+    return database.updateDatabase(db).then(results => {
       console.log('No errors; database updated.');
       // OPT(ML): Might have opportunity for DB read reduction if 
       // we only read document's ids
-      const allDocRefs = await db.collection('users').listDocuments();
-      console.time('updateRecommendations');
-      allDocRefs.forEach(async docRef => {
-        await updateRecommendations(docRef.id);
+      return db.collection('users').listDocuments()
+    })
+      .then(allDocRefs => {
+        console.time('updateRecommendations');
+        return Promise.all(allDocRefs.map(docRef =>
+          updateRecommendations(docRef.id)))
+      }).then(statusArr => {
+        console.log(`updateRecommendations completed in`);
+        console.timeEnd('updateRecommendations');
+        return statusArr
+      }).catch(err => {
+        console.error(err);
       })
-      console.log(`updateRecommendations completed in`);
-      console.timeEnd('updateRecommendations');
-      return results;
-    } catch (err) {
-      console.error(err);
-    }
-    return results;
   });
 
 exports.rateEvent = rateEvent;
@@ -60,6 +60,7 @@ async function updateRecommendations(userId) {
   eventIds = eventIds.filter(id => relevanceScore[id] > 0)
   eventIds.sort((id1, id2) => relevanceScore[id2] - relevanceScore[id1]);
   await db.collection('users').doc(userId).update({ events: { recommended: eventIds.slice(0, 10) } });
+  return 'SUCCESS';
 }
 
 exports.updateRecommendations = updateRecommendations;
