@@ -1,6 +1,5 @@
 /* eslint-disable no-loop-func */
 /* eslint-disable no-await-in-loop */
-const rp = require('request-promise');
 const admin = require('firebase-admin');
 
 /**
@@ -58,7 +57,7 @@ async function clearDatabase(db) {
 }
 
 /**
- * Uses the request module to send a request to the API and retrieve the JSON event
+ * Uses the axios module to send a request to the API and retrieve the JSON event
  * objects that are stored on each page. Then, it inserts the events into the database.
  * TODO: Refactor into smaller, more manageable functions.
  * 'https://calendar.oberlin.edu/api/2/events?start=2018-12-15&end=2018-12-19&page=1'
@@ -67,26 +66,27 @@ async function clearDatabase(db) {
  */
 async function insertAPIEventsToDatabase(db) {
   let promises = [];
-  let options = {
-    json: true,
+  const client = axios.create({
+    baseURL: 'https://calendar.oberlin.edu/api/2/events',
     timeout: 1500,
-    headers: {
-      'User-Agent': 'Request-Promise'
+    params: {
+      days: 8,
     },
-    uri: 'https://calendar.oberlin.edu/api/2/events?days=8'
-  };
-
-  let body = await rp(options).catch(err => {
-    console.log(err);
-    return null;
   });
+
+  let body = await client
+    .get('', { params: { days: 8 } })
+    .then((res) => res.data)
+    .catch((err) => {
+      console.log(err);
+      return null;
+    });
+
   let numPages = (pagesRemaining = body ? body.page.total : 10);
 
   for (let page = 1; page <= numPages; page++) {
-    options.uri = `https://calendar.oberlin.edu/api/2/events?days=8&page=${page}`;
-
     try {
-      body = await rp(options);
+      body = await client.get('', { params: { page } }).then((res) => res.data);
     } catch (e) {
       console.error(e);
       throw e;
