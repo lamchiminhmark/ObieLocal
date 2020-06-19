@@ -9,7 +9,7 @@ const admin = require('firebase-admin');
  * @param {FirebaseFirestore.Firestore} db a database instance
  * @returns {Promise<Promise<FirebaseFirestore.DocumentReference>[]>} all inserted document references
  */
-module.exports.updateDatabase = async function(db) {
+module.exports.updateDatabase = async function (db) {
   try {
     await clearDatabase(db);
     return insertAPIEventsToDatabase(db);
@@ -88,8 +88,7 @@ async function insertAPIEventsToDatabase(db) {
     try {
       body = await rp(options);
     } catch (e) {
-      console.error(e);
-      throw e;
+      throw new Error('Cannot fetch data from Oberlin API, stack: ' + e.stack);
     }
 
     /* If there are no events on the page, then make sure to count it as complete */
