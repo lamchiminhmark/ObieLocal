@@ -1,7 +1,7 @@
 /* eslint-disable no-loop-func */
 /* eslint-disable no-await-in-loop */
-const rp = require('request-promise');
 const admin = require('firebase-admin');
+const axios = require('axios');
 
 /**
  * Deletes all events in the database and then
@@ -9,7 +9,7 @@ const admin = require('firebase-admin');
  * @param {FirebaseFirestore.Firestore} db a database instance
  * @returns {Promise<Promise<FirebaseFirestore.DocumentReference>[]>} all inserted document references
  */
-module.exports.updateDatabase = async function(db) {
+module.exports.updateDatabase = async function (db) {
   try {
     await clearDatabase(db);
     return insertAPIEventsToDatabase(db);
@@ -58,7 +58,7 @@ async function clearDatabase(db) {
 }
 
 /**
- * Uses the request module to send a request to the API and retrieve the JSON event
+ * Uses the axios module to send a request to the API and retrieve the JSON event
  * objects that are stored on each page. Then, it inserts the events into the database.
  * TODO: Refactor into smaller, more manageable functions.
  * 'https://calendar.oberlin.edu/api/2/events?start=2018-12-15&end=2018-12-19&page=1'
@@ -67,29 +67,29 @@ async function clearDatabase(db) {
  */
 async function insertAPIEventsToDatabase(db) {
   let promises = [];
-  let options = {
-    json: true,
+  const client = axios.create({
+    baseURL: 'https://calendar.oberlin.edu/api/2/events',
     timeout: 1500,
-    headers: {
-      'User-Agent': 'Request-Promise'
+    params: {
+      days: 8,
     },
-    uri: 'https://calendar.oberlin.edu/api/2/events?days=8'
-  };
-
-  let body = await rp(options).catch(err => {
-    console.log(err);
-    return null;
   });
+
+  let body = await client
+    .get('', { params: { days: 8 } })
+    .then((res) => res.data)
+    .catch((err) => {
+      console.log(err);
+      return null;
+    });
+
   let numPages = (pagesRemaining = body ? body.page.total : 10);
 
   for (let page = 1; page <= numPages; page++) {
-    options.uri = `https://calendar.oberlin.edu/api/2/events?days=8&page=${page}`;
-
     try {
-      body = await rp(options);
+      body = await client.get('', { params: { days: 8, page } }).then((res) => res.data);
     } catch (e) {
-      console.error(e);
-      throw new Error('Error fetching from API.');
+      throw new Error('Cannot fetch data from Oberlin API, stack: ' + e.stack);
     }
 
     /* If there are no events on the page, then make sure to count it as complete */

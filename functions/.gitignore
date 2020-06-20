@@ -4,3 +4,5 @@ node_modules/
 firebase-debug.log
 
 test/test-twine-12451-69359364facf.json
+
+.gcloudignore
